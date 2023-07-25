@@ -6,7 +6,6 @@ import { UserContext } from "../../context/userContext";
 // import { Link } from 'react-router-dom';
 
 const MoviesPage = () => {
-    const { userCredentials } = useContext(UserContext);
     const [data, setResponse] = useState([]);
 
     useEffect(() => {
@@ -16,8 +15,6 @@ const MoviesPage = () => {
             setResponse(data);
         };
         response();
-
-
     }, []);
     return (
         <>

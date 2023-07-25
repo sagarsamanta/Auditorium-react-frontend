@@ -3,20 +3,20 @@ import Axios from "../lib/axiosInstance";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import { displayDate } from "../lib/utils";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { UserContext } from "../context/userContext";
 
 const DataTableMovie = ({ data, className }) => {
     const [moviesList, setMoviesList] = useState(data);
-    const authUser = useSelector((state) => state.auth);
+    // const authUser = useSelector((state) => state.auth);
+    const { userCredentials } = useContext(UserContext);
     const handleMovieStatusChange = (event, currentStatus, row) => {
-        console.log("row", row);
-        const newStatus =
-            row.status === STATUS_ACTIVE ? STATUS_INACTIVE : STATUS_ACTIVE;
+        const newStatus = row.status === STATUS_ACTIVE ? STATUS_INACTIVE : STATUS_ACTIVE;
 
-        Axios('PUT', `movie/chnageMovieStatus/${row._id}`, { status: newStatus }, { authRequest: true, token: authUser?.token })
+        Axios('PUT', `movie/chnageMovieStatus/${row._id}`, { status: newStatus }, { authRequest: true, token: userCredentials?.token })
             .then((res) => {
                 console.log('res', res);
                 if (res.data?.movie) {
