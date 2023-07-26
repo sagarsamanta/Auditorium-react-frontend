@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "../lib/axiosInstance";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import DataTable from "react-data-table-component";
 import { useAuth } from "../lib/hooks/useAuth";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const DataTableShow = ({ data, movieId, className }) => {
     const { token } = useAuth();
@@ -19,10 +20,10 @@ const DataTableShow = ({ data, movieId, className }) => {
                         return (prevData.title == newShow.title) ? { ...prevData, status: newShow.status } : prevData;
                     });
                     setShowsData(newShowList);
+                    toast.success(`${newShow.title} status changed to ${newShow.status}`)
                 }
-            })
-            .catch(err => {
-                console.log('err', err, err.message);
+            }).catch(err => {
+                toast.error(`${err.message}`);
             });
     }
     const columns = [
@@ -68,6 +69,11 @@ const DataTableShow = ({ data, movieId, className }) => {
             ),
         }
     ];
+
+    useEffect(() => {
+        setShowsData(data);
+    }, [data]);
+
     return (
         <>
             <DataTable

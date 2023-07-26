@@ -7,6 +7,7 @@ import MoviesPage from "../pages/admin/MoviesPage";
 import AddMoviePage from "../pages/admin/AddMoviePage";
 import UpdateMoviePage from "../pages/admin/UpdateMoviePage";
 import ShowsPage from "../pages/admin/ShowsPage";
+import EditShowPage from "../pages/admin/EditShowPage";
 
 const router = createBrowserRouter([
     {
@@ -45,8 +46,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: "admin/shows/edit-shows",
-        element: <AuthentiCate >edit shows</AuthentiCate>,
+        path: "admin/shows/edit-show",
+        element: <AuthentiCate><EditShowPage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

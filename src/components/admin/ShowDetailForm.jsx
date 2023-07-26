@@ -1,21 +1,23 @@
-"use client"
-import { displayDate, getPriceBySeatNumber } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { displayDate } from "../../lib/utils";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { addShowDetails, updateShowDetails } from "@/redux/slice/show";
+import Axios from "../../lib/axiosInstance";
+import { useAuth } from "../../lib/hooks/useAuth";
+import LoadingButton from "../UI/LoadingButton";
+import { toast } from "react-toastify";
 
 const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
-    const dispatch = useDispatch();
-    const showStore = useSelector((state) => state.show);
-    const seatStore = useSelector((state) => state.seat);
+    const [loading, setLoading] = useState(false);
+    const [showData, setShowData] = useState(null);
+    const { token } = useAuth();
     const formik = useFormik({
         initialValues: {
-            sTime: show?.showStartTime || '10:00',
-            eTime: show?.showEndTime || '12:00',
-            priceRow_a_to_c: show?.price?.priceRow_a_to_c || '100',
-            priceRow_d_to_h: show?.price?.priceRow_d_to_h || '200',
-            priceRow_i_to_n: show?.price?.priceRow_i_to_n || '300',
+            sTime: showData?.showStartTime || '--:--',
+            eTime: showData?.showEndTime || '--:--',
+            priceRow_a_to_c: showData?.price?.priceRow_a_to_c || '100',
+            priceRow_d_to_h: showData?.price?.priceRow_d_to_h || '200',
+            priceRow_i_to_n: showData?.price?.priceRow_i_to_n || '300',
         },
         validationSchema: Yup.object({
             sTime: Yup.string().required('Please Enter Movie Title'),
@@ -25,6 +27,7 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
             priceRow_i_to_n: Yup.string().required('Please Enter Price'),
         }),
         onSubmit: async (values) => {
+            setLoading(true);
             const show = {
                 ...values,
                 title: showTitle,
@@ -36,26 +39,57 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                     priceRow_i_to_n: values.priceRow_i_to_n,
                 },
             };
-            const seatsObjArr = seatStore?.seat?.selected[`${movie?._id}`]?.map((seat) => {
-                return {
-                    seatNo: seat,
-                    price: getPriceBySeatNumber(seat, values)
-                }
-            });
-            show.seats = seatsObjArr;
+            // const seatsObjArr = seatStore?.seat?.selected[`${movie?._id}`]?.map((seat) => {
+            //     return {
+            //         seatNo: seat,
+            //         price: getPriceBySeatNumber(seat, values)
+            //     }
+            // });
+            // show.seats = seatsObjArr;
             if (showId?.length > 2) {
                 // Update Show
-                await dispatch(updateShowDetails({ movieId: movie?._id, showId: showId, show: show }));
-                // FIX ME - page load to deal with caching of the page
-                window.location.reload();
+                Axios('PUT', `/show/${movie._id}/${showId}`, show, { authRequest: true, token: token })
+                    .then((request) => {
+                        console.log('request', request);
+                        toast.success('Show Updated Successfully');
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    })
+                    .catch((err) => {
+                        console.log('erroe', err.message);
+                        toast.error(`${err.message}`);
+                    });
             } else {
                 // Create Show
-                await dispatch(addShowDetails({ movieId: movie?._id, showId: showId, show: show }));
-                // FIX ME - page load to deal with caching of the page
-                window.location.href = `/admin/shows?movie=${movie?._id}`;
+                Axios('POST', `/show/${movie._id}`, [show], { authRequest: true, token: token })
+                    .then((request) => {
+                        console.log('request', request);
+                        toast.success('Show Created Successfully');
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    })
+                    .catch((err) => {
+                        console.log('erroe', err.message);
+                        toast.error(`${err.message}`);
+                    });
             }
         }
     });
+
+    useEffect(() => {
+        if (show) {
+            formik.setValues({
+                sTime: show.showStartTime || '10:00',
+                eTime: show.showEndTime || '12:00',
+                priceRow_a_to_c: show.price.priceRow_a_to_c || '100',
+                priceRow_d_to_h: show.price.priceRow_d_to_h || '200',
+                priceRow_i_to_n: show.price.priceRow_i_to_n || '300',
+            });
+            setShowData(show);
+        }
+    }, [show]);
 
     return (
         <>
@@ -157,10 +191,7 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                     </div>
 
                     <div className="flex items-center gap-6 w-full px-0 py-4 md:py-3">
-                        <button className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative" type="submit">
-                            {showStore.isLoading && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
-                            Save Show
-                        </button>
+                        <LoadingButton isLoading={loading} text="Save Show" />
                     </div>
 
                 </div>
