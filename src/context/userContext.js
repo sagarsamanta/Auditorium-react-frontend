@@ -1,6 +1,6 @@
 // UserContext.js
 import React, { createContext, useEffect, useState } from 'react';
-import { AUTH_USER_LOCALSTORAGE } from '../lib/consts';
+import { AUTH_USER_LOCALSTORAGE, USER_ADMIN_ROLE } from '../lib/consts';
 const UserContext = createContext();
 const defaultUser = {
     isAuthenticated: false,
@@ -8,7 +8,8 @@ const defaultUser = {
     token: null,
 };
 const UserProvider = ({ children }) => {
-    const [authUser, setAuthUser] = useState(defaultUser);
+    const user = JSON.parse(localStorage.getItem(AUTH_USER_LOCALSTORAGE)) || defaultUser;
+    const [authUser, setAuthUser] = useState(user);
     // Handler function to set user credentials
     const login = (credentials) => {
         const newUser = { ...credentials, isAuthenticated: true };
@@ -20,11 +21,6 @@ const UserProvider = ({ children }) => {
         localStorage.removeItem(AUTH_USER_LOCALSTORAGE);
     }
 
-    useEffect(() => {
-        if (authUser.token) return;
-        const user = JSON.parse(localStorage.getItem(AUTH_USER_LOCALSTORAGE)) || defaultUser;
-        setAuthUser(user);
-    }, [authUser]);
     return (
         <UserContext.Provider value={{ authUser, login, logout }}>
             {children}

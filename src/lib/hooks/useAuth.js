@@ -1,15 +1,20 @@
-import { cookies } from 'next/headers';
-import { AUTH_USER_COOKIE, USER_ADMIN_ROLE } from '../consts';
+import { USER_ADMIN_ROLE } from '../consts';
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 
-export const useAuth = (args) => {
+export const useAuth = () => {
+    const userContext = useContext(UserContext);
     try {
-        const request = args ? { ...args } : null;
-        const cookieStore = request ? request?.cookies : cookies();
-        const authUserCookie = cookieStore.get(AUTH_USER_COOKIE);
-        const authUser = authUserCookie?.value ? JSON.parse(authUserCookie?.value) : null;
-        const isAdmin = authUser?.user?.role === USER_ADMIN_ROLE;
-        return { authUser, isAdmin };
+        return {
+            ...userContext.authUser,
+            isAdmin: userContext.authUser.user && userContext.authUser.user.role === USER_ADMIN_ROLE
+        }
     } catch (err) {
-        return { authUser: null, isAdmin: false };
+        return {
+            isAuthenticated: false,
+            user: null,
+            token: null,
+            isAdmin: false
+        };
     }
 }

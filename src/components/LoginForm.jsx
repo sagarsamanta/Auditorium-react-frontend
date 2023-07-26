@@ -35,7 +35,6 @@ const LoginForm = () => {
 
 
     if (userContext && userContext?.authUser?.isAuthenticated) {
-        console.log('userContext', userContext);
         if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin', { replace: true });
         if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
         return <p>Already Authenticated</p>;

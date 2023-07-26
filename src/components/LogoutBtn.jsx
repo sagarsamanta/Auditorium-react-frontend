@@ -1,14 +1,11 @@
-"use client";
-import { logout } from '@/redux/slice/auth';
-import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
 import { BiLogOutCircle } from 'react-icons/bi'
+import { UserContext } from '../context/userContext';
+
 const LogoutBtn = () => {
-    const dispatch = useDispatch();
-    const router = useRouter();
+    const userContext = useContext(UserContext);
     const handleLogout = () => {
-        dispatch(logout());
-        router.push('/login');
+        userContext.logout();   // Context API
     }
     return (
         <>

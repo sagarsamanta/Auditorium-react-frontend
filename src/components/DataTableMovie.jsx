@@ -1,22 +1,19 @@
-"use client";
-import Axios from "../lib/axiosInstance";
+import { useEffect, useState } from "react";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import { displayDate } from "../lib/utils";
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
 import DataTable from "react-data-table-component";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { UserContext } from "../context/userContext";
+import { useAuth } from "../lib/hooks/useAuth";
+import Axios from "../lib/axiosInstance";
 
 const DataTableMovie = ({ data, className }) => {
     const [moviesList, setMoviesList] = useState(data);
-    // const authUser = useSelector((state) => state.auth);
-    const { userCredentials } = useContext(UserContext);
+    const { token } = useAuth();
     const handleMovieStatusChange = (event, currentStatus, row) => {
         const newStatus = row.status === STATUS_ACTIVE ? STATUS_INACTIVE : STATUS_ACTIVE;
 
-        Axios('PUT', `movie/chnageMovieStatus/${row._id}`, { status: newStatus }, { authRequest: true, token: userCredentials?.token })
+        Axios('PUT', `movie/chnageMovieStatus/${row._id}`, { status: newStatus }, { authRequest: true, token: token })
             .then((res) => {
                 console.log('res', res);
                 if (res.data?.movie) {
@@ -71,6 +68,10 @@ const DataTableMovie = ({ data, className }) => {
             ),
         }
     ];
+    useEffect(() => {
+        setMoviesList(data);
+    }, [data]);
+    console.log('moviesList ', data);
     return (
         <>
             <DataTable

@@ -3,6 +3,7 @@ import ErrorPage from "../pages/ErrorPage";
 import HomePage from "../pages/HomePage";
 import AuthentiCate from "./Authenticate";
 import LoginPage from "../pages/LoginPage";
+import MoviesPage from "../pages/admin/MoviesPage";
 
 const router = createBrowserRouter([
     {
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
     },
     {
         path: "admin/movies",
-        element: <AuthentiCate>sagar</AuthentiCate>,
+        element: <AuthentiCate><MoviesPage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

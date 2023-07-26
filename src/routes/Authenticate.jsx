@@ -1,17 +1,23 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
-import { AUTH_USER_LOCALSTORAGE } from '../lib/consts';
+import { Navigate } from 'react-router-dom';
+import AdminPanelLayout from '../components/admin/AdminPanelLayout';
+import { useAuth } from '../lib/hooks/useAuth';
 
 const AuthentiCate = ({ children }) => {
-    const isAdmin = localStorage.getItem(AUTH_USER_LOCALSTORAGE);
+    const { isAuthenticated, isAdmin } = useAuth();
     // TODO: Roal check
-    if (!isAdmin) {
+    if (!isAuthenticated) {
         return <Navigate to="/login" />;
     }
 
     return (
         <div>
-            {children}
+            {
+                isAdmin ? (
+                    <AdminPanelLayout>{children}</AdminPanelLayout>
+                ) : (
+                    { children }
+                )
+            }
         </div>
     )
 }
