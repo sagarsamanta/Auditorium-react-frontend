@@ -5,6 +5,7 @@ import AuthentiCate from "./Authenticate";
 import LoginPage from "../pages/LoginPage";
 import MoviesPage from "../pages/admin/MoviesPage";
 import AddMoviePage from "../pages/admin/AddMoviePage";
+import UpdateMoviePage from "../pages/admin/UpdateMoviePage";
 
 const router = createBrowserRouter([
     {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
     },
     {
         path: "admin/movies/:id",
-        element: <AuthentiCate >id</AuthentiCate>,
+        element: <AuthentiCate><UpdateMoviePage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

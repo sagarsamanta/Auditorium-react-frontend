@@ -1,4 +1,3 @@
-"use client"
 import { STATUS_ACTIVE } from "../../lib/consts";
 import { displayDate, getDataUriOfImage } from "../../lib/utils";
 import { useFormik } from "formik";
@@ -40,18 +39,24 @@ const AddMovieForm = ({ movie }) => {
             formData.append('language', values.language);
             formData.append('poster', values.image);
 
-            Axios('POST', '/movie/', formData, { authRequest: true, token: token })
+            const requestMethod = movie ? 'PUT' : 'POST';
+            const requestUrl = movie ? `/movie/${movie?._id}` : '/movie/';
+
+            Axios(requestMethod, requestUrl, formData, { authRequest: true, token: token })
                 .then((response) => {
                     console.log('response', response);
                     if (response?.status === 201) {
                         toast.success('Movie Added Sucessfully');
+                    }
+                    if (response?.status === 200) {
+                        toast.success('Movie Updated Sucessfully');
                     }
                 })
                 .finally(() => {
                     setLoading(false);
                 })
                 .catch((error) => {
-                    console.log('error', error);
+                    toast.error(`${error.message}`);
                 });
         }
     });
@@ -182,7 +187,7 @@ const AddMovieForm = ({ movie }) => {
                     </div>
 
                     <div className="flex items-center gap-6 w-full px-0 py-4 md:p-3">
-                        <LoadingButton isLoading={loading} text="Add Show" />
+                        <LoadingButton isLoading={loading} text={movie ? "Update Movie" : "Add Movie"} />
                     </div>
 
                 </div>

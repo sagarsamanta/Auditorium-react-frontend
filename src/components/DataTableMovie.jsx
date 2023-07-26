@@ -30,7 +30,6 @@ const DataTableMovie = ({ data, className }) => {
             .catch(err => {
                 if (err?.response?.status === 302) {
                     console.log(`${err?.response?.data?.message}`);
-                    alert(`${err?.response?.data?.message}`);
                     toast.warning(`${err?.response?.data?.message}`);
                 }
                 if (err?.response?.status === 500) {
