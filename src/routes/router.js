@@ -6,6 +6,7 @@ import LoginPage from "../pages/LoginPage";
 import MoviesPage from "../pages/admin/MoviesPage";
 import AddMoviePage from "../pages/admin/AddMoviePage";
 import UpdateMoviePage from "../pages/admin/UpdateMoviePage";
+import ShowsPage from "../pages/admin/ShowsPage";
 
 const router = createBrowserRouter([
     {
@@ -35,12 +36,12 @@ const router = createBrowserRouter([
     },
     {
         path: "admin/movies/add",
-        element: <AuthentiCate ><AddMoviePage /></AuthentiCate>,
+        element: <AuthentiCate><AddMoviePage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/shows",
-        element: <AuthentiCate >shows</AuthentiCate>,
+        element: <AuthentiCate><ShowsPage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
