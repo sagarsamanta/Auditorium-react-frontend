@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage";
 import AuthentiCate from "./Authenticate";
 import LoginPage from "../pages/LoginPage";
 import MoviesPage from "../pages/admin/MoviesPage";
+import AddMoviePage from "../pages/admin/AddMoviePage";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
     },
     {
         path: "admin/movies/add",
-        element: <AuthentiCate >add</AuthentiCate>,
+        element: <AuthentiCate ><AddMoviePage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

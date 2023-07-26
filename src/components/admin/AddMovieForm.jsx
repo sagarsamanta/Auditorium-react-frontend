@@ -1,19 +1,19 @@
 "use client"
-import { STATUS_ACTIVE } from "@/lib/consts";
-import { displayDate, getDataUriOfImage } from "@/lib/utils";
-import { addMovie } from "@/redux/slice/movie";
+import { STATUS_ACTIVE } from "../../lib/consts";
+import { displayDate, getDataUriOfImage } from "../../lib/utils";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
-import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef, useState } from "react";
 import * as Yup from "yup";
+import Axios from "../../lib/axiosInstance";
+import { useAuth } from "../../lib/hooks/useAuth";
+import { toast } from "react-toastify";
+import LoadingButton from "../UI/LoadingButton";
 
 const AddMovieForm = ({ movie }) => {
     const imgPreviewRef = useRef(null);
     const imgInputRef = useRef(null);
-    const dispatch = useDispatch();
-    const router = useRouter();
-    const movieStore = useSelector((state) => state.movie);
+    const [loading, setLoading] = useState(false);
+    const { token } = useAuth();
     const formik = useFormik({
         initialValues: {
             title: movie?.title || '',
@@ -31,10 +31,28 @@ const AddMovieForm = ({ movie }) => {
             language: Yup.string(),
         }),
         onSubmit: async (values) => {
-            const movie = await dispatch(addMovie(values));
-            if (movie?.type === 'movie/addMovie/fulfilled' && movie?.payload?._id) {
-                router.push(`/admin/shows?movie=${movie?.payload?._id}`);
-            }
+            setLoading(true);
+            const formData = new FormData();
+            formData.append('title', values.title);
+            formData.append('description', values.description);
+            formData.append('releaseDate', values.date);
+            formData.append('duration', values.duration);
+            formData.append('language', values.language);
+            formData.append('poster', values.image);
+
+            Axios('POST', '/movie/', formData, { authRequest: true, token: token })
+                .then((response) => {
+                    console.log('response', response);
+                    if (response?.status === 201) {
+                        toast.success('Movie Added Sucessfully');
+                    }
+                })
+                .finally(() => {
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.log('error', error);
+                });
         }
     });
 
@@ -164,10 +182,7 @@ const AddMovieForm = ({ movie }) => {
                     </div>
 
                     <div className="flex items-center gap-6 w-full px-0 py-4 md:p-3">
-                        <button className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative" type="submit">
-                            {movieStore.isLoading && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
-                            Add Show
-                        </button>
+                        <LoadingButton isLoading={loading} text="Add Show" />
                     </div>
 
                 </div>

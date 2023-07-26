@@ -23,7 +23,7 @@ const MoviesPage = () => {
                 <div className="flex justify-between items-center p-4 pt-0 shadow-lg">
                     <h1 className="text-3xl">Movies</h1>
                     <Link
-                        href="movies/add"
+                        to="/admin/movies/add"
                         className="text-sm inline-block px-4 py-3 rounded-lg bg-skin-base text-skin-inverted"
                     >
                         <div className="flex gap-2 items-center">

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import { displayDate } from "../lib/utils";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../lib/hooks/useAuth";
 import Axios from "../lib/axiosInstance";
 
@@ -25,9 +25,12 @@ const DataTableMovie = ({ data, className }) => {
                     setMoviesList(newMovieList);
                     toast.success(`Movie updated successfully`);
                 }
+                console.log('Hii');
             })
             .catch(err => {
                 if (err?.response?.status === 302) {
+                    console.log(`${err?.response?.data?.message}`);
+                    alert(`${err?.response?.data?.message}`);
                     toast.warning(`${err?.response?.data?.message}`);
                 }
                 if (err?.response?.status === 500) {
@@ -39,7 +42,7 @@ const DataTableMovie = ({ data, className }) => {
     const columns = [
         {
             name: 'Title',
-            selector: row => <Link href={`/admin/movies/${row._id}`} className="underline text-blue-500">{row.title}</Link>,
+            selector: row => <Link to={`/admin/movies/${row._id}`} className="underline text-blue-500">{row.title}</Link>,
         },
         {
             name: 'Release Date',
@@ -47,7 +50,7 @@ const DataTableMovie = ({ data, className }) => {
         },
         {
             name: 'Show Times',
-            selector: row => <Link href={`/admin/shows?movie=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 bg-blue-300 hover:bg-blue-400">All Show</Link>,
+            selector: row => <Link to={`/admin/shows?movie=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 bg-blue-300 hover:bg-blue-400">All Show</Link>,
         },
         {
             name: "Enable",
@@ -68,10 +71,6 @@ const DataTableMovie = ({ data, className }) => {
             ),
         }
     ];
-    useEffect(() => {
-        setMoviesList(data);
-    }, [data]);
-    console.log('moviesList ', data);
     return (
         <>
             <DataTable
