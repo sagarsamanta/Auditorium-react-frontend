@@ -15,7 +15,6 @@ const MoviesPage = () => {
             setLoading(false);
         };
         response();
-
     }, []);
     return (
         <>

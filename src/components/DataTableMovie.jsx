@@ -3,7 +3,7 @@ import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import { displayDate } from "../lib/utils";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useAuth } from "../lib/hooks/useAuth";
 import Axios from "../lib/axiosInstance";
 
@@ -45,15 +45,18 @@ const DataTableMovie = ({ data, className }) => {
         },
         {
             name: 'Release Date',
+            sortable: true,
             selector: row => `${displayDate(row.releaseDate)}`,
         },
         {
             name: 'Show Times',
-            selector: row => <Link to={`/admin/shows?movie=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 bg-blue-300 hover:bg-blue-400">All Show</Link>,
+            cell: row => <Link to={`/admin/shows?movie=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 bg-blue-300 hover:bg-blue-400">All Show</Link>,
         },
         {
             name: "Enable",
-            selector: (row) => (
+            selector: 'status',
+            sortable: true,
+            cell: (row) => (
                 <button
                     title={`${row.status === STATUS_ACTIVE
                         ? "Deactive this movie"
@@ -76,6 +79,7 @@ const DataTableMovie = ({ data, className }) => {
                 columns={columns}
                 data={moviesList}
                 className={className}
+                pagination
             />
         </>
     )
