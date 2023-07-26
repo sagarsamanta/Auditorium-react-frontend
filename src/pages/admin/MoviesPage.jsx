@@ -34,7 +34,7 @@ const MoviesPage = () => {
 
                 <div className="movies-table-wrapper p-4 shadow-md mt-5">
                     {loading ? (
-                        <Loader />
+                        <Loader className={'m-auto'} />
                     ) : (
                         <DataTableMovie data={data} />
                     )}
