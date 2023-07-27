@@ -118,12 +118,12 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                     }
                                 </div>
                                 <div>
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="show-start-time">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="show-end-time">
                                         Show End Time
                                     </label>
                                     <input
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.eTime && formik.errors.eTime) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                                        id="show-start-time"
+                                        id="show-end-time"
                                         type="time"
                                         name="eTime"
                                         value={formik.values.eTime}
@@ -139,12 +139,12 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                             <p className="text-gray-700 text-lg font-bold mb-2">Price</p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 md:mb-0">
                                 <div>
-                                    <label className="block capitalize tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="show-start-time">
+                                    <label className="block capitalize tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="row-a-c">
                                         Row <span className="text-skin-base">A - C</span>
                                     </label>
                                     <input
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.priceRow_a_to_c && formik.errors.priceRow_a_to_c) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                                        id="show-start-time"
+                                        id="row-a-c"
                                         type="number"
                                         name="priceRow_a_to_c"
                                         value={formik.values.priceRow_a_to_c}
@@ -155,12 +155,12 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                     }
                                 </div>
                                 <div>
-                                    <label className="block capitalize tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="show-start-time">
+                                    <label className="block capitalize tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="row-d-h">
                                         Row <span className="text-skin-base">D - H</span>
                                     </label>
                                     <input
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.priceRow_d_to_h && formik.errors.priceRow_d_to_h) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                                        id="show-start-time"
+                                        id="row-d-h"
                                         type="number"
                                         name="priceRow_d_to_h"
                                         value={formik.values.priceRow_d_to_h}
@@ -171,12 +171,12 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                     }
                                 </div>
                                 <div>
-                                    <label className="block capitalize tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="show-start-time">
+                                    <label className="block capitalize tracking-wide text-gray-700 text-sm font-bold mb-2" htmlFor="row-i-n">
                                         Row <span className="text-skin-base">I - N</span>
                                     </label>
                                     <input
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.priceRow_i_to_n && formik.errors.priceRow_i_to_n) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                                        id="show-start-time"
+                                        id="row-i-n"
                                         type="number"
                                         name="priceRow_i_to_n"
                                         value={formik.values.priceRow_i_to_n}

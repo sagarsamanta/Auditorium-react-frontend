@@ -111,12 +111,12 @@ const AddMovieForm = ({ movie }) => {
 
                             <div className="px-3 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-description">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-language">
                                         Language
                                     </label>
                                     <input
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.language && formik.errors.language) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                                        id="movie-date"
+                                        id="movie-language"
                                         type="text"
                                         name="language"
                                         value={formik.values.language}
@@ -127,7 +127,7 @@ const AddMovieForm = ({ movie }) => {
                                     }
                                 </div>
                                 <div>
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-description">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-duration">
                                         Duration
                                     </label>
                                     <input
@@ -143,7 +143,7 @@ const AddMovieForm = ({ movie }) => {
                                     }
                                 </div>
                                 <div>
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-description">
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-date">
                                         Show Date
                                     </label>
                                     <input
