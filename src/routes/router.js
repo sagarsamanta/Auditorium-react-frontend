@@ -10,6 +10,7 @@ import ShowsPage from "../pages/admin/ShowsPage";
 import EditShowPage from "../pages/admin/EditShowPage";
 import Users from "../pages/user/Users";
 import UserMovieBooking from "../pages/user/Booking";
+import SeatPage from "../components/admin/SeatPage";
 
 const router = createBrowserRouter([
     {
@@ -53,8 +54,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: "admin/shows/sets",
-        element: <AuthentiCate >sets</AuthentiCate>,
+        path: "admin/shows/edit-show/seats",
+        element: <AuthentiCate ><SeatPage /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

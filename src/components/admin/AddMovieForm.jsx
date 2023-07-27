@@ -170,7 +170,6 @@ const AddMovieForm = ({ movie }) => {
                                     className="hidden"
                                     id="movie-poster"
                                     type="file"
-                                    placeholder="Sholay"
                                     name="image"
                                     onChange={(e) => handleImageChange(e.currentTarget.files[0])}
                                 />

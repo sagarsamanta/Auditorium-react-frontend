@@ -1,0 +1,52 @@
+import { useState, useEffect } from 'react';
+import { getMovieById, getSeatsForShow, getShowsDetails } from '../../lib/utils';
+import ShowSeats from '../../components/admin/ShowSeats';
+import { useAuth } from '../../lib/hooks/useAuth';
+import { Link } from 'react-router-dom';
+import Loader from '../UI/Loader';
+
+const SeatPage = () => {
+    const queryParameters = new URLSearchParams(window.location.search);
+    const movieId = queryParameters.get('movieId') || null;
+    const showId = queryParameters.get('showId') || null;
+    const authUser = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [movie, setMovie] = useState(null);
+    const [show, setShow] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { movie } = await getMovieById(movieId);
+            const { show } = await getShowsDetails(movieId, showId);
+
+            if (movie) setMovie(movie);
+            if (show) setShow(show);
+            setLoading(false);
+        }
+        fetchData();
+    }, []);
+    return (
+        <main className='shows-seats-page'>
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className='text-3xl'>Seats for: {show?.title}</h1>
+                    <span className="font-medium">Movie: {movie?.title}</span>
+                </div>
+                <Link to={`/admin/shows?movie=${movieId}`} className="text-sm inline-block px-4 py-3 rounded-lg bg-skin-base text-skin-inverted">See All Shows</Link>
+            </div>
+            {
+                loading ? (
+                    <div className="flex justify-center items-center h-96">
+                        <Loader />
+                    </div>
+                ) : (
+                    <div className="shows-detail-wrapper pt-5">
+                        <ShowSeats movieId={movie?._id} showId={showId} show={show} authUser={authUser} priceList={show?.price} />
+                    </div>
+                )
+            }
+        </main>
+    )
+}
+
+export default SeatPage;

@@ -44,7 +44,7 @@ const DataTableShow = ({ data, movieId, className }) => {
             selector: row => (
                 <div className="space-x-4">
                     <Link to={`/admin/shows/edit-show?showId=${row._id}&showTitle=${row.title}&movieId=${movieId}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-blue-600 w-24 text-center text-blue-600 font-serif hover:bg-blue-600 hover:text-white">Edit</Link>
-                    {(row?.status === STATUS_ACTIVE && row?.showStartTime !== '--:--' && row?.showEndTime !== '--:--') && <Link href={`/admin/shows/edit-show/seats?movieId=${movieId}&showId=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-pink-600 text-pink-600 hover:text-white hover:bg-pink-600 w-20 text-center font-serif">Seats</Link>}
+                    {(row?.status === STATUS_ACTIVE && row?.showStartTime !== '--:--' && row?.showEndTime !== '--:--') && <Link to={`/admin/shows/edit-show/seats?movieId=${movieId}&showId=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-pink-600 text-pink-600 hover:text-white hover:bg-pink-600 w-20 text-center font-serif">Seats</Link>}
                 </div>
             ),
         },
