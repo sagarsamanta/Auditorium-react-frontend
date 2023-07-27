@@ -11,6 +11,7 @@ import EditShowPage from "../pages/admin/EditShowPage";
 import Users from "../pages/user/Users";
 import UserMovieBooking from "../pages/user/Booking";
 import SeatPage from "../components/admin/SeatPage";
+import Bookings from "../pages/booking/Bookings";
 
 const router = createBrowserRouter([
     {
@@ -76,6 +77,13 @@ const router = createBrowserRouter([
         path: "admin/users/booking/:userId",
         element: <AuthentiCate>
             <UserMovieBooking />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/admin/users/bookings/movie/:bookingId",
+        element: <AuthentiCate>
+            <Bookings />
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },
