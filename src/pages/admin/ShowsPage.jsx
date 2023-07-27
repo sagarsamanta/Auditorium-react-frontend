@@ -62,7 +62,7 @@ const ShowsPage = () => {
     return (
         <>
             <main className="shows-page">
-                <div className="flex justify-between items-center p-4 pt-0 shadow-md mt-5">
+                <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                     <div>
                     <h1 className="text-xl md:text-2xl lg:text:3xl">Shows</h1>
                     </div>

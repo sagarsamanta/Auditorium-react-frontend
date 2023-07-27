@@ -19,8 +19,8 @@ const MoviesPage = () => {
     return (
         <>
             <main className="movies-page  ">
-                <div className="flex justify-between items-center p-4  shadow-lg">
-                <h1 className="text-xl md:text-2xl lg:text:3xl">Movies</h1>
+                <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
+                    <h1 className="text-xl md:text-2xl lg:text:3xl">Movies</h1>
                     <Link
                         to="/admin/movies/add"
                         className="text-sm inline-block px-2 py-2 md:px-4 md:py-3 rounded-lg bg-skin-base text-skin-inverted"
