@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
-const DataTableUsers = ({ data, className }) => {    
+const DataTableUsers = ({ data, className }) => {
 
     const columns = [
         {
             name: 'Emp Id',
+            sortable: true,
+            selector: row => row.empId,
             cell: row => <Link to={`/admin/users/booking/${row._id}`} className="underline text-blue-500">{row.empId}</Link>,
         },
         {
