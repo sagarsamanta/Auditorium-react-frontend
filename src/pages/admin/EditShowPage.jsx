@@ -32,7 +32,7 @@ const EditShowPage = () => {
             <main className='shows-detail-page'>
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className='text-3xl'>Edit {showTitle}</h1>
+                    <h1 className="text-xl md:text-2xl lg:text:3xl">Edit {showTitle}</h1>
                         <span className="font-medium">Movie: {movie?.title}</span>
                     </div>
                     <div className="space-x-4">

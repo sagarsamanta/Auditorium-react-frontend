@@ -64,7 +64,7 @@ const ShowsPage = () => {
             <main className="shows-page">
                 <div className="flex justify-between items-center p-4 pt-0 shadow-md mt-5">
                     <div>
-                        <h1 className="text-3xl">Shows</h1>
+                    <h1 className="text-xl md:text-2xl lg:text:3xl">Shows</h1>
                     </div>
                     <Link
                         to="/admin/movies/"

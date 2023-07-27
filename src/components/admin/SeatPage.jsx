@@ -29,7 +29,7 @@ const SeatPage = () => {
         <main className='shows-seats-page'>
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md mt-5">
                 <div>
-                    <h1 className='text-3xl'>Seats for: {show?.title}</h1>
+                <h1 className="text-xl md:text-2xl lg:text:3xl">Seats for: {show?.title}</h1>
                     <span className="font-medium">Movie: {movie?.title}</span>
                 </div>
                 <Link to={`/admin/shows?movie=${movieId}`} className="text-sm inline-block px-4 py-3 rounded-lg bg-skin-base text-skin-inverted">See All Shows</Link>
