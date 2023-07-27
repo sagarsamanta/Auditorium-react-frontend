@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
     const userContext = useContext(UserContext);
     const [loading, setLoading] = useState(false);
+    const [error,setError]=useState("")
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
@@ -28,18 +29,21 @@ const LoginForm = () => {
             }).finally(() => {
                 setLoading(false);
             }).catch((err) => {
-                console.log('error', err.message);
+                setError(err.response.data.error)
+                console.log('error', err);
             });
-        }
+        },
+       
     });
 
-
+    const handleInputFocus = () => {
+        setError("");
+      };
     if (userContext && userContext?.authUser?.isAuthenticated) {
         if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin', { replace: true });
         if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
         return <p>Already Authenticated</p>;
     }
-
     return (
         <>
             <div className="p-5 bg-white md:flex-1">
@@ -51,6 +55,7 @@ const LoginForm = () => {
                             type="text"
                             id="userName"
                             name="userName"
+                            onFocus={handleInputFocus}
                             tabIndex={1}
                             value={formik.values.userName}
                             onChange={formik.handleChange}
@@ -65,6 +70,7 @@ const LoginForm = () => {
                         </div>
                         <input
                             type="password"
+                            onFocus={handleInputFocus}
                             id="password"
                             name="password"
                             tabIndex={2}
@@ -82,10 +88,11 @@ const LoginForm = () => {
                             disabled={loading}
                         >
                             Log in
-                            {loading && <span className="animate-spin absolute right-10 top-3 border-2 border-r-0 border-skin-inverted inline-block rounded-full w-5 h-5" />}
+                            {loading &&  <span className="animate-spin absolute right-10 top-3 border-2 border-r-0 border-skin-inverted inline-block rounded-full w-5 h-5" />}
                         </button>
                     </div>
                 </form>
+                {error && <div className="text-red-500 text-right p-1">{error}</div>}
             </div>
         </>
     )

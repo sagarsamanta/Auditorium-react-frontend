@@ -152,3 +152,29 @@ export const getSeatsForShow = async (movieId, showId, token) => {
         ...data,
     }
 }
+export const getAllUsers = async () => {
+    const res = await fetch(`${API_ROOT}/user/`, {
+        headers: {
+            'Authorization': `Bearer ${ADMIN_TOKEN}`
+        },
+        cache: 'no-store',
+    });
+    const data = await res.json();
+    return {
+        status: res.status,
+        users: data.users,
+    }
+}
+export const getAllUserBookings = async (userId) => {
+    const res = await fetch(`${API_ROOT}/user/get-all-booked-movie/${userId}`, {
+        headers: {
+            'Authorization': `Bearer ${ADMIN_TOKEN}`
+        },
+        cache: 'no-store',
+    });
+    const data = await res.json();
+    return {
+        status: res.status,
+        bookings: data.bookings,
+    }
+}

@@ -8,6 +8,8 @@ import AddMoviePage from "../pages/admin/AddMoviePage";
 import UpdateMoviePage from "../pages/admin/UpdateMoviePage";
 import ShowsPage from "../pages/admin/ShowsPage";
 import EditShowPage from "../pages/admin/EditShowPage";
+import Users from "../pages/user/Users";
+import UserMovieBooking from "../pages/user/Booking";
 
 const router = createBrowserRouter([
     {
@@ -53,6 +55,27 @@ const router = createBrowserRouter([
     {
         path: "admin/shows/sets",
         element: <AuthentiCate >sets</AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/users",
+        element: (
+            <AuthentiCate>
+                <Users />
+            </AuthentiCate>
+        ),
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/users/:userId",
+        element: <AuthentiCate>sets</AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/users/booking/:userId",
+        element: <AuthentiCate>
+            <UserMovieBooking />
+        </AuthentiCate>,
         errorElement: <ErrorPage />,
     },
 

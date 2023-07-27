@@ -17,7 +17,7 @@ const UpdateMoviePage = () => {
             setLoading(false);
         }
         getMovie();
-    }, []);
+    }, [id]);
 
     if (loading) {
         return (
