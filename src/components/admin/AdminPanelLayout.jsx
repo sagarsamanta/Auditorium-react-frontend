@@ -119,7 +119,7 @@ const AdminPanelLayout = ({ children }) => {
                         </div>
                     </div>
                 </aside>
-                <main id="content" className="flex-1 p-6 lg:px-8">
+                <main id="content" className="flex-1 p-6 lg:px-8 overflow-x-hidden">
                     <div className="sm:py-6">
                         <div className="">
                             {user && isAdmin ? children : <LoginForm />}

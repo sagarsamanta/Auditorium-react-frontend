@@ -27,7 +27,7 @@ const SeatPage = () => {
     }, []);
     return (
         <main className='shows-seats-page'>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md mt-5">
                 <div>
                     <h1 className='text-3xl'>Seats for: {show?.title}</h1>
                     <span className="font-medium">Movie: {movie?.title}</span>

@@ -116,9 +116,9 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
     return (
         <>
             <div className="seats-wrapper">
-                <div className="info-wrapper space-y-4 py-5">
+                <div className="info-wrapper py-3">
                     {/* Info and color code elements */}
-                    <div className="color-code-wrapper grid grid-cols-3 md:grid-cols-4 justify-center items-center gap-x-3 text-sm">
+                    <div className="w-[95%] mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
                         <div className="flex items-center gap-3">
                             <div className="w-4 h-4 bg-skin-seat-available rounded-sm" />
                             <span>Available</span>
@@ -137,9 +137,6 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                         </div>
                     </div>
                 </div>
-                <div className="screen w-[95%] mx-auto h-6 bg-skin-muted/50 text-center">
-                    Screen
-                </div>
 
                 {
                     loading.seats ? (
@@ -149,8 +146,11 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                     ) : (
                         <>
                             <div className="seats overflow-hidden flex justify-center">
-                                <div className="wrapper-1  overflow-x-auto">
+                                <div className="wrapper-1 overflow-x-auto">
                                     <div className="seats-container mt-5 w-max">
+                                        <div className="screen mb-6 h-6 bg-skin-muted/50 text-center">
+                                            Screen
+                                        </div>
                                         {Object.keys(SEATS).map((row) => {
                                             const seats = SEATS[row];
                                             return (
