@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
 import Modal from "../UI/Modal";
 
-const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
+const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatsList, setSeats] = useState(null);
     const [loading, setLoading] = useState({ booking: false, reserved: false, seats: true });

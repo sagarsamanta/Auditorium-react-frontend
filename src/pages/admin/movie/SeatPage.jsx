@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getMovieById, getSeatsForShow, getShowsDetails } from '../../../lib/utils';
+import { getMovieById, getShowsDetails } from '../../../lib/utils';
 import ShowSeats from '../../../components/admin/ShowSeats';
 import { useAuth } from '../../../lib/hooks/useAuth';
 import { Link } from 'react-router-dom';
@@ -30,7 +30,6 @@ const SeatPage = () => {
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                 <div>
                     <h1 className="text-xl md:text-2xl lg:text:3xl">Seats for: {show?.title}</h1>
-                    <span className="font-medium">Movie: {movie?.title}</span>
                 </div>
                 <Link to={`/admin/shows?movie=${movieId}`} className="text-sm inline-block px-4 py-3 rounded-lg bg-skin-base text-skin-inverted">See All Shows</Link>
             </div>
@@ -40,9 +39,16 @@ const SeatPage = () => {
                         <Loader />
                     </div>
                 ) : (
-                    <div className="shows-detail-wrapper pt-5">
-                        <ShowSeats movieId={movie?._id} showId={showId} show={show} authUser={authUser} priceList={show?.price} />
-                    </div>
+                    <>
+                        <div>
+                            <span className="font-semibold flex justify-center items-center py-5">
+                                Movie : <span className="text-green-800 ml-2">{movie?.title || <Loader className={'w-[15px] h-[15px]'} />}</span>
+                            </span>
+                        </div>
+                        <div className="shows-detail-wrapper pt-5">
+                            <ShowSeats movieId={movie?._id} showId={showId} show={show} authUser={authUser} priceList={show?.price} />
+                        </div>
+                    </>
                 )
             }
         </main>
