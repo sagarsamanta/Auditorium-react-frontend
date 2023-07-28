@@ -83,7 +83,7 @@ const ShowsPage = () => {
                         <>
                             <div>
                                 <span className="font-semibold flex justify-center items-center py-5">
-                                    Movie : <span className="text-green-800 ml-2">{movie?.title || <Loader className={'w-[15px] h-[15px]'} />}</span>
+                                    Movie : <span className="text-skin-base ml-2">{movie?.title || <Loader className={'w-[15px] h-[15px]'} />}</span>
                                 </span>
                             </div>
                             <div className="shows-table-wrapper p-4 shadow-md mt-5">
