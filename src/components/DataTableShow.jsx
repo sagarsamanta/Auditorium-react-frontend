@@ -5,8 +5,7 @@ import DataTable from "react-data-table-component";
 import { useAuth } from "../lib/hooks/useAuth";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AiOutlineEdit } from "react-icons/ai";
-import { MdAirlineSeatReclineExtra } from "react-icons/md";
+import { MdAirlineSeatReclineExtra, MdEdit } from "react-icons/md";
 
 const DataTableShow = ({ data, movieId, className }) => {
     const { token } = useAuth();
@@ -45,9 +44,9 @@ const DataTableShow = ({ data, movieId, className }) => {
             name: 'Action',
             cell: row => (
                 <div className="space-x-4">
-                    <Link to={`/admin/shows/edit-show?showId=${row._id}&showTitle=${row.title}&movieId=${movieId}`} className="text-lg inline-block py-2 px-4 rounded-lg transition duration-200 border border-blue-600 text-center text-blue-600 font-serif hover:bg-blue-600 hover:text-white"><AiOutlineEdit /></Link>
+                    <Link to={`/admin/shows/edit-show?showId=${row._id}&showTitle=${row.title}&movieId=${movieId}`} className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white" title="Edit"><MdEdit size={15} /></Link>
 
-                    {(row?.status === STATUS_ACTIVE && row?.showStartTime !== '--:--' && row?.showEndTime !== '--:--') && <Link to={`/admin/shows/edit-show/seats?movieId=${movieId}&showId=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-pink-600 text-pink-600 hover:text-white hover:bg-pink-600 w-20 text-center font-serif"><MdAirlineSeatReclineExtra /></Link>}
+                    {(row?.status === STATUS_ACTIVE && row?.showStartTime !== '--:--' && row?.showEndTime !== '--:--') && <Link to={`/admin/shows/edit-show/seats?movieId=${movieId}&showId=${row._id}`} className="text-lg inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white" title="Seats"><MdAirlineSeatReclineExtra size={15} /></Link>}
                 </div>
             ),
         },
@@ -59,13 +58,14 @@ const DataTableShow = ({ data, movieId, className }) => {
                 <button
                     title={`${row.status === STATUS_ACTIVE
                         ? "Deactive this show"
-                        : "Active this show"
+                        : "Activeate this show"
                         } `}
                     name={`enable-show--${row._id}`}
                     className={`text-xs ${row.status === STATUS_ACTIVE ? "bg-green-300 hover:bg-green-600 hover:text-white" : "bg-yellow-300 hover:bg-yellow-600 hover:text-white"
-                        } inline-block py-2 px-4 rounded-lg transition duration-200 text-black cursor-pointer w-24`}
+                        } inline-block py-2 px-4 rounded-lg transition duration-200 text-black cursor-pointer w-24 disabled:opacity-70 disabled:cursor-not-allowed`}
                     defaultChecked={row.status === STATUS_ACTIVE ? true : false}
                     onClick={(e) => handleShowStatusChange(row)}
+                    disabled={(row?.showStartTime === '--:--' && row?.showEndTime === '--:--')}
                 >
                     {row.status}
                 </button>

@@ -26,7 +26,7 @@ const DataTableUsers = ({ data, className }) => {
             name: 'Action',
             cell: row => (
                 <div >
-                    <Link href={`/admin/users/`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-blue-600 w-24 text-center text-blue-600 font-serif hover:bg-blue-600 hover:text-white">Edit</Link>
+                    <Link href={`/admin/users/`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-skin-base w-24 text-center text-skin-base font-serif hover:bg-skin-base hover:text-white">Edit</Link>
 
 
                 </div>
