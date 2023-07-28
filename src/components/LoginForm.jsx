@@ -1,6 +1,6 @@
 import Axios from "../lib/axiosInstance";
 import { USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../lib/consts";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
     const userContext = useContext(UserContext);
     const [loading, setLoading] = useState(false);
-    const [error,setError]=useState("")
+    const [error, setError] = useState("")
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
@@ -33,17 +33,19 @@ const LoginForm = () => {
                 console.log('error', err);
             });
         },
-       
+
     });
 
     const handleInputFocus = () => {
         setError("");
-      };
-    if (userContext && userContext?.authUser?.isAuthenticated) {
-        if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin', { replace: true });
-        if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
-        return <p>Already Authenticated</p>;
-    }
+    };
+
+    useEffect(() => {
+        if (userContext && userContext?.authUser?.isAuthenticated) {
+            if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin');
+            if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
+        }
+    }, [userContext?.authUser?.isAuthenticated, userContext?.authUser?.role]);
     return (
         <>
             <div className="p-5 bg-white md:flex-1">
@@ -88,7 +90,7 @@ const LoginForm = () => {
                             disabled={loading}
                         >
                             Log in
-                            {loading &&  <span className="animate-spin absolute right-10 top-3 border-2 border-r-0 border-skin-inverted inline-block rounded-full w-5 h-5" />}
+                            {loading && <span className="animate-spin absolute right-10 top-3 border-2 border-r-0 border-skin-inverted inline-block rounded-full w-5 h-5" />}
                         </button>
                     </div>
                 </form>
