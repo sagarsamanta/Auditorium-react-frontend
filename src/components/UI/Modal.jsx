@@ -1,15 +1,11 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Dialog, Transition } from "@headlessui/react"
+import { Fragment } from "react";
+import LoadingButton from "./LoadingButton";
 
-export default function Modal() {
-    let [isOpen, setIsOpen] = useState(true)
+export default function Modal({ isOpen, closeHandler, config }) {
 
     function closeModal() {
-        setIsOpen(false)
-    }
-
-    function openModal() {
-        setIsOpen(true)
+        closeHandler(false)
     }
 
     return (
@@ -44,22 +40,27 @@ export default function Modal() {
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900"
                                     >
-                                        Payment successful
+                                        {config?.title || ''}
                                     </Dialog.Title>
                                     <div className="mt-2">
                                         <p className="text-sm text-gray-500">
-                                            Your payment has been successfully submitted. We’ve sent
-                                            you an email with all of the details of your order.
+                                            {config?.text || ''}
                                         </p>
                                     </div>
 
-                                    <div className="mt-4">
+                                    <div className="mt-4 space-x-3">
+                                        <LoadingButton
+                                            text={config?.buttonText}
+                                            isLoading={config?.loading}
+                                            className={`transition delay-150 border border-transparent bg-skin-base py-2 text-sm font-medium text-skin-inverted hover:bg-skin-base/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-skin-base focus-visible:ring-offset-2 ${config?.buttonClassName}`}
+                                            onClick={config?.buttonHandler}
+                                        />
                                         <button
                                             type="button"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                            className="inline-flex justify-center rounded-md transition delay-150 border border-red-500 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-500 hover:text-skin-inverted focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                                             onClick={closeModal}
                                         >
-                                            Got it, thanks!
+                                            Cancel
                                         </button>
                                     </div>
                                 </Dialog.Panel>

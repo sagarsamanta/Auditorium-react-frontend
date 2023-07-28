@@ -4,17 +4,20 @@ import { getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../l
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
+import Modal from "../UI/Modal";
 
 const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatsList, setSeats] = useState(null);
     const [loading, setLoading] = useState({ booking: false, reserved: false, seats: true });
+    const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
+    const [selectedReservedSeate, setSelectedReservedSeate] = useState('');
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
-    const fetchData = async () => {
+    const fetchFreshData = async () => {
         const seats = await getSeatsForShow(movieId, showId, authUser?.token);
         if (seats) setSeats(seats);
-        setLoading({ ...loading, seats: false });
+        setLoading({ booking: false, reserved: false, seats: false });
         setSelectedSeats([]);
     }
 
@@ -24,8 +27,8 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
         if (seatsByStatus?.BOOKED?.seatNo?.includes(seatNo)) return;
 
         if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
-            console.log('seatsByStatus?.RESERVED?.seatNo', seatsByStatus?.RESERVED?.seatNo);
-            // Open Modal
+            setIsOpenReserveSeatModal(true);
+            setSelectedReservedSeate(seatNo);
         }
 
         if (selectedSeats.includes(seatNo)) {
@@ -78,7 +81,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                 })
                 .finally(() => {
                     setLoading(prev => { return { ...prev, booking: false } });
-                    fetchData();
+                    fetchFreshData();
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -106,7 +109,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                 })
                 .finally(() => {
                     setLoading(prev => { return { ...prev, reserved: false } });
-                    fetchData();
+                    fetchFreshData();
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -114,8 +117,24 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
         }
     }
 
+    const handleMakeAvailable = async () => {
+        setLoading({ ...loading, reserved: true });
+        Axios('DELETE', `/show/${movieId}/${showId}/${selectedReservedSeate}`, null, { authRequest: true, token: authUser?.token })
+            .then((res) => {
+                console.log('res', res);
+            })
+            .finally(() => {
+                fetchFreshData();
+                setSelectedReservedSeate('');
+                setIsOpenReserveSeatModal(false);
+            })
+            .catch((err) => {
+                console.log('err', err);
+            });
+    }
+
     useEffect(() => {
-        fetchData();
+        fetchFreshData();
     }, []);
 
     return (
@@ -194,7 +213,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                                     className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
                                     type="submit"
                                     onClick={handleSave}
-                                    disabled={selectedSeats.length === 0}
+                                    disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
                                 >
                                     {loading.booking && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
                                     Book Selected Seats
@@ -203,7 +222,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                                     className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
                                     type="submit"
                                     onClick={handleSaveReserve}
-                                    disabled={selectedSeats.length === 0}
+                                    disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
                                 >
                                     {loading.reserved && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
                                     Reserve Selected Seats
@@ -212,6 +231,18 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
                         </>
                     )
                 }
+                <Modal
+                    isOpen={isOpenReserveSeatModal}
+                    closeHandler={setIsOpenReserveSeatModal}
+                    config={{
+                        title: `Make seat no. "${selectedReservedSeate}" as Available`,
+                        text: 'This will mark this seat as Available for everyone',
+                        buttonText: 'Make Available',
+                        buttonHandler: handleMakeAvailable,
+                        loading: loading.reserved,
+                        buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
+                    }}
+                />
             </div>
         </>
     );
