@@ -54,7 +54,7 @@ const DataTableMovie = ({ data, className }) => {
         },
         {
             name: "Enable",
-            selector: 'status',
+            selector: (row) => row.status,
             sortable: true,
             cell: (row) => (
                 <button

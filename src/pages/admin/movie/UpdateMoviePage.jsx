@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import AddMovieForm from '../../components/admin/AddMovieForm';
-import { getMovieById } from '../../lib/utils';
 import { Link, useParams } from 'react-router-dom';
-import Loader from '../../components/UI/Loader';
+import Loader from '../../../components/UI/Loader';
+import AddMovieForm from '../../../components/admin/AddMovieForm';
+import { getMovieById } from '../../../lib/utils';
 
 const UpdateMoviePage = () => {
     const { id } = useParams();
@@ -42,7 +42,7 @@ const UpdateMoviePage = () => {
                     ) : (
                         <>
                             <div className="flex justify-between items-center">
-                            <h1 className="text-xl md:text-2xl lg:text:3xl">Update Movie</h1>
+                                <h1 className="text-xl md:text-2xl lg:text:3xl">Update Movie</h1>
                                 <Link to="/admin/movies/" className="text-sm inline-block px-4 py-3 rounded-lg bg-skin-base text-skin-inverted">See All Movie</Link>
                             </div >
                             <div className="movies-table-wrapper">

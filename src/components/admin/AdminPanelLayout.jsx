@@ -1,7 +1,6 @@
 import LogoutBtn from "../LogoutBtn";
 import LoginForm from "../LoginForm";
 import NavBar from "./NavBar";
-import Divider from "../UI/Divider";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../lib/hooks/useAuth";
 

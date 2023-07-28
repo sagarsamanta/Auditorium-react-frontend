@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import ShowDetailForm from "../../components/admin/ShowDetailForm";
-import { STATUS_ACTIVE } from "../../lib/consts";
-import { getMovieById, getShowsDetails } from "../../lib/utils";
+import ShowDetailForm from "../../../components/admin/ShowDetailForm";
+import { STATUS_ACTIVE } from "../../../lib/consts";
+import { getMovieById, getShowsDetails } from "../../../lib/utils";
 import { Link } from 'react-router-dom';
-import Loader from "../../components/UI/Loader";
+import Loader from "../../../components/UI/Loader";
 
 const EditShowPage = () => {
     const queryParameters = new URLSearchParams(window.location.search);
@@ -32,7 +32,7 @@ const EditShowPage = () => {
             <main className='shows-detail-page'>
                 <div className="flex justify-between items-center">
                     <div>
-                    <h1 className="text-xl md:text-2xl lg:text:3xl">Edit {showTitle}</h1>
+                        <h1 className="text-xl md:text-2xl lg:text:3xl">Edit {showTitle}</h1>
                         <span className="font-medium">Movie: {movie?.title}</span>
                     </div>
                     <div className="space-x-4">

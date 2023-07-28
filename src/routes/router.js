@@ -1,17 +1,19 @@
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from "../pages/ErrorPage";
 import HomePage from "../pages/HomePage";
-import AuthentiCate from "./Authenticate";
 import LoginPage from "../pages/LoginPage";
-import MoviesPage from "../pages/admin/MoviesPage";
-import AddMoviePage from "../pages/admin/AddMoviePage";
-import UpdateMoviePage from "../pages/admin/UpdateMoviePage";
-import ShowsPage from "../pages/admin/ShowsPage";
-import EditShowPage from "../pages/admin/EditShowPage";
-import Users from "../pages/user/Users";
-import UserMovieBooking from "../pages/user/Booking";
-import SeatPage from "../components/admin/SeatPage";
+
+import AuthentiCate from "./Authenticate";
+
+import MoviesPage from "../pages/admin/movie/MoviesPage";
+import AddMoviePage from "../pages/admin/movie/AddMoviePage";
+import UpdateMoviePage from "../pages/admin/movie/UpdateMoviePage";
+import ShowsPage from "../pages/admin/movie/ShowsPage";
+import EditShowPage from "../pages/admin/movie/EditShowPage";
+import UserMovieBooking from "../pages/admin/user/Booking";
+import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
+import Users from "../pages/admin/user/Users";
 
 const router = createBrowserRouter([
     {

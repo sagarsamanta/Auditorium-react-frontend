@@ -1,6 +1,5 @@
-// UserContext.js
-import React, { createContext, useEffect, useState } from 'react';
-import { AUTH_USER_LOCALSTORAGE, USER_ADMIN_ROLE } from '../lib/consts';
+import React, { createContext, useState } from 'react';
+import { AUTH_USER_LOCALSTORAGE } from '../lib/consts';
 const UserContext = createContext();
 const defaultUser = {
     isAuthenticated: false,

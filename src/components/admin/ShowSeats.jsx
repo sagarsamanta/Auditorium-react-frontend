@@ -23,6 +23,11 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList }) => {
         // If seat is booked, then do not allow to select
         if (seatsByStatus?.BOOKED?.seatNo?.includes(seatNo)) return;
 
+        if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
+            console.log('seatsByStatus?.RESERVED?.seatNo', seatsByStatus?.RESERVED?.seatNo);
+            // Open Modal
+        }
+
         if (selectedSeats.includes(seatNo)) {
             const newSelectedSeats = selectedSeats.filter(
                 (selectedSeat) => selectedSeat !== seatNo

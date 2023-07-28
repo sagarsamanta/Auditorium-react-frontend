@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import DataTableShow from "../../components/DataTableShow";
-import { STATUS_INACTIVE } from "../../lib/consts";
-import { getMovieById, getShowsByMovieId } from "../../lib/utils";
+import DataTableShow from "../../../components/DataTableShow";
+import { STATUS_INACTIVE } from "../../../lib/consts";
+import { getMovieById, getShowsByMovieId } from "../../../lib/utils";
 import { Link } from 'react-router-dom';
-import Loader from '../../components/UI/Loader';
+import Loader from '../../../components/UI/Loader';
 
 const generateShowsArray = (movieId, shows = []) => {
     return [
@@ -64,7 +64,7 @@ const ShowsPage = () => {
             <main className="shows-page">
                 <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                     <div>
-                    <h1 className="text-xl md:text-2xl lg:text:3xl">Shows</h1>
+                        <h1 className="text-xl md:text-2xl lg:text:3xl">Shows</h1>
                     </div>
                     <Link
                         to="/admin/movies/"
