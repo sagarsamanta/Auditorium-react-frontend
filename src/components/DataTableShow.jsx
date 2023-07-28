@@ -83,6 +83,19 @@ const DataTableShow = ({ data, movieId, className }) => {
                 columns={columns}
                 data={showsData}
                 className={className}
+                noHeader // Hide the default table header
+        customStyles={{
+          headRow: {
+            style: {
+              // Center the column names (headers)
+              textAlign: 'center',
+              background: 'lightblue', // Change the background color of the column headers
+              fontWeight:'bold',
+              fontSize:'15px',
+            
+            },
+          },
+        }}
             />
         </>
     )
