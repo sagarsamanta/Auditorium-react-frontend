@@ -24,7 +24,7 @@ const SeatPage = () => {
             setLoading(false);
         }
         fetchData();
-    }, []);
+    }, [movieId, showId]);
     return (
         <main className='shows-seats-page'>
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">

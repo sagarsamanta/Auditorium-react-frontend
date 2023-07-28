@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../../../components/UI/Loader";
 import { getAllUserBookings } from "../../../lib/utils";
 import DataTableUsersBookings from "../../../components/DataTableUsersBookings";
