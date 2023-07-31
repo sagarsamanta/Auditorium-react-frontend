@@ -2,7 +2,7 @@ import { useState } from "react";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import { displayDate } from "../lib/utils";
 import { Link } from "react-router-dom";
-import DataTable from "react-data-table-component";
+import { CustomDataTable as DataTable } from "./DataTable";
 import { toast } from "react-toastify";
 import { useAuth } from "../lib/hooks/useAuth";
 import Axios from "../lib/axiosInstance";
@@ -19,7 +19,7 @@ const DataTableMovie = ({ data, className }) => {
                 if (res.data?.movie) {
                     const newMovie = res.data?.movie;
                     const newMovieList = moviesList.map(prevData => {
-                        return (prevData._id == newMovie._id) ? { ...prevData, status: newMovie.status } : prevData;
+                        return (prevData._id === newMovie._id) ? { ...prevData, status: newMovie.status } : prevData;
                     });
                     console.log('newMovieList', newMovieList);
                     setMoviesList(newMovieList);
@@ -80,19 +80,6 @@ const DataTableMovie = ({ data, className }) => {
                 data={moviesList}
                 className={className}
                 pagination
-                noHeader // Hide the default table header
-                customStyles={{
-                    headRow: {
-                        style: {
-                            // Center the column names (headers)
-                            textAlign: 'center',
-                            background: 'lightblue', // Change the background color of the column headers
-                            fontWeight: 'bold',
-                            fontSize: '15px',
-
-                        },
-                    },
-                }}
             />
         </>
     )

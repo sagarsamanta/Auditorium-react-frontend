@@ -5,7 +5,7 @@ import { getAllUsers } from "../../../lib/utils";
 import Loader from "../../../components/UI/Loader";
 import DataTableUsers from "../../../components/DataTableUsers";
 
-const Users = () => {
+const UsersPage = () => {
     const [data, setResponse] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -20,7 +20,7 @@ const Users = () => {
     return (
         <>
             <main className="movies-page  ">
-                <div className="flex justify-between items-center p-2 shadow-lg">
+                <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                     <h1 className="text-xl md:text-2xl lg:text:3xl">Users</h1>
                     <Link
                         to=""
@@ -44,4 +44,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default UsersPage;

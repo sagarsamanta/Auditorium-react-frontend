@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import DataTable from "react-data-table-component";
+import { CustomDataTable as DataTable } from "./DataTable";
+import { MdEdit } from "react-icons/md";
 
 const DataTableUsers = ({ data, className }) => {
 
@@ -26,9 +27,7 @@ const DataTableUsers = ({ data, className }) => {
             name: 'Action',
             cell: row => (
                 <div >
-                    <Link href={`/admin/users/`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 border border-skin-base w-24 text-center text-skin-base font-serif hover:bg-skin-base hover:text-white">Edit</Link>
-
-
+                    <Link to={`/admin/users/${row._id}`} className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white" title="Edit"><MdEdit size={15} /></Link>
                 </div>
             ),
         },
@@ -40,19 +39,6 @@ const DataTableUsers = ({ data, className }) => {
                 data={data}
                 className={className}
                 pagination
-                noHeader // Hide the default table header
-                customStyles={{
-                    headRow: {
-                        style: {
-                            // Center the column names (headers)
-                            textAlign: 'center',
-                            background: 'lightblue', // Change the background color of the column headers
-                            fontWeight: 'bold',
-                            fontSize: '15px',
-
-                        },
-                    },
-                }}
             />
         </>
     )

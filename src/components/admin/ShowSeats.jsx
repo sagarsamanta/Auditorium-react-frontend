@@ -44,7 +44,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
     const getSeatStatusColor = (seatNo) => {
         if (seatsList?.totalSeats) {
             if (seatsByStatus?.BOOKED?.seatNo.includes(seatNo)) {
-                return 'bg-skin-seat-booked';
+                return 'bg-skin-seat-booked cursor-not-allowed';
             }
             if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
                 return 'bg-skin-seat-reserved';

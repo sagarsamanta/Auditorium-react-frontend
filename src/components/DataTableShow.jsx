@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Axios from "../lib/axiosInstance";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
-import DataTable from "react-data-table-component";
+import { CustomDataTable as DataTable } from "./DataTable";
 import { useAuth } from "../lib/hooks/useAuth";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ const DataTableShow = ({ data, movieId, className }) => {
                 if (res.data?.show) {
                     const newShow = res.data?.show;
                     const newShowList = showsData.map(prevData => {
-                        return (prevData.title == newShow.title) ? { ...prevData, status: newShow.status } : prevData;
+                        return (prevData.title === newShow.title) ? { ...prevData, status: newShow.status } : prevData;
                     });
                     setShowsData(newShowList);
                     toast.success(`${newShow.title} status changed to ${newShow.status}`)
@@ -83,19 +83,6 @@ const DataTableShow = ({ data, movieId, className }) => {
                 columns={columns}
                 data={showsData}
                 className={className}
-                noHeader // Hide the default table header
-        customStyles={{
-          headRow: {
-            style: {
-              // Center the column names (headers)
-              textAlign: 'center',
-              background: 'lightblue', // Change the background color of the column headers
-              fontWeight:'bold',
-              fontSize:'15px',
-            
-            },
-          },
-        }}
             />
         </>
     )

@@ -152,6 +152,7 @@ const AddMovieForm = ({ movie }) => {
                                         type="date"
                                         name="date"
                                         value={formik.values.date}
+                                        min={displayDate(undefined, 'YYYY-MM-DD')}
                                         onChange={formik.handleChange}
                                     />
                                     {

@@ -10,10 +10,10 @@ import AddMoviePage from "../pages/admin/movie/AddMoviePage";
 import UpdateMoviePage from "../pages/admin/movie/UpdateMoviePage";
 import ShowsPage from "../pages/admin/movie/ShowsPage";
 import EditShowPage from "../pages/admin/movie/EditShowPage";
-import UserMovieBooking from "../pages/admin/user/Booking";
+import BookingPage from "../pages/admin/user/BookingPage";
 import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
-import Users from "../pages/admin/user/Users";
+import UsersPage from "../pages/admin/user/UsersPage";
 
 const router = createBrowserRouter([
     {
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
         path: "admin/users",
         element: (
             <AuthentiCate>
-                <Users />
+                <UsersPage />
             </AuthentiCate>
         ),
         errorElement: <ErrorPage />,
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
     {
         path: "admin/users/booking/:userId",
         element: <AuthentiCate>
-            <UserMovieBooking />
+            <BookingPage />
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },
