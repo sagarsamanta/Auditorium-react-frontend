@@ -7,7 +7,9 @@ export const useAuth = () => {
     try {
         return {
             ...userContext.authUser,
-            isAdmin: userContext.authUser.user && userContext.authUser.user.role === USER_ADMIN_ROLE
+            isAdmin: userContext.authUser.user && userContext.authUser.user.role === USER_ADMIN_ROLE,
+            login: userContext?.login,
+            logout: userContext?.logout
         }
     } catch (err) {
         return {
