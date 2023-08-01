@@ -55,7 +55,7 @@ const NavBar = () => {
                                                         to={`/user/profile/${user?.email}`}
                                                         className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm capitalize`}
                                                     >
-                                                        {user.name}
+                                                        {user?.name}
                                                     </Link>
                                                 )}
                                             </Menu.Item>
