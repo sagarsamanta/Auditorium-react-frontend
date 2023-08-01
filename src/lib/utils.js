@@ -81,7 +81,7 @@ export const userProfileImage = (user) => {
     }
     const initials = user.name ? user.name.charAt(0) : "U";
     return (
-        <div title={user.name} className="h-8 w-8 rounded-full capitalize bg-gray-500 flex items-center justify-center text-white">
+        <div title={user.name} className="h-8 w-8 rounded-full capitalize bg-skin-base flex items-center justify-center text-white">
             {initials}
         </div>
     );
