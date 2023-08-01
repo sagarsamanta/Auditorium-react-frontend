@@ -68,6 +68,25 @@ export const organizeSeatsByStatus = (seats = []) => {
     return result;
 }
 
+export const userProfileImage = (user) => {
+    if (!user) return '';
+    if (user.profileImage) {
+        return (
+            <img
+                className="h-8 w-8 rounded-full"
+                src={user.profileImage}
+                alt={user.name}
+            />
+        )
+    }
+    const initials = user.name ? user.name.charAt(0) : "U";
+    return (
+        <div title={user.name} className="h-8 w-8 rounded-full capitalize bg-gray-500 flex items-center justify-center text-white">
+            {initials}
+        </div>
+    );
+}
+
 
 /** API methods */
 export const getAllMovies = async () => {

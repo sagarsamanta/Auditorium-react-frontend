@@ -3,7 +3,7 @@ export const API_ROOT = process.env.API_ROOT || "http://localhost:5000/api";
 export const AUTH_USER_LOCALSTORAGE = 'IWS-AUTHUSER';
 
 export const USER_ADMIN_ROLE = "ADMIN";
-export const USER_EMPLOYEE_ROLE = "EMPLOYEE";
+export const USER_EMPLOYEE_ROLE = "USER";
 export const AUTH_USER_COOKIE = "IWS-AUTHUSER";
 export const STATUS_ACTIVE = "ACTIVE";
 export const STATUS_INACTIVE = "IN-ACTIVE";
