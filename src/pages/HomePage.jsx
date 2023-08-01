@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
-import NavBar from "../components/NavBar";
 import Axios from "../lib/axiosInstance";
 import Loader from "../components/UI/Loader";
 import { toast } from "react-toastify";
@@ -25,7 +24,6 @@ const HomePage = () => {
     }, []);
     return (
         <>
-            <NavBar />
             <div className="mx-auto container px-2 sm:px-6 lg:px-8 py-4">
                 {
                     loading ? (

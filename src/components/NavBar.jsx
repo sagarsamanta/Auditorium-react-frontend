@@ -2,11 +2,12 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { useAuth } from '../lib/hooks/useAuth';
 import Logo from './UI/Logo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { userProfileImage } from '../lib/utils';
 
 const NavBar = () => {
     const { user, isAuthenticated, token, logout } = useAuth();
+    const { pathname } = useLocation();
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {() => (
@@ -31,10 +32,10 @@ const NavBar = () => {
                                                 </Menu.Button>
                                             ) : (
                                                 <Link
-                                                    to="/login"
+                                                    to={`${pathname === "/login" ? "/" : "/login"}`}
                                                     className={`text-white bg-skin-base hover:bg-skin-base/20 hover:text-white rounded-md px-3 py-2 text-sm font-medium`}
                                                 >
-                                                    Login
+                                                    {`${pathname === "/login" ? "Back to Home" : "Login"}`}
                                                 </Link>
                                             )
                                         }

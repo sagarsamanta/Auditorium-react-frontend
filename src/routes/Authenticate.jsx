@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import AdminPanelLayout from '../components/admin/AdminPanelLayout';
 import { useAuth } from '../lib/hooks/useAuth';
 import { ToastContainer } from 'react-toastify';
+import UserPanelLayout from '../components/user/UserPanelLayout';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AuthentiCate = ({ children }) => {
@@ -17,7 +18,7 @@ const AuthentiCate = ({ children }) => {
                 isAdmin ? (
                     <AdminPanelLayout>{children}</AdminPanelLayout>
                 ) : (
-                    { children }
+                    <UserPanelLayout>{children}</UserPanelLayout>
                 )
             }
             <ToastContainer
