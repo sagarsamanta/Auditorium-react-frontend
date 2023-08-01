@@ -11,7 +11,7 @@ const MovieCard = ({ movies }) => {
                         {
                             movies.map((movie) => {
                                 return (
-                                    <div key={movie._id} className="card border border-slate-200 p-2 rounded-md">
+                                    <div key={movie._id} className="card shadow p-2 rounded-md">
                                         <img src={`${movie.poster}`} alt={movie.title} />
                                         <div className="card-body">
                                             <h2 className="card-title text-lg font-semibold mb-2">{movie.title}</h2>
