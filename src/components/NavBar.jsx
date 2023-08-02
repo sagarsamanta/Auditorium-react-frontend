@@ -9,7 +9,7 @@ const NavBar = () => {
     const { user, isAuthenticated, token, logout } = useAuth();
     const { pathname } = useLocation();
     return (
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-gray-800 fixed top-0 z-50 left-0 right-0 shadow-lg">
             {() => (
                 <>
                     <div className="mx-auto container px-2 sm:px-6 lg:px-8">

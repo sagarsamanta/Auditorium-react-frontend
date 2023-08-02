@@ -43,16 +43,16 @@ const LoginForm = () => {
     useEffect(() => {
         if (userContext && userContext?.authUser?.isAuthenticated) {
             if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin');
-            if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/user/bookings');
+            if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
         }
     }, [userContext?.authUser?.isAuthenticated, userContext?.authUser?.role]);
     return (
         <>
-            <div className="p-5 bg-white md:flex-1">
-                <h3 className="my-4 text-2xl font-semibold text-skin-base">Login</h3>
+            <div className="p-5 bg-gray-600 md:flex-1">
+                <h3 className="my-4 text-2xl font-semibold text-skin-inverted">Login</h3>
                 <form action="#" className="flex flex-col space-y-5" onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col space-y-1">
-                        <label htmlFor="userName" className="text-sm font-semibold text-skin-base">Email Address / Employee ID / Mobile No.</label>
+                        <label htmlFor="userName" className="text-sm font-semibold text-skin-inverted">Email Address / Employee ID / Mobile No.</label>
                         <input
                             type="text"
                             id="userName"
@@ -61,14 +61,14 @@ const LoginForm = () => {
                             tabIndex={1}
                             value={formik.values.userName}
                             onChange={formik.handleChange}
-                            className={`px-4 py-2 transition duration-300 border ${(formik.touched.userName && formik.errors.userName) ? 'border-red-500' : ''} text-skin-text-body rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-skin-muted`}
+                            className={`px-4 py-2 transition duration-300 border border-gray-600 ${(formik.touched.userName && formik.errors.userName) ? 'border-red-500' : 'border-b-gray-800'} text-skin-inverted bg-transparent rounded focus:border-transparent focus:outline-none focus:ring-2 focus:ring-skin-muted`}
                         />
                         <span className="text-xs text-red-500">{formik.touched.userName && formik.errors.userName}</span>
                     </div>
                     <div className="flex flex-col space-y-1">
                         <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="text-sm font-semibold text-skin-base">Password</label>
-                            <a href="#" className="text-sm text-skin-base hover:underline">Forgot Password?</a>
+                            <label htmlFor="password" className="text-sm font-semibold text-skin-inverted">Password</label>
+                            <a href="#" className="text-sm text-skin-inverted hover:underline">Forgot Password?</a>
                         </div>
                         <input
                             type="password"
@@ -78,7 +78,7 @@ const LoginForm = () => {
                             tabIndex={2}
                             value={formik.values.password}
                             onChange={formik.handleChange}
-                            className={`px-4 py-2 transition duration-300 border ${(formik.touched.password && formik.errors.password) ? 'border-red-500' : ''} text-skin-text-body rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-skin-muted`}
+                            className={`px-4 py-2 transition duration-300 border border-gray-600 ${(formik.touched.password && formik.errors.password) ? 'border-red-500' : 'border-b-gray-800'} text-skin-inverted bg-transparent rounded focus:border-transparent focus:outline-none focus:ring-2 focus:ring-skin-muted`}
                         />
                         <span className="text-xs text-red-500">{formik.touched.password && formik.errors.password}</span>
                     </div>

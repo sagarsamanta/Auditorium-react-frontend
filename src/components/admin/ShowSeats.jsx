@@ -1,5 +1,5 @@
 import Axios from "../../lib/axiosInstance";
-import { SEATS } from "../../lib/consts";
+import { SEATS, USER_ADMIN_ROLE } from "../../lib/consts";
 import { getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../lib/utils";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
     const fetchFreshData = async () => {
+        if (authUser?.user?.role !== USER_ADMIN_ROLE) setLoading({ ...loading, seats: true });
         const seats = await getSeatsForShow(movieId, showId, authUser?.token);
         if (seats) setSeats(seats);
         setLoading({ booking: false, reserved: false, seats: false });
@@ -53,7 +54,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         if (selectedSeats.includes(seatNo)) {
             return 'bg-skin-seat-selected';
         }
-        return 'bg-skin-seat-available';
+        return 'bg-skin-seat-available text-gray-400 border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/5';
     }
 
     const getTotalSelectedPrice = (seatsObj) => {
@@ -135,7 +136,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
 
     useEffect(() => {
         fetchFreshData();
-    }, []);
+    }, [movieId, showId, authUser, priceList]);
 
     return (
         <>
@@ -143,19 +144,19 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                 <div className="info-wrapper py-3">
                     {/* Info and color code elements */}
                     <div className="w-[95%] mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
-                        <div className="flex items-center gap-3">
-                            <div className="w-4 h-4 bg-skin-seat-available rounded-sm" />
+                        <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 bg-skin-seat-available rounded-sm text-skin-inverted border border-green-800/70 focus:ring-green-800/70 bg-green-800/10" />
                             <span>Available</span>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             <div className="w-4 h-4 bg-skin-seat-selected rounded-sm" />
                             <span>Selected</span>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             <div className="w-4 h-4 bg-skin-seat-booked rounded-sm" />
                             <span>Booked</span>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             <div className="w-4 h-4 bg-skin-seat-reserved rounded-sm" />
                             <span>Reserved</span>
                         </div>
@@ -218,15 +219,19 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                                     {loading.booking && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
                                     Book Selected Seats
                                 </button>
-                                <button
-                                    className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
-                                    type="submit"
-                                    onClick={handleSaveReserve}
-                                    disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
-                                >
-                                    {loading.reserved && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
-                                    Reserve Selected Seats
-                                </button>
+                                {
+                                    authUser?.user?.role === USER_ADMIN_ROLE && (
+                                        <button
+                                            className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
+                                            type="submit"
+                                            onClick={handleSaveReserve}
+                                            disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
+                                        >
+                                            {loading.reserved && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
+                                            Reserve Selected Seats
+                                        </button>
+                                    )
+                                }
                             </div>
                         </>
                     )

@@ -4,7 +4,9 @@ const UserPanelLayout = ({ children }) => {
     return (
         <>
             <NavBar />
-            {children}
+            <main className="w-full min-h-screen bg-gray-700 pt-20">
+                {children}
+            </main>
         </>
     )
 }
