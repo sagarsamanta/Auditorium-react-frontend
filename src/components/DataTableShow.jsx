@@ -6,6 +6,7 @@ import { useAuth } from "../lib/hooks/useAuth";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { MdAirlineSeatReclineExtra, MdEdit } from "react-icons/md";
+import { displayTime } from "../lib/utils";
 
 const DataTableShow = ({ data, movieId, className }) => {
     const { token } = useAuth();
@@ -34,11 +35,11 @@ const DataTableShow = ({ data, movieId, className }) => {
         },
         {
             name: 'Start Time',
-            selector: row => row.showStartTime,
+            selector: row => displayTime(row.showStartTime),
         },
         {
             name: 'End Time',
-            selector: row => row.showEndTime,
+            selector: row => displayTime(row.showEndTime),
         },
         {
             name: 'Action',

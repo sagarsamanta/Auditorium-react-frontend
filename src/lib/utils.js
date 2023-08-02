@@ -23,6 +23,11 @@ export const displayDate = (dateString, format = "Do MMM, YYYY") => {
     return moment(dateString).format(format);
 }
 
+export const displayTime = (timeIn12hrs, format = "hh:mm A") => {
+    if (timeIn12hrs === "--:--") return timeIn12hrs;
+    return moment(timeIn12hrs, "hh:mm A").format(format);
+}
+
 export const getPriceBySeatNumber = (seatNumber, priceList) => {
     const firstChar = seatNumber?.charAt(0)?.toUpperCase();
 
