@@ -52,7 +52,7 @@ const HomePage = () => {
 
     return (
         <>
-            <div className="relative">
+            <div className="relative min-h-screen">
                 {
                     loading.movie ? (
                         <Loader className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' />
