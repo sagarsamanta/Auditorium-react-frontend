@@ -15,6 +15,8 @@ import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
 import UsersPage from "../pages/admin/user/UsersPage";
 import UserPanelLayout from "../components/user/UserPanelLayout";
+import ProfilePage from "../pages/users/ProfilePage";
+import BookingsPage from "../pages/users/BookingsPage";
 
 const router = createBrowserRouter([
     {
@@ -87,6 +89,20 @@ const router = createBrowserRouter([
         path: "/admin/users/bookings/movie/:bookingId",
         element: <AuthentiCate>
             <Bookings />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/user/bookings",
+        element: <AuthentiCate>
+            <BookingsPage />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/user/profile",
+        element: <AuthentiCate>
+            <ProfilePage />
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },

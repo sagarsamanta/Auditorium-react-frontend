@@ -11,7 +11,7 @@ const AuthentiCate = ({ children }) => {
     if (!isAuthenticated) {
         return <Navigate to="/login" />;
     }
-
+console.log(children);
     return (
         <div>
             {

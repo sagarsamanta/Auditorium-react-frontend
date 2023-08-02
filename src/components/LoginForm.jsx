@@ -29,7 +29,7 @@ const LoginForm = () => {
             }).finally(() => {
                 setLoading(false);
             }).catch((err) => {
-                setError(err.response.data.error)
+                setError(err.response?.data?.error)
                 console.log('error', err);
             });
         },
@@ -43,7 +43,7 @@ const LoginForm = () => {
     useEffect(() => {
         if (userContext && userContext?.authUser?.isAuthenticated) {
             if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin');
-            if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
+            if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/user/bookings');
         }
     }, [userContext?.authUser?.isAuthenticated, userContext?.authUser?.role]);
     return (
