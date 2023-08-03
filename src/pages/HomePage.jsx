@@ -61,7 +61,7 @@ const HomePage = () => {
                     loading.movie ? (
                         <Loader className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' />
                     ) : (
-                        error.movie || error.shows ? (
+                        error.movie || error.shows || !selectedShow ? (
                             <SomethingWentWrong className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' text="No Shows available, Better luck next time!" />
                         ) : (
                             <div className="mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4">
@@ -109,10 +109,10 @@ const HomePage = () => {
                                                                             if (show?.status === STATUS_ACTIVE) {
                                                                                 return (
                                                                                     <button
-                                                                                        className={`${selectedShow._id === show._id ? 'text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40' : 'text-skin-inverted border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted'} focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                                                                                        className={`${selectedShow?._id === show?._id ? 'text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40' : 'text-skin-inverted border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted'} focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
                                                                                         onClick={() => setSelectedShow(show)}
                                                                                     >
-                                                                                        {selectedShow._id === show._id ? <FiCheckCircle size={15} /> : <MdRadioButtonUnchecked size={15} />}
+                                                                                        {selectedShow?._id === show?._id ? <FiCheckCircle size={15} /> : <MdRadioButtonUnchecked size={15} />}
                                                                                         {displayTime(show?.showStartTime)}
                                                                                     </button>
                                                                                 )
@@ -129,7 +129,7 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 {
-                                    isAuthenticated && (
+                                    isAuthenticated && selectedShow && (
                                         <div className=" bg-gray-800 text-skin-inverted rounded-lg p-4">
                                             <span className="text-xl font-semibold">Seats</span>
                                             {
@@ -138,7 +138,7 @@ const HomePage = () => {
                                                         <Loader className="block" />
                                                     </div>
                                                 ) : (
-                                                    <ShowSeats movieId={movie._id} showId={selectedShow._id} authUser={{ user: user, token: token }} priceList={selectedShow.price} />
+                                                    <ShowSeats movieId={movie?._id} showId={selectedShow?._id} authUser={{ user: user, token: token }} priceList={selectedShow?.price} />
                                                 )
                                             }
                                         </div>
