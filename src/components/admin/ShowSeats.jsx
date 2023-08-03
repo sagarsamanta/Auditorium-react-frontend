@@ -60,13 +60,14 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
     }
 
     const getTotalSelectedPrice = (seatsObj) => {
-        return seatsObj.reduce((total, seat) => total + seat.price, 0);
+        return seatsObj?.reduce((total, seat) => total + seat.price, 0);
     };
 
     const handleSave = async () => {
         if (selectedSeats.length > 0) {
             setLoading(prev => { return { ...prev, booking: true } });
             const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
+            console.log("pppp",selectedSeats,priceList);
             const seats = {
                 movieId,
                 showtimeId: showId,

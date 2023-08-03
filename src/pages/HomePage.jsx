@@ -32,6 +32,7 @@ const HomePage = () => {
             })
             .catch((err) => {
                 setError({ movie: true, shows: true });
+                // toast.error(`${err.response.statusText}`);
             });
     }, []);
 
@@ -104,11 +105,12 @@ const HomePage = () => {
                                                                 <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-4">
                                                                     {isAllShowInactive && <p className="p-2 bg-gray-700 col-span-2 rounded-md text-center">No show Available!</p>}
                                                                     {
-                                                                        shows.map((show) => {
+                                                                        shows.map((show, index) => {
                                                                             if (show?.status === STATUS_ACTIVE) {
                                                                                 return (
                                                                                     <button
-                                                                                        className={`${selectedShow?._id === show?._id ? 'text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40' : 'text-skin-inverted border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted'} focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                                                                                        key={index}
+                                                                                        className={`${selectedShow._id === show._id ? 'text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40' : 'text-skin-inverted border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted'} focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
                                                                                         onClick={() => setSelectedShow(show)}
                                                                                     >
                                                                                         {selectedShow?._id === show?._id ? <FiCheckCircle size={15} /> : <MdRadioButtonUnchecked size={15} />}
