@@ -19,6 +19,7 @@ const NavBar = () => {
                                     <Logo />
                                 </div>
                             </div>
+                            <div className='text-white hidden md:block capitalize'>  Wellcome ,  <span className=''>{user?.name}</span></div>
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
@@ -56,14 +57,15 @@ const NavBar = () => {
                                                         to={`/user/profile/${user?.email}`}
                                                         className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm capitalize`}
                                                     >
-                                                        {user?.name}
+                                                        {/* {user?.name} */}
+                                                        My Profile
                                                     </Link>
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                        to={`/user/profile/history/${user?.email}`}
+                                                        to={`/user/bookings`}
                                                         className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm`}
                                                     >
                                                         Booking History

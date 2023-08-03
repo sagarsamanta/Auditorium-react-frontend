@@ -17,6 +17,7 @@ import UsersPage from "../pages/admin/user/UsersPage";
 import Layout from "../pages/Layout";
 import ProfilePage from "../pages/users/ProfilePage";
 import BookingsPage from "../pages/users/BookingsPage";
+import BookingDetails from "../pages/users/BookingDetails";
 
 const router = createBrowserRouter([
     {
@@ -100,12 +101,20 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
+        path: "/user/bookings/:bookingId",
+        element: <AuthentiCate>
+            <BookingDetails />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
         path: "/user/profile",
         element: <AuthentiCate>
             <ProfilePage />
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },
+
 
 
 ]);
