@@ -14,19 +14,19 @@ import BookingPage from "../pages/admin/user/BookingPage";
 import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
 import UsersPage from "../pages/admin/user/UsersPage";
-import UserPanelLayout from "../components/user/UserPanelLayout";
+import Layout from "../pages/Layout";
 import ProfilePage from "../pages/users/ProfilePage";
 import BookingsPage from "../pages/users/BookingsPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <UserPanelLayout><HomePage /></UserPanelLayout>,
+        element: <Layout><HomePage /></Layout>,
         errorElement: <ErrorPage />,
     },
     {
         path: "login",
-        element: <UserPanelLayout><LoginPage /></UserPanelLayout>,
+        element: <Layout><LoginPage /></Layout>,
         errorElement: <ErrorPage />,
     },
     {
