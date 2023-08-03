@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Axios from "../lib/axiosInstance";
 import Loader from "../components/UI/Loader";
-import { toast } from "react-toastify";
 import { useAuth } from "../lib/hooks/useAuth";
 import { FiCheckCircle } from "react-icons/fi";
 import { MdRadioButtonUnchecked } from "react-icons/md";
@@ -33,7 +32,6 @@ const HomePage = () => {
             })
             .catch((err) => {
                 setError({ movie: true, shows: true });
-                toast.error(`${err.response.statusText}`);
             });
     }, []);
 
@@ -50,12 +48,9 @@ const HomePage = () => {
                 })
                 .catch((err) => {
                     setError({ movie: true, shows: true });
-                    toast.error(`${err.response.statusText}`);
                 });
         }
     }, [movie, isAuthenticated, token]);
-
-    console.log('isAllShowInactive', isAllShowInactive);
 
     return (
         <>

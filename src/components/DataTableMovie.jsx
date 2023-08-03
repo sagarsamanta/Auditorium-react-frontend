@@ -15,17 +15,14 @@ const DataTableMovie = ({ data, className }) => {
 
         Axios('PUT', `movie/chnageMovieStatus/${row._id}`, { status: newStatus }, { authRequest: true, token: token })
             .then((res) => {
-                console.log('res', res);
                 if (res.data?.movie) {
                     const newMovie = res.data?.movie;
                     const newMovieList = moviesList.map(prevData => {
                         return (prevData._id === newMovie._id) ? { ...prevData, status: newMovie.status } : prevData;
                     });
-                    console.log('newMovieList', newMovieList);
                     setMoviesList(newMovieList);
                     toast.success(`Movie updated successfully`);
                 }
-                console.log('Hii');
             })
             .catch(err => {
                 if (err?.response?.status === 302) {

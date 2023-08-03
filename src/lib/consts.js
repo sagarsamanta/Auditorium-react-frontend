@@ -30,5 +30,11 @@ export const SEATS = {
   N: ["20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "09", "08", "07", "06", "05", "04", "03", "02", "01"],
 };
 
+export const BOOKING_STATUS = {
+  PENDING: "PENDING",
+  BOOKED: "BOOKED",
+  VISITED: "VISITED",
+};
+
 
 export const ADMIN_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI4ZmFlYjQwMmJiNDIxMjQxNDUxN2EiLCJpYXQiOjE2ODk4NDQ1NDZ9.wk2jJAdctuMkIfuqRZJqXaS5Pu19YTRWN_DR4ywudZA"

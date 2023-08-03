@@ -28,6 +28,18 @@ export const displayTime = (timeIn12hrs, format = "hh:mm A") => {
     return moment(timeIn12hrs, "hh:mm A").format(format);
 }
 
+export const isPastDate = (dateString) => {
+    if (!dateString) return true;
+    return moment(dateString).isBefore(moment());
+}
+
+export const getCurrencyFormat = (amount, countryCode = "INR") => {
+    return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: countryCode,
+    }).format(amount);
+}
+
 export const getPriceBySeatNumber = (seatNumber, priceList) => {
     const firstChar = seatNumber?.charAt(0)?.toUpperCase();
 
