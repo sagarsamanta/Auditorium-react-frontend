@@ -18,6 +18,7 @@ const HomePage = () => {
     const [loading, setLoading] = useState({ movie: true, shows: true });
     const [error, setError] = useState({ movie: false, shows: false });
     const { isAuthenticated, token, user } = useAuth();
+    const isAllShowInactive = shows.filter((show) => show.status === STATUS_ACTIVE).length === 0;
 
     // Frath Movie
     useEffect(() => {
@@ -53,6 +54,8 @@ const HomePage = () => {
                 });
         }
     }, [movie, isAuthenticated, token]);
+
+    console.log('isAllShowInactive', isAllShowInactive);
 
     return (
         <>
@@ -104,6 +107,7 @@ const HomePage = () => {
                                                                 <Loader className="w-[14px] h-[14px]" />
                                                             ) : (
                                                                 <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-4">
+                                                                    {isAllShowInactive && <p className="p-2 bg-gray-700 col-span-2 rounded-md text-center">No show Available!</p>}
                                                                     {
                                                                         shows.map((show) => {
                                                                             if (show?.status === STATUS_ACTIVE) {
@@ -129,7 +133,7 @@ const HomePage = () => {
                                     </div>
                                 </div>
                                 {
-                                    isAuthenticated && selectedShow && (
+                                    isAuthenticated && selectedShow && !isAllShowInactive && (
                                         <div className=" bg-gray-800 text-skin-inverted rounded-lg p-4">
                                             <span className="text-xl font-semibold">Seats</span>
                                             {
