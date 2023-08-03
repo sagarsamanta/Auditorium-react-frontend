@@ -11,6 +11,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
     const [seatsList, setSeats] = useState(null);
     const [loading, setLoading] = useState({ booking: false, reserved: false, seats: true });
     const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
+    const [isOpenSelectedSeatModal, setIsOpenSelectedSeatModal] = useState(false);
     const [selectedReservedSeate, setSelectedReservedSeate] = useState('');
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
@@ -48,13 +49,14 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                 return 'bg-skin-seat-booked cursor-not-allowed';
             }
             if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
+                if (authUser?.user?.role !== USER_ADMIN_ROLE) return 'bg-skin-seat-booked cursor-not-allowed'
                 return 'bg-skin-seat-reserved';
             }
         }
         if (selectedSeats.includes(seatNo)) {
             return 'bg-skin-seat-selected';
         }
-        return 'bg-skin-seat-available text-gray-400 border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/5';
+        return 'bg-skin-seat-available text-gray-400 border border-green-800/70 bg-green-800/20 hover:bg-green-800/50 focus:ring-green-800/70';
     }
 
     const getTotalSelectedPrice = (seatsObj) => {
@@ -82,6 +84,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                 })
                 .finally(() => {
                     setLoading(prev => { return { ...prev, booking: false } });
+                    setIsOpenSelectedSeatModal(false);
                     fetchFreshData();
                 })
                 .catch((err) => {
@@ -145,7 +148,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                     {/* Info and color code elements */}
                     <div className="w-[95%] mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
                         <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-skin-seat-available rounded-sm text-skin-inverted border border-green-800/70 focus:ring-green-800/70 bg-green-800/10" />
+                            <div className="w-4 h-4 bg-skin-seat-available rounded-sm text-skin-inverted border border-green-800/70 bg-green-800/20" />
                             <span>Available</span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -156,10 +159,14 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                             <div className="w-4 h-4 bg-skin-seat-booked rounded-sm" />
                             <span>Booked</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-skin-seat-reserved rounded-sm" />
-                            <span>Reserved</span>
-                        </div>
+                        {
+                            authUser?.user?.role === USER_ADMIN_ROLE && (
+                                <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 bg-skin-seat-reserved rounded-sm" />
+                                    <span>Reserved</span>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
 
@@ -211,9 +218,9 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
 
                             <div className="flex flex-col md:flex-row justify-stretch md:justify-center items-stretch gap-2 w-full px-0 py-4 md:py-3">
                                 <button
-                                    className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
+                                    className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
                                     type="submit"
-                                    onClick={handleSave}
+                                    onClick={() => setIsOpenSelectedSeatModal(true)}
                                     disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
                                 >
                                     {loading.booking && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
@@ -222,7 +229,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                                 {
                                     authUser?.user?.role === USER_ADMIN_ROLE && (
                                         <button
-                                            className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
+                                            className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
                                             type="submit"
                                             onClick={handleSaveReserve}
                                             disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
@@ -245,6 +252,18 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                         buttonText: 'Make Available',
                         buttonHandler: handleMakeAvailable,
                         loading: loading.reserved,
+                        buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
+                    }}
+                />
+                <Modal
+                    isOpen={isOpenSelectedSeatModal}
+                    closeHandler={setIsOpenSelectedSeatModal}
+                    config={{
+                        title: <span>Seat no. "<span className="text-skin-base">{selectedSeats?.sort()?.join(', ')}</span>"</span>,
+                        text: 'Are you sure you want to book these seats?',
+                        buttonText: 'Book Now',
+                        buttonHandler: handleSave,
+                        loading: loading.booking,
                         buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
                     }}
                 />
