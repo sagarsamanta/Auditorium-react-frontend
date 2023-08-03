@@ -85,7 +85,7 @@ const HomePage = () => {
                                             <span className="text-xl font-semibold">Shows</span>
                                             {
                                                 !isAuthenticated ? (
-                                                    <div className={`bg-gray-800 z-10 p-5 flex justify-center items-center relative`}>
+                                                    <div className={`bg-gray-800 z-10 p-5 flex justify-center items-center relative overflow-hidden`}>
                                                         <div className="flex flex-col justify-center items-center gap-4">
                                                             <img src={`/images/blurBg.png`} alt="" className="absolute inset-0 -z-10 select-none pointer-events-none md:opacity-50" />
                                                             <Link
@@ -102,7 +102,7 @@ const HomePage = () => {
                                                             loading.shows ? (
                                                                 <Loader className="w-[14px] h-[14px]" />
                                                             ) : (
-                                                                <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-4">
+                                                                <div className="w-full md:w-3/4 grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
                                                                     {isAllShowInactive && <p className="p-2 bg-gray-700 col-span-2 rounded-md text-center">No show Available!</p>}
                                                                     {
                                                                         shows.map((show, index) => {

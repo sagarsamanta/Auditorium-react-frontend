@@ -56,7 +56,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         if (selectedSeats.includes(seatNo)) {
             return 'bg-skin-seat-selected';
         }
-        return 'bg-skin-seat-available text-gray-400 border border-green-800/70 bg-green-800/20 hover:bg-green-800/50 focus:ring-green-800/70';
+        return 'bg-skin-seat-available text-gray-400 border border-green-800/70 bg-green-800/50 hover:bg-green-800/50 focus:ring-green-800/70';
     }
 
     const getTotalSelectedPrice = (seatsObj) => {
@@ -189,11 +189,10 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                                             return (
                                                 <div
                                                     key={row}
-                                                    className={`row row-${row}  my-1 flex justify-center items-center gap-5`}
+                                                    className={`row row-${row} my-1 flex justify-center items-center gap-5`}
                                                 >
-                                                    {/* <div className="row-key">{row}</div> */}
                                                     <div
-                                                        className={`seats-${row}  flex gap-2 justify-around items-center`}
+                                                        className={`seats-${row} flex gap-2 justify-around items-center`}
                                                     >
                                                         {seats.map((seat) => {
                                                             const seatNo = `${row}${seat}`;
