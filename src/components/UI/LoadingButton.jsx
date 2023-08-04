@@ -1,6 +1,6 @@
 import Loader from './Loader';
 
-const LoadingButton = ({ text = "Save", className = '', isLoading = false, onClick }) => {
+const LoadingButton = ({ text = "Save", className = '', isLoading = false, onClick, icon = null }) => {
     return (
         <>
             <button
@@ -8,7 +8,7 @@ const LoadingButton = ({ text = "Save", className = '', isLoading = false, onCli
                 type="submit"
                 onClick={onClick}
             >
-                {isLoading && <Loader className="w-[15px] h-[15px] absolute top-[14px] left-3" />}
+                <span className="w-[15px] h-[15px] absolute top-1/2 -translate-y-1/2 left-3">{isLoading ? <Loader className="w-full h-full" /> : icon}</span>
                 {text}
             </button>
         </>

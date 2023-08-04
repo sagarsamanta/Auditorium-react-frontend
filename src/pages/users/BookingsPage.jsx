@@ -74,11 +74,11 @@ const BookingsPage = () => {
                                                                     <p className="line-clamp-3">{displayDate(booking?.movie?.releaseDate)} | {displayTime(booking?.showtime?.showStartTime)}</p>
                                                                 </div>
                                                                 <div className="w-full md:w-1/3 grid grid-cols-2">
-                                                                    <div className="w-1/2 mt-4 space-y-1">
+                                                                    <div className="mt-4 space-y-1">
                                                                         <span className="text-lg font-semibold">Seats</span>
                                                                         <p className="line-clamp-3">{`${booking?.seats?.map(seat => seat?.seatNo).join(', ')}`.trim()}</p>
                                                                     </div>
-                                                                    <div className="w-1/2 mt-4 space-y-1">
+                                                                    <div className="mt-4 space-y-1">
                                                                         <span className="text-lg font-semibold">Total</span>
                                                                         <p className="line-clamp-3">{getCurrencyFormat(booking?.totalPrice)}</p>
                                                                     </div>
@@ -128,11 +128,11 @@ const BookingsPage = () => {
                                                                         <p className="line-clamp-1">{displayDate(booking?.createdAt)}, {displayTime(booking?.createdAt)}</p>
                                                                     </div>
                                                                     <div className="w-full md:w-3/4 grid grid-cols-2">
-                                                                        <div className="w-1/2 mt-1">
+                                                                        <div className="mt-1">
                                                                             <span className="text-md font-semibold">Seats</span>
                                                                             <p className="line-clamp-1">{`${booking?.seats?.map(seat => seat?.seatNo).join(', ')}`.trim()}</p>
                                                                         </div>
-                                                                        <div className="w-1/2 mt-1">
+                                                                        <div className="mt-1">
                                                                             <span className="text-md font-semibold">Total</span>
                                                                             <p className="line-clamp-1">{getCurrencyFormat(booking?.totalPrice)}</p>
                                                                         </div>
