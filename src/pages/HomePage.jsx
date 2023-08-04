@@ -65,8 +65,9 @@ const HomePage = () => {
                         ) : (
                             <div className="mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4">
                                 <div className="bg-gray-800 text-skin-inverted rounded-lg p-4 flex flex-col md:flex-row gap-4 md:gap-8">
-                                    <div className="w-full md:w-1/3">
-                                        <img src={movie?.poster} alt={movie?.title} className="w-full h-auto rounded-lg" />
+                                    <div className={`w-full md:w-1/3 h-[360px] max-h-[360px] relative overflow-hidden rounded-lg`}>
+                                        <img src={movie?.poster} alt={movie?.title} className="w-full h-full absolute inset-0 object-cover bg-center z-[0] blur-lg" />
+                                        <img src={movie?.poster} alt={movie?.title} className="w-full h-full absolute inset-0 object-contain bg-center z-[2]" />
                                     </div>
                                     <div className="w-full md:w-2/3 space-y-6">
                                         <h2 className="text-3xl font-semibold">{movie?.title}</h2>
