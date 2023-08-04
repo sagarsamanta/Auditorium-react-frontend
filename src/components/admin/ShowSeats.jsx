@@ -56,7 +56,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         if (selectedSeats.includes(seatNo)) {
             return 'bg-skin-seat-selected';
         }
-        return 'bg-skin-seat-available text-gray-400 border border-green-800/70 bg-green-800/50 hover:bg-green-800/50 focus:ring-green-800/70';
+        return 'text-gray-400 border border-green-800/70 bg-green-800/50 hover:bg-green-800/50 focus:ring-green-800/70';
     }
 
     const getTotalSelectedPrice = (seatsObj) => {
@@ -67,7 +67,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         if (selectedSeats.length > 0) {
             setLoading(prev => { return { ...prev, booking: true } });
             const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
-            console.log("pppp",selectedSeats,priceList);
+            console.log("pppp", selectedSeats, priceList);
             const seats = {
                 movieId,
                 showtimeId: showId,
@@ -149,7 +149,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                     {/* Info and color code elements */}
                     <div className="w-[95%] mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
                         <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-skin-seat-available rounded-sm text-skin-inverted border border-green-800/70 bg-green-800/20" />
+                            <div className="w-4 h-4 rounded-sm text-skin-inverted border border-green-800/70 bg-green-800/20" />
                             <span>Available</span>
                         </div>
                         <div className="flex items-center gap-2">
