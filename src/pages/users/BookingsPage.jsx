@@ -32,7 +32,7 @@ const BookingsPage = () => {
     }, []);
 
     return (
-        <div className="text-sm container min-h-screen lg:mx-auto px-3 mt-3 pb-14 relative">
+        <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">
             <h1 className="text-xl md:text-2xl lg:text-3xl p-3 text-white rounded-sm font-semibold mb-4">Booking History</h1>
             {
                 loading ? (
@@ -123,7 +123,7 @@ const BookingsPage = () => {
                                                                     <div className="font-semibold w-full text-lg line-clamp-1">
                                                                         <h5>{booking?.movie?.title}</h5>
                                                                     </div>
-                                                                    <p className="text-xs">({booking?.movie?.language})</p>
+                                                                    <p className="text-xs inline-block">({booking?.movie?.language})</p>
                                                                     <div className="mt-1">
                                                                         <span className="text-md font-semibold">Booking Date</span>
                                                                         <p className="line-clamp-1">{displayDate(booking?.createdAt)}, {displayTime(booking?.createdAt)}</p>

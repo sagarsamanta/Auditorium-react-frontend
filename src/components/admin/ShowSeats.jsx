@@ -56,7 +56,8 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         if (selectedSeats.includes(seatNo)) {
             return 'bg-skin-seat-selected';
         }
-        return 'text-gray-400 border border-green-800/70 bg-green-800/50 hover:bg-green-800/50 focus:ring-green-800/70';
+        const availableTextColor = authUser?.user?.role === USER_ADMIN_ROLE ? '' : 'text-white'
+        return `${availableTextColor} border transition bg-green-800/20 hover:bg-green-800/40 border-green-800/70 focus:ring-green-800/70`;
     }
 
     const getTotalSelectedPrice = (seatsObj) => {
