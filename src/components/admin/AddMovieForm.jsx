@@ -74,7 +74,7 @@ const AddMovieForm = ({ movie }) => {
                 <div className="flex flex-wrap my-6">
                     <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="col-span-3">
-                            <div className="px-3 mb-6 md:mb-0">
+                            <div className="md:px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-title">
                                     Movie Title {' '}
                                     {
@@ -94,7 +94,7 @@ const AddMovieForm = ({ movie }) => {
                                     (formik.touched.title && formik.errors.title) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.title}</p>
                                 }
                             </div>
-                            <div className="px-3">
+                            <div className="md:px-3">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-description">
                                     Description
                                 </label>
@@ -110,8 +110,7 @@ const AddMovieForm = ({ movie }) => {
                                     (formik.touched.description && formik.errors.description) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.description}</p>
                                 }
                             </div>
-
-                            <div className="px-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="md:px-3 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-language">
                                         Language
@@ -163,7 +162,7 @@ const AddMovieForm = ({ movie }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-1 flex flex-col">
+                        <div className="col-span-3 md:col-span-1 flex flex-col">
                             <div>
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-poster">
                                     Movie Poster
@@ -177,13 +176,14 @@ const AddMovieForm = ({ movie }) => {
                                     onChange={(e) => handleImageChange(e.currentTarget.files[0])}
                                 />
                             </div>
-                            <div className="relative h-60 md:h-full">
+                            <div className="relative h-60 max-h-96 md:h-full group">
                                 <img
                                     ref={imgPreviewRef}
-                                    src={movie?.poster || `https://res.cloudinary.com/dmnbwbb2q/image/upload/v1689672759/sagar/iwlsfplmpv6uiqi7llsp.png`} className={`absolute inset-0 ${movie?.poster || imgPreviewRef?.current?.src ? '' : 'flex justify-center items-center bg-gray-200'} w-full h-full object-contain cursor-pointer`}
+                                    src={movie?.poster || `/images/upload.png`} className={`absolute inset-0 ${movie?.poster || imgPreviewRef?.current?.src ? '' : 'flex justify-center items-center'} w-full h-full object-contain cursor-pointer bg-gray-200 p-4 rounded-lg z-[0]`}
                                     onClick={() => imgInputRef.current.click()}
                                     alt="Click to add Movie Poster"
                                 />
+                                <span className="absolute inset-0 flex justify-center items-center pointer-events-none bg-slate-300/50 transition opacity-0 group-hover:opacity-100 z-[1] font-semibold capitalize tracking-wider">Click to change image</span>
                             </div>
                         </div>
                     </div>
