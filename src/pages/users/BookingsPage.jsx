@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Axios from '../../lib/axiosInstance'
 import { useAuth } from '../../lib/hooks/useAuth';
-import { displayDate, displayTime, getCurrencyFormat, isPastDate } from '../../lib/utils';
+import { displayDate, displayTime, getCurrencyFormat, isPastDate, lowResImageUrl } from '../../lib/utils';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/UI/Loader';
 import SomethingWentWrong from '../../components/UI/SomethingWentWrong';
@@ -51,52 +51,51 @@ const BookingsPage = () => {
                                     <div className='py-2 divide-y divide-gray-500 space-y-4'>
                                         {
                                             upCommingShows?.map((booking) => {
-                                                if (!isPastDate(booking?.movie?.releaseDate)) {
-                                                    return (
-                                                        <div className={`block py-4 text-skin-inverted transition-all`}>
-                                                            <div className='flex flex-col md:flex-row items-start gap-4'>
-                                                                <div className='w-full md:w-1/3 h-full overflow-hidden rounded-md shadow-lg border border-white/5'>
-                                                                    <img src={booking?.movie?.poster} alt='not-found' className='w-full h-auto' />
+                                                return (
+                                                    <div className={`block py-4 text-skin-inverted transition-all`}>
+                                                        <div className='flex flex-col md:flex-row items-start gap-4'>
+                                                            <div className={`w-full md:w-1/3 h-[360px] max-h-[360px] relative overflow-hidden rounded-md shadow-lg border border-white/5`}>
+                                                                <img src={booking?.movie?.poster} alt={booking?.movie?.title} className="w-full h-full absolute inset-0 object-cover bg-center z-[0] blur-lg" />
+                                                                <img src={booking?.movie?.poster} alt={booking?.movie?.title} className="w-full h-full absolute inset-0 object-contain bg-center z-[2]" />
+                                                            </div>
+                                                            <div className='flex w-full flex-col justify-end'>
+                                                                <div className="">
+                                                                    <h5 className="font-semibold w-full text-3xl uppercase line-clamp-1 leading-tight">
+                                                                        {booking?.movie?.title}
+                                                                    </h5>
+                                                                    <span className="capitalize">({booking?.movie?.language})</span>
                                                                 </div>
-                                                                <div className='flex w-full flex-col justify-end'>
-                                                                    <div className="">
-                                                                        <h5 className="font-semibold w-full text-xl line-clamp-1 leading-tight">
-                                                                            {booking?.movie?.title}
-                                                                        </h5>
-                                                                        <span className="capitalize">({booking?.movie?.language})</span>
+                                                                <div className="mt-4 space-y-1">
+                                                                    <span className="text-lg font-semibold">Description</span>
+                                                                    <p className="line-clamp-3">{booking?.movie?.description}</p>
+                                                                </div>
+                                                                <div className="mt-4 space-y-1">
+                                                                    <span className="text-lg font-semibold">Movie Date</span>
+                                                                    <p className="line-clamp-3">{displayDate(booking?.movie?.releaseDate)} | {displayTime(booking?.showtime?.showStartTime)}</p>
+                                                                </div>
+                                                                <div className="w-full md:w-1/3 grid grid-cols-2">
+                                                                    <div className="w-1/2 mt-4 space-y-1">
+                                                                        <span className="text-lg font-semibold">Seats</span>
+                                                                        <p className="line-clamp-3">{`${booking?.seats?.map(seat => seat?.seatNo).join(', ')}`.trim()}</p>
                                                                     </div>
-                                                                    <div className="mt-4 space-y-1">
-                                                                        <span className="text-xl font-semibold">Description</span>
-                                                                        <p className="line-clamp-3">{booking?.movie?.description}</p>
+                                                                    <div className="w-1/2 mt-4 space-y-1">
+                                                                        <span className="text-lg font-semibold">Total</span>
+                                                                        <p className="line-clamp-3">{getCurrencyFormat(booking?.totalPrice)}</p>
                                                                     </div>
-                                                                    <div className="mt-4 space-y-1">
-                                                                        <span className="text-xl font-semibold">Date</span>
-                                                                        <p className="line-clamp-3">{displayDate(booking?.movie?.releaseDate)}, {displayTime(booking?.showtime?.showStartTime)}</p>
-                                                                    </div>
-                                                                    <div className="w-full md:w-1/3 grid grid-cols-2">
-                                                                        <div className="w-1/2 mt-4 space-y-1">
-                                                                            <span className="text-xl font-semibold">Seats</span>
-                                                                            <p className="line-clamp-3">{`${booking?.seats?.map(seat => seat?.seatNo).join(', ')}`.trim()}</p>
-                                                                        </div>
-                                                                        <div className="w-1/2 mt-4 space-y-1">
-                                                                            <span className="text-xl font-semibold">Total</span>
-                                                                            <p className="line-clamp-3">{getCurrencyFormat(booking?.totalPrice)}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="mt-4 space-y-1">
-                                                                        <Link
-                                                                            to={`/user/bookings/${booking?._id}`}
-                                                                            className="text-skin-inverted bg-skin-base focus:ring-skin-muted focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2"
-                                                                        >
-                                                                            <MdOpenInNew size={15} />
-                                                                            View Details
-                                                                        </Link>
-                                                                    </div>
+                                                                </div>
+                                                                <div className="mt-4 space-y-1">
+                                                                    <Link
+                                                                        to={`/user/bookings/${booking?._id}`}
+                                                                        className="text-skin-inverted bg-skin-base focus:ring-skin-muted focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2"
+                                                                    >
+                                                                        <MdOpenInNew size={15} />
+                                                                        View Details
+                                                                    </Link>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    )
-                                                }
+                                                    </div>
+                                                )
                                             })
                                         }
                                     </div>
@@ -117,11 +116,11 @@ const BookingsPage = () => {
                                                         <Link to={`/user/bookings/${booking?._id}`} className={`booking rounded block bg-gray-700/30 py-4 px-2 text-gray-100 group transition-all`}>
                                                             <div className='flex items-start gap-4'>
                                                                 <div className='w-40 h-full overflow-hidden rounded shadow-lg border border-white/5'>
-                                                                    <img src={booking?.movie?.poster} alt='not-found' className='transition delay-150 grayscale group-hover:grayscale-0' />
+                                                                    <img src={lowResImageUrl(booking?.movie?.poster)} alt='not-found' className='transition delay-150 grayscale group-hover:grayscale-0' />
                                                                 </div>
                                                                 <div className='flex w-full flex-col justify-end'>
                                                                     <div className="font-semibold w-full text-lg line-clamp-1">
-                                                                        <h5>{booking?.movie?.title}</h5>
+                                                                        <h5 className='uppercase'>{booking?.movie?.title}</h5>
                                                                     </div>
                                                                     <p className="text-xs inline-block">({booking?.movie?.language})</p>
                                                                     <div className="mt-1">

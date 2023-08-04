@@ -103,6 +103,11 @@ export const userProfileImage = (user) => {
     );
 }
 
+export const lowResImageUrl = (imageUrl) => {
+    if (!imageUrl || !imageUrl.includes('cloudinary')) return imageUrl;
+    return imageUrl.replace('image/upload', 'image/upload/c_fill,h_150,w_150');
+}
+
 
 /** API methods */
 export const getAllMovies = async () => {
