@@ -12,7 +12,6 @@ const UpdateMoviePage = () => {
     useEffect(() => {
         const getMovie = async () => {
             const response = await getMovieById(id);
-            console.log('response', { ...response });
             setMovieResponse({ ...response });
             setLoading(false);
         }

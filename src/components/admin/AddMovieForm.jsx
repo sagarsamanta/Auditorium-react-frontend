@@ -7,12 +7,14 @@ import { useAuth } from "../../lib/hooks/useAuth";
 import Axios from "../../lib/axiosInstance";
 import LoadingButton from "../UI/LoadingButton";
 import { STATUS_ACTIVE } from "../../lib/consts";
+import { useNavigate } from "react-router-dom";
 
 const AddMovieForm = ({ movie }) => {
     const imgPreviewRef = useRef(null);
     const imgInputRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const { token } = useAuth();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             title: movie?.title || '',
@@ -44,9 +46,9 @@ const AddMovieForm = ({ movie }) => {
 
             Axios(requestMethod, requestUrl, formData, { authRequest: true, token: token })
                 .then((response) => {
-                    console.log('response', response);
                     if (response?.status === 201) {
                         toast.success('Movie Added Sucessfully');
+                        navigate(`/admin/movies/${response?.data?.movie?._id}`);
                     }
                     if (response?.status === 200) {
                         toast.success('Movie Updated Sucessfully');
