@@ -1,5 +1,5 @@
 import Axios from "../../lib/axiosInstance";
-import { SEATS, USER_ADMIN_ROLE } from "../../lib/consts";
+import { MAX_SEATS_PER_BOOKING, SEATS, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../../lib/consts";
 import { getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../lib/utils";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -39,7 +39,15 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
             );
             setSelectedSeats(newSelectedSeats);
         } else {
-            setSelectedSeats([...selectedSeats, seatNo]);
+            if (authUser?.user?.role === USER_ADMIN_ROLE) {
+                setSelectedSeats([...selectedSeats, seatNo]);
+            }
+            else if (authUser?.user?.role === USER_EMPLOYEE_ROLE && selectedSeats.length < MAX_SEATS_PER_BOOKING) {
+                setSelectedSeats([...selectedSeats, seatNo]);
+            }
+            else {
+                toast.warning(`You can only select ${MAX_SEATS_PER_BOOKING} seats`);
+            }
         }
     };
 
