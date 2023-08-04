@@ -67,7 +67,6 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         if (selectedSeats.length > 0) {
             setLoading(prev => { return { ...prev, booking: true } });
             const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
-            console.log("pppp", selectedSeats, priceList);
             const seats = {
                 movieId,
                 showtimeId: showId,

@@ -8,7 +8,6 @@ const axiosInstance = axios.create({
 
 // Custom method to make API calls
 const Axios = (method, url, data = null, config = {}) => {
-    console.log(config);
     if (config.authRequest && config.token) {
         config.headers = { ...axiosInstance.headers, ...config.headers, Authorization: `Bearer ${config.token}` };
     }

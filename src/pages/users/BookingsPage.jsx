@@ -42,6 +42,8 @@ const BookingsPage = () => {
                         {
                             (bookings.length === 0 || error) && <SomethingWentWrong text={`${error ? "Something went wrong, Please try again!" : "No Previous Bookings to display!"}`} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 " />
                         }
+
+                        {/* Up-comming Movies */}
                         {
                             upCommingShows.length > 0 && (
                                 <div className="bg-gray-800 text-skin-inverted rounded-lg p-4">
@@ -101,6 +103,8 @@ const BookingsPage = () => {
                                 </div>
                             )
                         }
+
+                        {/* Previous Bookings */}
                         {
                             previousShows.length > 0 && (
                                 <div className="bg-gray-800 text-skin-inverted rounded-lg p-4">
@@ -121,8 +125,8 @@ const BookingsPage = () => {
                                                                     </div>
                                                                     <p className="text-xs">({booking?.movie?.language})</p>
                                                                     <div className="mt-1">
-                                                                        <span className="text-md font-semibold">Date</span>
-                                                                        <p className="line-clamp-1">{displayDate(booking?.movie?.releaseDate)}, {displayTime(booking?.showtime?.showStartTime)}</p>
+                                                                        <span className="text-md font-semibold">Booking Date</span>
+                                                                        <p className="line-clamp-1">{displayDate(booking?.createdAt)}, {displayTime(booking?.createdAt)}</p>
                                                                     </div>
                                                                     <div className="w-full md:w-3/4 grid grid-cols-2">
                                                                         <div className="w-1/2 mt-1">
@@ -142,7 +146,8 @@ const BookingsPage = () => {
                                             })
                                         }
                                     </div>
-                                </div>)
+                                </div>
+                            )
                         }
                     </div>
                 )

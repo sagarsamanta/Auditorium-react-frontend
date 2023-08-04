@@ -55,7 +55,6 @@ export const getPriceBySeatNumber = (seatNumber, priceList) => {
 
 export const getSeatPriceObj = (selectedSeats, priceList) => {
     if (!selectedSeats || !priceList) return {};
-    console.log('selectedSeats', selectedSeats);
     const seatPriceObj = selectedSeats.map((seat) => {
         return {
             seatNo: seat,
