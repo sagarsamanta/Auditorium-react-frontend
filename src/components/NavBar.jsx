@@ -4,7 +4,8 @@ import { useAuth } from '../lib/hooks/useAuth';
 import Logo from './UI/Logo';
 import { Link, useLocation } from 'react-router-dom';
 import { userProfileImage } from '../lib/utils';
-
+import { RiAccountCircleLine } from 'react-icons/ri'
+import { BiMoviePlay, BiLogOutCircle } from 'react-icons/bi'
 const NavBar = () => {
     const { user, isAuthenticated, token, logout } = useAuth();
     const { pathname } = useLocation();
@@ -19,7 +20,7 @@ const NavBar = () => {
                                     <Logo />
                                 </div>
                             </div>
-                            <div className='text-white hidden md:block capitalize'>  Wellcome ,  <span className=''>{user?.name}</span></div>
+                            {isAuthenticated && <div className='text-white hidden md:block capitalize'>  Wellcome, <span className=''>{user?.name}</span></div>}
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
@@ -54,11 +55,11 @@ const NavBar = () => {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                        to={`/user/profile/${user?.email}`}
-                                                        className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm capitalize`}
+                                                        to={`/user/profile`}
+                                                        className={`${active ? 'bg-gray-200' : ''} ${pathname === "/user/profile" ? 'bg-skin-base/20' : ''} block px-4 py-2 text-sm capitalize`}
                                                     >
-                                                        {/* {user?.name} */}
-                                                        My Profile
+                                                        <div className='flex gap-2 items-center'><RiAccountCircleLine size={17} />
+                                                            <div className='text-[15px]'>  My Profile</div></div>
                                                     </Link>
                                                 )}
                                             </Menu.Item>
@@ -66,9 +67,12 @@ const NavBar = () => {
                                                 {({ active }) => (
                                                     <Link
                                                         to={`/user/bookings`}
-                                                        className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm`}
+                                                        className={`${active ? 'bg-gray-200' : ''} ${pathname === "/user/bookings" ? 'bg-skin-base/20' : ''} block px-4 py-2 text-sm`}
                                                     >
-                                                        Booking History
+                                                        <div className='flex gap-2 items-center'>
+                                                            <BiMoviePlay size={17} />
+                                                            <div className='text-[15px]'>  Booking History</div>
+                                                        </div>
                                                     </Link>
                                                 )}
                                             </Menu.Item>
@@ -76,9 +80,13 @@ const NavBar = () => {
                                                 {({ active }) => (
                                                     <button
                                                         onClick={() => logout()}
-                                                        className={`${active ? 'bg-red-100' : ''} block w-full text-left px-4 py-2 text-sm`}
+                                                        className={`${active ? 'bg-red-200' : ''}  block w-full text-left px-4 py-2 text-sm`}
                                                     >
-                                                        Sign out
+                                                        <div className='flex gap-2 items-center'>
+                                                            <BiLogOutCircle size={17} />
+
+                                                            <div className='text-[15px]'> Log out</div>
+                                                        </div>
                                                     </button>
                                                 )}
                                             </Menu.Item>

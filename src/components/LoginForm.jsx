@@ -68,7 +68,7 @@ const LoginForm = () => {
                     <div className="flex flex-col space-y-1">
                         <div className="flex items-center justify-between">
                             <label htmlFor="password" className="text-sm font-semibold text-skin-inverted">Password</label>
-                            <a href="#" className="text-sm text-skin-inverted hover:underline">Forgot Password?</a>
+                            {/* <a href="#" className="text-sm text-skin-inverted hover:underline">Forgot Password?</a> */}
                         </div>
                         <input
                             type="password"
