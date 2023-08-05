@@ -9,13 +9,16 @@ import Axios from "../lib/axiosInstance";
 import { AiOutlineDelete } from 'react-icons/ai'
 import { MdEdit } from "react-icons/md";
 import { BiHide } from "react-icons/bi";
-
+import SearchBox from "./UI/SearchBox";
+import Modal from '../components//UI/Modal'
 const DataTableMovie = ({ data, className }) => {
     const [moviesList, setMoviesList] = useState(data);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState({ movie: "", show: false })
     const { token } = useAuth();
+
     const handleMovieStatusChange = (event, currentStatus, row) => {
         const newStatus = row.status === STATUS_ACTIVE ? STATUS_INACTIVE : STATUS_ACTIVE;
-
         Axios('PUT', `movie/chnageMovieStatus/${row._id}`, { status: newStatus }, { authRequest: true, token: token })
             .then((res) => {
                 if (res.data?.movie) {
@@ -37,6 +40,16 @@ const DataTableMovie = ({ data, className }) => {
                 }
                 event.target.checked = currentStatus === STATUS_ACTIVE ? true : false;
             });
+    }    
+    const onOkConfirmDelete=()=>{
+        console.log("Api called for delete");
+        closeConfirmModal()
+    }
+    const confirmConfig = {
+        title: 'Are you sure you want to remove this movie ?',
+        buttonText: 'Ok',
+        text: showDeleteConfirm ? `Movie Name : ${showDeleteConfirm.movie}` : "",
+        buttonHandler: onOkConfirmDelete
     }
     const columns = [
         {
@@ -73,23 +86,41 @@ const DataTableMovie = ({ data, className }) => {
             ),
         },
         {
-            name: "Actions",
-            cell: (row) => (
-                <div className="space-x-4">
+            name: 'Actions',
+            cell: row => (
+                <div className="space-x-4 flex justify-center">
                     <Link to={`/admin/movies/${row._id}`} className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white" title="Edit"><MdEdit size={15} /></Link>
-                    <Link to={`/admin/movies/${row._id}`} className="hidden p-2 rounded-lg transition duration-200 border border-red-500 text-center text-red-500 font-serif hover:bg-red-500 hover:text-white" title="Remove"><AiOutlineDelete size={15} /></Link>
+                    <button onClick={()=>openConfirmModal(row.title)} to={`/admin/movies/${row._id}`} className="p-2 rounded-lg transition duration-200 border border-red-500 text-center text-red-500 font-serif hover:bg-red-500 hover:text-white" title="Remove"><AiOutlineDelete size={15} /></button>
                 </div>
             ),
-        }
+        },
     ];
+    const closeConfirmModal = () => {
+        setShowDeleteConfirm({
+            movie: "",
+            show: false
+        })
+    }
+    const openConfirmModal = (text) => {
+        setShowDeleteConfirm({
+            movie: text,
+            show: true
+        })
+    }
     return (
         <>
+            <SearchBox data={data} setData={setMoviesList} setIsLoading={setIsLoading} />
             <DataTable
                 columns={columns}
                 data={moviesList}
                 className={className}
                 pagination
+                paginationPerPage={20}
+                loading={true}
+                title="Movie List"
+                progressPending={isLoading}
             />
+            {showDeleteConfirm && <Modal isOpen={showDeleteConfirm.show} closeHandler={closeConfirmModal} config={confirmConfig} />}
         </>
     )
 }

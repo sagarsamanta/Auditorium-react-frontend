@@ -14,10 +14,13 @@ import BookingPage from "../pages/admin/user/BookingPage";
 import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
 import UsersPage from "../pages/admin/user/UsersPage";
+import Reports from "../pages/admin/reports/Reports";
+
 import Layout from "../pages/Layout";
 import ProfilePage from "../pages/users/ProfilePage";
 import BookingsPage from "../pages/users/BookingsPage";
 import BookingDetails from "../pages/users/BookingDetails";
+import CheckIn from "../pages/check-in/CheckIn";
 
 const router = createBrowserRouter([
     {
@@ -91,6 +94,32 @@ const router = createBrowserRouter([
         element: <AuthentiCate>
             <Bookings />
         </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/admin/bookings",
+        element: <AuthentiCate>
+            <BookingsPage />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/admin/bookings/:bookingId",
+        element: <AuthentiCate>
+            <BookingDetails />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/admin/check-in",
+        element: <AuthentiCate>
+            <CheckIn />
+        </AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/reports",
+        element: <AuthentiCate><Reports /></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

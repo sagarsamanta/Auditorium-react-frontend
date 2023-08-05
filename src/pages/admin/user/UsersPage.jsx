@@ -14,6 +14,7 @@ const UsersPage = () => {
             const data = await getAllUsers()
             setResponse(data?.users);
             setLoading(false);
+            console.log(data);
         };
         response();
     }, []);

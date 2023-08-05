@@ -1,4 +1,6 @@
 import DataTable from "react-data-table-component";
+import {FaSpinner} from 'react-icons/fa'
+import {PiSpinnerGapThin} from 'react-icons/pi'
 
 export const CustomDataTable = ({ columns, data, className, ...rest }) => {
     return (
@@ -6,7 +8,9 @@ export const CustomDataTable = ({ columns, data, className, ...rest }) => {
             <DataTable
                 columns={columns}
                 data={data}
-                className={className}
+                className={className}               
+                
+                progressComponent={<div className="animate-spin"><PiSpinnerGapThin size={40} /></div>}
                 {...rest}
                 // noHeader // Hide the default table header
                 customStyles={{
