@@ -1,5 +1,4 @@
 import DataTable from "react-data-table-component";
-import {FaSpinner} from 'react-icons/fa'
 import {PiSpinnerGapThin} from 'react-icons/pi'
 
 export const CustomDataTable = ({ columns, data, className, ...rest }) => {

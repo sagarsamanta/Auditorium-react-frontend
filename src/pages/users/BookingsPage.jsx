@@ -19,7 +19,6 @@ const BookingsPage = () => {
     useEffect(() => {
         Axios('GET', `/user/get-all-booked-movie/${user?._id}`, null, { authRequest: true, token: token })
             .then((response) => {
-                console.log(response,user?._id);
                 if (response?.status === 200) {
                     setBookings(response?.data?.bookings)
                 }
