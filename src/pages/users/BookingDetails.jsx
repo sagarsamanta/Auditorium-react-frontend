@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import TicketModal from '../../components/UI/TicketModal';
 import Loader from '../../components/UI/Loader';
 import SomethingWentWrong from '../../components/UI/SomethingWentWrong';
+import { BOOKING_STATUS } from '../../lib/consts';
 
 const BookingDetails = (props) => {
     const [bookingDetails, setBookingDetails] = useState([]);
@@ -21,6 +22,7 @@ const BookingDetails = (props) => {
             .then((response) => {
                 if (response?.status === 200) {
                     setBookingDetails(response?.data?.booking)
+                    console.log(response.data);
                 }
             })
             .finally(() => {
@@ -54,7 +56,22 @@ const BookingDetails = (props) => {
         amount: bookingDetails?.totalPrice,
         language: bookingDetails?.movie?.language
     }
-
+    const openCancelTicketModal = () => {
+        Axios('DELETE', `/show/${bookingDetails?._id}`, null, { authRequest: true, token: token })
+            .then((response) => {
+                if (response?.status === 200) {
+                    // setBookingDetails(response?.data?.booking)
+                    window.location.reload() // need to change with updated value
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(true);
+                // toast.error(`${error.message}`);
+            });
+    }
     return (
         <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">
             {
@@ -95,6 +112,10 @@ const BookingDetails = (props) => {
                                                 <span className="text-lg font-semibold">Total</span>
                                                 <p className="line-clamp-3">{getCurrencyFormat(bookingDetails?.totalPrice)}</p>
                                             </div>
+                                            <div className="mt-4 space-y-1">
+                                                <span className="text-lg font-semibold">Status</span>
+                                                <p className={`line-clamp-3 ${BOOKING_STATUS.CANCEL == bookingDetails?.status ? "text-red-500" : 'text-green-500'}`}>{(bookingDetails?.status)}</p>
+                                            </div>
                                         </div>
                                         <div className="mt-4 space-y-1">
                                             <button
@@ -109,6 +130,12 @@ const BookingDetails = (props) => {
                                             >
                                                 Download ticket
                                             </button>
+                                            {BOOKING_STATUS.CANCEL !== bookingDetails?.status && <button
+                                                className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                                                onClick={openCancelTicketModal}
+                                            >
+                                                Cancel ticket
+                                            </button>}
                                         </div>
                                     </div>
                                 </div>

@@ -35,6 +35,7 @@ export const BOOKING_STATUS = {
   PENDING: "PENDING",
   BOOKED: "BOOKED",
   VISITED: "VISITED",
+  CANCEL: "CANCEL"
 };
 
 
