@@ -4,6 +4,8 @@ import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../lib/hooks/useAuth";
 import Logo from "../UI/Logo";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminPanelLayout = ({ children }) => {
     const { user, isAdmin } = useAuth();
@@ -105,6 +107,18 @@ const AdminPanelLayout = ({ children }) => {
                     </div>
                 </main>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={4000}
+                limit={1}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                theme="light"
+            />
         </>
     );
 };

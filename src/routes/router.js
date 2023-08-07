@@ -16,130 +16,124 @@ import Bookings from "../pages/booking/Bookings";
 import UsersPage from "../pages/admin/user/UsersPage";
 import Reports from "../pages/admin/reports/Reports";
 
-import Layout from "../pages/Layout";
 import ProfilePage from "../pages/users/ProfilePage";
 import BookingsPage from "../pages/users/BookingsPage";
 import BookingDetails from "../pages/users/BookingDetails";
 import CheckIn from "../pages/check-in/CheckIn";
+import AdminPanelLayout from "../components/admin/AdminPanelLayout";
+import UserPanelLayout from "../components/user/UserPanelLayout";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Layout><HomePage /></Layout>,
+        element: <UserPanelLayout><HomePage /></UserPanelLayout>,
         errorElement: <ErrorPage />,
     },
     {
         path: "login",
-        element: <Layout><LoginPage /></Layout>,
+        element: <UserPanelLayout><LoginPage /></UserPanelLayout>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin",
-        element: <AuthentiCate><div>admin</div></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><div>admin</div></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/movies",
-        element: <AuthentiCate><MoviesPage /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><MoviesPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/movies/:id",
-        element: <AuthentiCate><UpdateMoviePage /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><UpdateMoviePage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/movies/add",
-        element: <AuthentiCate><AddMoviePage /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><AddMoviePage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/shows",
-        element: <AuthentiCate><ShowsPage /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><ShowsPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/shows/edit-show",
-        element: <AuthentiCate><EditShowPage /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><EditShowPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/shows/edit-show/seats",
-        element: <AuthentiCate ><SeatPage /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><SeatPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/users",
-        element: (
-            <AuthentiCate>
-                <UsersPage />
-            </AuthentiCate>
-        ),
+
+        element: <AuthentiCate><AdminPanelLayout><UsersPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/users/:userId",
-        element: <AuthentiCate>sets</AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout>sets</AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/users/booking/:userId",
-        element: <AuthentiCate>
-            <BookingPage />
-        </AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><BookingPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/admin/users/bookings/movie/:bookingId",
-        element: <AuthentiCate>
-            <Bookings />
-        </AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><Bookings /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/admin/bookings",
-        element: <AuthentiCate>
-            <BookingsPage />
-        </AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><BookingsPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/admin/bookings/:bookingId",
-        element: <AuthentiCate>
-            <BookingDetails />
-        </AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><BookingDetails /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/admin/check-in",
-        element: <AuthentiCate>
-            <CheckIn />
-        </AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><CheckIn /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "admin/reports",
-        element: <AuthentiCate><Reports /></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><Reports /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/user/bookings",
         element: <AuthentiCate>
-            <BookingsPage />
+            <UserPanelLayout>
+                <BookingsPage />
+            </UserPanelLayout>
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/user/bookings/:bookingId",
         element: <AuthentiCate>
-            <BookingDetails />
+            <UserPanelLayout>
+                <BookingDetails />
+            </UserPanelLayout>
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
         path: "/user/profile",
         element: <AuthentiCate>
-            <ProfilePage />
+            <UserPanelLayout>
+                <ProfilePage />
+            </UserPanelLayout>
         </AuthentiCate>,
         errorElement: <ErrorPage />,
     },

@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../lib/hooks/useAuth';
-import Layout from '../pages/Layout';
 
 const AuthentiCate = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -11,7 +10,7 @@ const AuthentiCate = ({ children }) => {
 
     return (
         <div className='app-wrapper'>
-            <Layout>{children}</Layout>
+            {children}
         </div>
     )
 }
