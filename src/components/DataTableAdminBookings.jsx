@@ -3,12 +3,27 @@ import { CustomDataTable as DataTable } from "./DataTable";
 import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { useState } from "react";
 import TicketModal from "./UI/TicketModal";
-import { IoTicketOutline } from "react-icons/io5";
 import { BOOKING_STATUS } from '../lib/consts';
+import { TbTicketOff } from "react-icons/tb";
+import { IoTicketOutline } from "react-icons/io5";
+import Modal from './UI/Modal';
 
 const DataTableAdminBookings = ({ data, className }) => {
     const [ticket, setTicket] = useState(null);
     const [openTicketModal, setOpenTicketModal] = useState(false);
+    const [selectedBookingToCancel, setSelectedBookingToCancel] = useState(null);
+    const [isOpenCancelBookingModal, setIsOpenCancelBookingModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const askFormConfirmation = (row) => {
+        setIsOpenCancelBookingModal(true);
+        setSelectedBookingToCancel(row);
+    }
+
+    const handleBookingCancelation = () => {
+        // selectedBookingToCancel
+        console.log('selectedBookingToCancel', selectedBookingToCancel);
+    }
 
     const viewTicket = (row) => {
         setTicket({
@@ -72,7 +87,14 @@ const DataTableAdminBookings = ({ data, className }) => {
             name: 'Ticket',
             cell: (row) => (
                 <>
-                    <button className={`shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded flex justify-between items-center gap-x-2 disabled:opacity-50`} onClick={() => viewTicket(row)} disabled={row.status !== BOOKING_STATUS.BOOKED}><IoTicketOutline size={15} title='View Ticket' /> View Ticket</button>
+                    <button 
+                        className={`shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
+                        onClick={() => viewTicket(row)}
+                        disabled={row.status !== BOOKING_STATUS.BOOKED}
+                        title="View Ticket"
+                    >
+                        <IoTicketOutline size={15} />
+                    </button>
                 </>
             )
         },
@@ -81,12 +103,12 @@ const DataTableAdminBookings = ({ data, className }) => {
             cell: (row) => (
                 <>
                     <button
-                        className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50 flex justify-between items-center gap-x-2`}
-                        onClick={() => viewTicket(row)}
+                        className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
+                        onClick={() => askFormConfirmation(row)}
                         title='Cancel Ticket'
                         disabled={row.status === BOOKING_STATUS.VISITED}
                     >
-                        <IoTicketOutline size={15} /> Cancel Ticket
+                        <TbTicketOff size={15} />
                     </button>
                 </>
             ),
@@ -107,6 +129,19 @@ const DataTableAdminBookings = ({ data, className }) => {
                 closeHandler={closeTicketModal}
                 ticket={ticket}
             />}
+
+            <Modal
+                isOpen={isOpenCancelBookingModal}
+                closeHandler={setIsOpenCancelBookingModal}
+                config={{
+                    title: `Cancel this show for "${selectedBookingToCancel?.movie?.title}"`,
+                    text: 'This will cancel your booking for the show',
+                    buttonText: 'Cancel Booking',
+                    buttonHandler: handleBookingCancelation,
+                    loading: loading,
+                    buttonClassName: 'bg-red-600 text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
+                }}
+            />
         </>
     )
 }

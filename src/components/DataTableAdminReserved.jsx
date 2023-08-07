@@ -1,4 +1,4 @@
-import { IoTicketOutline } from "react-icons/io5";
+import { TbLockOpen } from "react-icons/tb";
 import Axios from "../lib/axiosInstance";
 import { useAuth } from "../lib/hooks/useAuth";
 import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
@@ -73,10 +73,11 @@ const DataTableAdminReserved = ({ data, className }) => {
             cell: (row) => (
                 <>
                     <button 
-                        className={`transition duration-150 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded flex justify-between items-center gap-x-2 disabled:opacity-50`}
+                        className={`transition duration-150 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded disabled:opacity-50`}
+                        disabled={isOpenReserveSeatModal}
                         onClick={() => {askFormConfirmation(row)}}
                     >
-                        <IoTicketOutline size={15} title='View Ticket' /> Mark Available
+                        <TbLockOpen size={15} title='View Ticket' />
                     </button>
                 </>
             )
