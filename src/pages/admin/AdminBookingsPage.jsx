@@ -17,7 +17,6 @@ const AdminBookingsPage = () => {
     useEffect(() => {
         const response = async () => {
             const data = await getAdminBookings(user?._id, token);
-            console.log('data?.reservedSeats', data);
             setBookings(data?.bookings);
             setReserved(data?.reserved);
             setLoading(false);

@@ -1,25 +1,33 @@
 import { IoTicketOutline } from "react-icons/io5";
 import Axios from "../lib/axiosInstance";
 import { useAuth } from "../lib/hooks/useAuth";
-import { displayDate, displayTime, getCurrencyFormat, getSeatPriceObj } from "../lib/utils";
+import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
-import { BOOKING_STATUS } from "../lib/consts";
 import { useState } from "react";
+import Modal from "./UI/Modal";
 
 const DataTableAdminReserved = ({ data, className }) => {
     const { token } = useAuth();
     const [reservedSeats, setReservedSeats] = useState(data);
+    const [selectedReservedSeat, setSelecterReservedSeat] = useState(null);
+    const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
+    const askFormConfirmation = (row) => {
+        setIsOpenReserveSeatModal(true);
+        setSelecterReservedSeat(row);
+    }
     const handleMakeAvailable = async (row) => {
         const movieId = row?.movieId?._id;
         const showId = row?.showId?._id;
-        const selectedReservedSeate = row?.seatNo;
-        Axios('DELETE', `/show/${movieId}/${showId}/${selectedReservedSeate}`, null, { authRequest: true, token: token })
+        setLoading(true);
+        Axios('DELETE', `/show/${movieId}/${showId}/${row?.seatNo}`, null, { authRequest: true, token: token })
             .then((res) => {
-                console.log('res', res?.data?.seat?.seatNo);
                 const newData = reservedSeats.filter(seat => seat.seatNo !== res?.data?.seat?.seatNo);
-                console.log('newData', newData);
                 setReservedSeats(newData);
+            })
+            .finally(() => {
+                setLoading(false);
             })
             .catch((err) => {
                 console.log('err', err);
@@ -60,8 +68,8 @@ const DataTableAdminReserved = ({ data, className }) => {
             cell: (row) => (
                 <>
                     <button 
-                        className={`shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded flex justify-between items-center gap-x-2 disabled:opacity-50`}
-                        onClick={() => handleMakeAvailable(row)}
+                        className={`transition duration-150 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded flex justify-between items-center gap-x-2 disabled:opacity-50`}
+                        onClick={() => {askFormConfirmation(row)}}
                     >
                         <IoTicketOutline size={15} title='View Ticket' /> Mark Available
                     </button>
@@ -76,6 +84,19 @@ const DataTableAdminReserved = ({ data, className }) => {
                 data={reservedSeats}
                 className={className}
                 pagination
+            />
+
+            <Modal
+                isOpen={isOpenReserveSeatModal}
+                closeHandler={setIsOpenReserveSeatModal}
+                config={{
+                    title: `Make seat no. "${selectedReservedSeat?.seatNo}" as Available`,
+                    text: 'This will mark this seat as Available for everyone',
+                    buttonText: 'Make Available',
+                    buttonHandler: handleMakeAvailable,
+                    loading: loading,
+                    buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
+                }}
             />
         </>
     )
