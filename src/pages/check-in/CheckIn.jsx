@@ -12,7 +12,6 @@ const CheckIn = () => {
 
     const [shows, setAllShows] = useState([])
     const [activeMovie, setActiveMovie] = useState([])
-    const [loading, setLoading] = useState(false)
     const [selectedShow, setSelectedShow] = useState({})
     const { token } = useAuth();
     const getShowsRecords = (id) => {
@@ -20,24 +19,24 @@ const CheckIn = () => {
         setSelectedShow(show[0])
     }
     useEffect(() => {
-        setLoading(true);
-
         Axios('GET', `movie/movie-shows-timings`, null, { authRequest: true, token: token })
             .then((res) => {
                 setAllShows(res.data?.show);
                 setActiveMovie(res.data?.movie);
+                setSelectedShow(res.data?.show[0])               
             })
             .finally(() => {
-                setLoading(false);
             })
             .catch((err) => {
-                setLoading(false);
+                console.log(err);
             });
 
     }, []);
     return (
         <div className="container">
-            <h2 className="text-xl font-semibold">Shows Records</h2>
+            <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
+                    <h1 className="text-xl md:text-2xl lg:text:3xl">Check-In</h1>                   
+                </div>
             <div className="bg-white rounded-lg  py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-1">
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
                     <span className=" text-sm font-semibold">Total Seats</span>
@@ -66,7 +65,7 @@ const CheckIn = () => {
                 {shows?.map((show, index) => (
                     <button
                         key={index}
-                        className={`${true ? 'text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40' : 'text-skin-inverted border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted'} focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                        className={`${selectedShow?._id === show._id ? 'transition text-skin-inverted border hover:border-green-700 border-green-800 hover:bg-green-700 focus:ring-green-800/70 bg-green-800' : 'text-skin-base border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted'} focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
                         onClick={() => getShowsRecords(show?._id)}
                     >
                         {selectedShow?._id === show?._id ? <FiCheckCircle size={15} /> : <MdRadioButtonUnchecked size={15} />}
