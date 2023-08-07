@@ -4,14 +4,16 @@ import { Link } from "react-router-dom";
 import { getAllUsers } from "../../../lib/utils";
 import Loader from "../../../components/UI/Loader";
 import DataTableUsers from "../../../components/DataTableUsers";
+import { useAuth } from "../../../lib/hooks/useAuth";
 
 const UsersPage = () => {
     const [data, setResponse] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { token } = useAuth();
 
     useEffect(() => {
         const response = async () => {
-            const data = await getAllUsers()
+            const data = await getAllUsers(token)
             setResponse(data?.users);
             setLoading(false);
             console.log(data);

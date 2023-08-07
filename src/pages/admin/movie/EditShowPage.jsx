@@ -4,6 +4,7 @@ import { STATUS_ACTIVE } from "../../../lib/consts";
 import { getMovieById, getShowsDetails } from "../../../lib/utils";
 import { Link } from 'react-router-dom';
 import Loader from "../../../components/UI/Loader";
+import { useAuth } from "../../../lib/hooks/useAuth";
 
 const EditShowPage = () => {
     const queryParameters = new URLSearchParams(window.location.search);
@@ -13,11 +14,12 @@ const EditShowPage = () => {
     const [movie, setMovie] = useState(null);
     const [show, setShow] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { token } = useAuth();
 
     useEffect(() => {
         const fetchShowsAndMovie = async () => {
-            const { movie } = await getMovieById(movieId);
-            const { show } = await getShowsDetails(movieId, showId);
+            const { movie } = await getMovieById(movieId, token);
+            const { show } = await getShowsDetails(movieId, showId, token);
 
             if (movie) setMovie(movie);
             if (show) setShow(show);

@@ -1,5 +1,5 @@
 import moment from "moment";
-import { ADMIN_TOKEN, API_ROOT } from "./consts";
+import { API_ROOT } from "./consts";
 
 export const getDataUriOfImage = (file = null) => {
     if (!file) return '';
@@ -110,10 +110,10 @@ export const lowResImageUrl = (imageUrl) => {
 
 
 /** API methods */
-export const getAllMovies = async () => {
+export const getAllMovies = async (token) => {
     const res = await fetch(`${API_ROOT}/movie/`, {
         headers: {
-            'Authorization': `Bearer ${ADMIN_TOKEN}`
+            'Authorization': `Bearer ${token}`
         },
         cache: 'no-store',
     });
@@ -124,11 +124,11 @@ export const getAllMovies = async () => {
     }
 }
 
-export const getMovieById = async (movieId) => {
+export const getMovieById = async (movieId, token) => {
     if (!movieId) return {};
     const res = await fetch(`${API_ROOT}/movie/${movieId}`, {
         headers: {
-            'Authorization': `Bearer ${ADMIN_TOKEN}`
+            'Authorization': `Bearer ${token}`
         },
         cache: 'no-store',
     });
@@ -142,11 +142,11 @@ export const getMovieById = async (movieId) => {
     }
 }
 
-export const getShowsByMovieId = async (movieId) => {
+export const getShowsByMovieId = async (movieId, token) => {
     if (!movieId) return {};
     const res = await fetch(`${API_ROOT}/user/getAllShowsForMovie/${movieId}`, {
         headers: {
-            'Authorization': `Bearer ${ADMIN_TOKEN}`
+            'Authorization': `Bearer ${token}`
         },
         cache: 'no-store',
     });
@@ -160,11 +160,11 @@ export const getShowsByMovieId = async (movieId) => {
     }
 }
 
-export const getShowsDetails = async (movieId, showId) => {
+export const getShowsDetails = async (movieId, showId, token) => {
     if (!movieId || !showId) return {};
     const res = await fetch(`${API_ROOT}/user/getShow/${movieId}/${showId}`, {
         headers: {
-            'Authorization': `Bearer ${ADMIN_TOKEN}`
+            'Authorization': `Bearer ${token}`
         },
         cache: 'no-store',
     });
@@ -192,10 +192,10 @@ export const getSeatsForShow = async (movieId, showId, token) => {
         ...data,
     }
 }
-export const getAllUsers = async () => {
+export const getAllUsers = async (token) => {
     const res = await fetch(`${API_ROOT}/user/`, {
         headers: {
-            'Authorization': `Bearer ${ADMIN_TOKEN}`
+            'Authorization': `Bearer ${token}`
         },
         cache: 'no-store',
     });
@@ -205,10 +205,10 @@ export const getAllUsers = async () => {
         users: data.users,
     }
 }
-export const getAllUserBookings = async (userId) => {
+export const getAllUserBookings = async (userId, token) => {
     const res = await fetch(`${API_ROOT}/user/get-all-booked-movie/${userId}`, {
         headers: {
-            'Authorization': `Bearer ${ADMIN_TOKEN}`
+            'Authorization': `Bearer ${token}`
         },
         cache: 'no-store',
     });

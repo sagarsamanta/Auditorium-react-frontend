@@ -3,14 +3,16 @@ import { Link, useParams } from "react-router-dom";
 import Loader from "../../../components/UI/Loader";
 import { getAllUserBookings } from "../../../lib/utils";
 import DataTableUsersBookings from "../../../components/DataTableUsersBookings";
+import { useAuth } from "../../../lib/hooks/useAuth";
 
 const UserMovieBooking = () => {
     const [data, setResponse] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { userId } = useParams()
+    const { userId } = useParams();
+    const { token } = useAuth();
     useEffect(() => {
         const response = async () => {
-            const data = await getAllUserBookings(userId)
+            const data = await getAllUserBookings(userId, token);
             setResponse(data?.bookings);
             setLoading(false);
         };

@@ -3,14 +3,16 @@ import DataTableMovie from "../../../components/DataTableMovie";
 import { getAllMovies } from "../../../lib/utils";
 import { Link } from "react-router-dom";
 import Loader from "../../../components/UI/Loader";
+import { useAuth } from "../../../lib/hooks/useAuth";
 
 const MoviesPage = () => {
     const [data, setResponse] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { token } = useAuth();
 
     useEffect(() => {
         const response = async () => {
-            const data = await getAllMovies()
+            const data = await getAllMovies(token);
             setResponse(data?.movies);
             setLoading(false);
         };

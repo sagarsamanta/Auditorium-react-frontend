@@ -16,8 +16,8 @@ const SeatPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const { movie } = await getMovieById(movieId);
-            const { show } = await getShowsDetails(movieId, showId);
+            const { movie } = await getMovieById(movieId, authUser?.token);
+            const { show } = await getShowsDetails(movieId, showId, authUser?.token);
 
             if (movie) setMovie(movie);
             if (show) setShow(show);

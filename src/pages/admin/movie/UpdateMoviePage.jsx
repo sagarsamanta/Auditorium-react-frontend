@@ -3,15 +3,17 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../../../components/UI/Loader';
 import AddMovieForm from '../../../components/admin/AddMovieForm';
 import { getMovieById } from '../../../lib/utils';
+import { useAuth } from '../../../lib/hooks/useAuth';
 
 const UpdateMoviePage = () => {
     const { id } = useParams();
     const [movieResponse, setMovieResponse] = useState({ movie: null, message: '', status: 0 });
     const [loading, setLoading] = useState(true);
+    const { token } = useAuth();
 
     useEffect(() => {
         const getMovie = async () => {
-            const response = await getMovieById(id);
+            const response = await getMovieById(id, token);
             setMovieResponse({ ...response });
             setLoading(false);
         }

@@ -4,6 +4,7 @@ import { STATUS_INACTIVE } from "../../../lib/consts";
 import { getMovieById, getShowsByMovieId } from "../../../lib/utils";
 import { Link } from 'react-router-dom';
 import Loader from '../../../components/UI/Loader';
+import { useAuth } from '../../../lib/hooks/useAuth';
 
 const generateShowsArray = (movieId, shows = []) => {
     return [
@@ -40,13 +41,14 @@ const ShowsPage = () => {
     const [shows, setShows] = useState(null);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { token } = useAuth();
 
     useEffect(() => {
         const fetchShowsAndMovie = async () => {
             if (!movieId) return;
 
-            const { status, movie } = await getMovieById(movieId);
-            const { showStatus, shows } = await getShowsByMovieId(movieId);
+            const { status, movie } = await getMovieById(movieId, token);
+            const { showStatus, shows } = await getShowsByMovieId(movieId, token);
             if (status === 200) setMovie(movie);
             if (showStatus === 200) setShows(shows);
 
