@@ -5,6 +5,7 @@ import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
 import { useState } from "react";
 import Modal from "./UI/Modal";
+import { toast } from "react-toastify";
 
 const DataTableAdminReserved = ({ data, className }) => {
     const { token } = useAuth();
@@ -17,20 +18,24 @@ const DataTableAdminReserved = ({ data, className }) => {
         setIsOpenReserveSeatModal(true);
         setSelecterReservedSeat(row);
     }
-    const handleMakeAvailable = async (row) => {
-        const movieId = row?.movieId?._id;
-        const showId = row?.showId?._id;
+    const handleMakeAvailable = () => {
         setLoading(true);
-        Axios('DELETE', `/show/${movieId}/${showId}/${row?.seatNo}`, null, { authRequest: true, token: token })
+        const movieId = selectedReservedSeat?.movieId?._id;
+        const showId = selectedReservedSeat?.showId?._id;
+        const seatNo = selectedReservedSeat?.seatNo;
+        Axios('DELETE', `/show/${movieId}/${showId}/${seatNo}`, null, { authRequest: true, token: token })
             .then((res) => {
                 const newData = reservedSeats.filter(seat => seat.seatNo !== res?.data?.seat?.seatNo);
                 setReservedSeats(newData);
+                toast.success(res?.data?.message);
             })
             .finally(() => {
                 setLoading(false);
+                setIsOpenReserveSeatModal(false);
             })
             .catch((err) => {
                 console.log('err', err);
+                toast.error(err.message);
             });
     }
     const columns = [
@@ -90,7 +95,7 @@ const DataTableAdminReserved = ({ data, className }) => {
                 isOpen={isOpenReserveSeatModal}
                 closeHandler={setIsOpenReserveSeatModal}
                 config={{
-                    title: `Make seat no. "${selectedReservedSeat?.seatNo}" as Available`,
+                    title: `Mark seat no. "${selectedReservedSeat?.seatNo}" as Available`,
                     text: 'This will mark this seat as Available for everyone',
                     buttonText: 'Make Available',
                     buttonHandler: handleMakeAvailable,
