@@ -22,6 +22,7 @@ import BookingDetails from "../pages/users/BookingDetails";
 import CheckIn from "../pages/check-in/CheckIn";
 import AdminPanelLayout from "../components/admin/AdminPanelLayout";
 import UserPanelLayout from "../components/user/UserPanelLayout";
+import AdminBookingsPage from "../pages/admin/AdminBookingsPage";
 
 const router = createBrowserRouter([
     {
@@ -92,7 +93,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/admin/bookings",
-        element: <AuthentiCate><AdminPanelLayout><BookingsPage /></AdminPanelLayout></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><AdminBookingsPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

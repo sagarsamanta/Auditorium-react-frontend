@@ -192,6 +192,7 @@ export const getSeatsForShow = async (movieId, showId, token) => {
         ...data,
     }
 }
+
 export const getAllUsers = async (token) => {
     const res = await fetch(`${API_ROOT}/user/`, {
         headers: {
@@ -205,6 +206,7 @@ export const getAllUsers = async (token) => {
         users: data.users,
     }
 }
+
 export const getAllUserBookings = async (userId, token) => {
     const res = await fetch(`${API_ROOT}/user/get-all-booked-movie/${userId}`, {
         headers: {
@@ -216,5 +218,20 @@ export const getAllUserBookings = async (userId, token) => {
     return {
         status: res.status,
         bookings: data.bookings,
+    }
+}
+
+export const getAdminBookings = async (userId, token) => {
+    const res = await fetch(`${API_ROOT}/booking/get-all-bookings/${userId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        cache: 'no-store',
+    });
+    const data = await res.json();
+    return {
+        status: res.status,
+        bookings: data.bookings,
+        reserved: data.reservedSeats,
     }
 }

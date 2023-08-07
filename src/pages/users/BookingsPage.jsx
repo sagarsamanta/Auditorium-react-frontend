@@ -40,7 +40,7 @@ const BookingsPage = () => {
                 ) : (
                     <div className='space-y-4'>
                         {
-                            (bookings.length === 0 || error) && <SomethingWentWrong text={`${error ? "Something went wrong, Please try again!" : "No Previous Bookings to display!"}`} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" textClassNames="text-gray-800" />
+                            (bookings.length === 0 || error) && <SomethingWentWrong text={`${error ? "Something went wrong, Please try again!" : "No Previous Bookings to display!"}`} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                         }
 
                         {/* Up-comming Movies */}
