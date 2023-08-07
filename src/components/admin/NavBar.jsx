@@ -36,7 +36,7 @@ const NavBar = () => {
           className={`${(startsWith("/admin/bookings")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}
         >
           <div className='flex gap-2 items-center'>
-            <BiMoviePlay size={17} />
+            <BiMoviePlay size={20} />
             <div className='text-[15px]'>Bookings </div>
           </div>
         </Link>
