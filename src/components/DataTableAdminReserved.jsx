@@ -13,6 +13,7 @@ const DataTableAdminReserved = ({ data, className }) => {
     const [selectedReservedSeat, setSelecterReservedSeat] = useState(null);
     const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    console.log('data', data);
 
     const askFormConfirmation = (row) => {
         setIsOpenReserveSeatModal(true);
@@ -40,8 +41,12 @@ const DataTableAdminReserved = ({ data, className }) => {
     }
     const columns = [
         {
-            name: 'Date',
+            name: 'Movie Date',
             cell: row => displayDate(row?.movieId?.releaseDate),
+        },
+        {
+            name: 'Show',
+            cell: row => row?.showId?.title,
         },
         {
             name: 'Movie',
@@ -52,12 +57,12 @@ const DataTableAdminReserved = ({ data, className }) => {
             ),
         },
         {
-            name: 'Start Time',
-            cell: row => displayTime(row?.showId?.showStartTime),
-        },
-        {
             name: 'Seat No.',
             cell: row => row?.seatNo,
+        },
+        {
+            name: 'Start Time',
+            cell: row => displayTime(row?.showId?.showStartTime),
         },
         {
             name: 'Cost',
@@ -72,10 +77,10 @@ const DataTableAdminReserved = ({ data, className }) => {
             name: 'Action',
             cell: (row) => (
                 <>
-                    <button 
+                    <button
                         className={`transition duration-150 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded disabled:opacity-50`}
                         disabled={isOpenReserveSeatModal}
-                        onClick={() => {askFormConfirmation(row)}}
+                        onClick={() => { askFormConfirmation(row) }}
                     >
                         <TbLockOpen size={15} title='View Ticket' />
                     </button>

@@ -14,7 +14,7 @@ import BookingPage from "../pages/admin/user/BookingPage";
 import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
 import UsersPage from "../pages/admin/user/UsersPage";
-import Reports from "../pages/admin/reports/Reports";
+import ReportsPage from "../pages/admin/reports/ReportsPage";
 
 import ProfilePage from "../pages/users/ProfilePage";
 import BookingsPage from "../pages/users/BookingsPage";
@@ -108,7 +108,7 @@ const router = createBrowserRouter([
     },
     {
         path: "admin/reports",
-        element: <AuthentiCate><AdminPanelLayout><Reports /></AdminPanelLayout></AuthentiCate>,
+        element: <AuthentiCate><AdminPanelLayout><ReportsPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
