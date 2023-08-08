@@ -21,6 +21,7 @@ const CheckIn = () => {
     useEffect(() => {
         Axios('GET', `movie/movie-shows-timings`, null, { authRequest: true, token: token })
             .then((res) => {
+                console.log(res);
                 setAllShows(res.data?.show);
                 setActiveMovie(res.data?.movie);
                 setSelectedShow(res.data?.show[0])               
@@ -61,6 +62,7 @@ const CheckIn = () => {
 
             </div>
             <div className='font-semibold text-xl'>Available Show Timings</div>
+            {shows.length===0 && <div className='p-3 flex justify-center items-center'>No shows Available</div>}
             <div className='my-3'>
                 {shows?.map((show, index) => (
                     <button
@@ -75,7 +77,7 @@ const CheckIn = () => {
 
             </div>
             <div>
-                {Object.keys(selectedShow).length > 0 && <UsersCheckInTable show={selectedShow} showStartTime={selectedShow?.showStartTime} />}
+                {selectedShow && Object.keys(selectedShow).length > 0 && <UsersCheckInTable show={selectedShow} showStartTime={selectedShow?.showStartTime} />}
             </div>
         </div>
     );

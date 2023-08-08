@@ -75,9 +75,9 @@ const UsersCheckInTable = ({ show, showStartTime}) => {
         {
             name: 'Booking Id',
             selector: row => (
-                <div className="flex gap-1 cursor-pointer items-center" onClick={(e) => handleCopyClick(e, row.bookingId)}>
+                <div className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center" onClick={(e) => handleCopyClick(e, row.bookingId)}>
                     <span>{row.bookingId}</span>
-                    <AiOutlineCopy title="Copy" className="copy-button" >Copy</AiOutlineCopy>
+                    <AiOutlineCopy title="Copy" className="text-blue-500" >Copy</AiOutlineCopy>
                 </div>
             ),
         },
@@ -89,7 +89,7 @@ const UsersCheckInTable = ({ show, showStartTime}) => {
         {
             name: 'Amount',
             sortable: true,
-            selector: row => row.totalPrice,
+            selector: row => <div className="text-green-600">₹ {row.totalPrice}</div>,
         },
         // {
         //     name: 'Total Booked Seats',
