@@ -6,10 +6,12 @@ import Axios from "../../lib/axiosInstance";
 import { useAuth } from "../../lib/hooks/useAuth";
 import LoadingButton from "../UI/LoadingButton";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
     const [loading, setLoading] = useState(false);
     const [showData, setShowData] = useState(null);
+    const navigate = useNavigate();
     const { token } = useAuth();
     const formik = useFormik({
         initialValues: {
@@ -66,6 +68,7 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                     .then((request) => {
                         console.log('request', request);
                         toast.success('Show Created Successfully');
+                        navigate(-1);
                     })
                     .finally(() => {
                         setLoading(false);
