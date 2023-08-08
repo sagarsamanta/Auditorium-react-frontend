@@ -37,12 +37,7 @@ const AdminPanelLayout = ({ children }) => {
                     className="bg-gray-600 text-gray-100 flex justify-between md:hidden"
                     data-dev-hint="mobile menu bar"
                 >
-                    <Link
-                        to="/admin"
-                        className="block p-4 text-white font-bold whitespace-nowrap truncate"
-                    >
-                        IWS
-                    </Link>
+                    <Logo to="/admin" className="ml-5" />
 
                     <label
                         htmlFor="menu-open"
@@ -91,7 +86,7 @@ const AdminPanelLayout = ({ children }) => {
                         className="flex flex-col space-y-6 relative h-full"
                         data-dev-hint="optional div for having an extra footer navigation"
                     >
-                        <Logo to="/admin" />
+                        <Logo to="/admin" className="ml-4" />
 
                         <NavBar />
                         <div className="absolute bottom-4 w-full">

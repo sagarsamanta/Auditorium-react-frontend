@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
 
-const Logo = ({ to = '/' }) => {
+const Logo = ({ to = '/', className = '' }) => {
     return (
         <>
             <Link
                 to={to}
-                className="text-white font-bold flex items-center space-x-2"
+                className={`text-white font-bold flex items-center space-x-2 ${className}`}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

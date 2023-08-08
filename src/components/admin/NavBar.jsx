@@ -3,7 +3,7 @@ import { FiUsers } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import { TbReportSearch } from 'react-icons/tb'
 import { RxDashboard } from 'react-icons/rx'
-import {BsCheckCircle} from 'react-icons/bs'
+import { BsCheckCircle } from 'react-icons/bs'
 const NavBar = () => {
   const { pathname } = useLocation();
   const startsWith = (str) => pathname.startsWith(str);
@@ -35,14 +35,14 @@ const NavBar = () => {
           to={`/admin/bookings`}
           className={`${(startsWith("/admin/bookings")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}
         >
-          <div className='flex gap-2 items-center'>
+          <div className='flex justify-center items-center gap-4'>
             <BiMoviePlay size={20} />
-            <div className='text-[15px]'>Bookings </div>
+            <div>Bookings </div>
           </div>
         </Link>
         <Link to="/admin/check-in" className={`${(startsWith("/admin/check-in")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
           <div className="flex justify-center items-center gap-4">
-            <BsCheckCircle size={20} />
+            <BsCheckCircle size={19} />
             <div>Check-In</div>
           </div>
         </Link>
