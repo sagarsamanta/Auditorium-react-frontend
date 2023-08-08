@@ -1,6 +1,6 @@
 import Axios from "../../lib/axiosInstance";
 import { MAX_SEATS_PER_BOOKING, SEATS, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../../lib/consts";
-import { getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../lib/utils";
+import { getCurrencyFormat, getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../lib/utils";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
@@ -22,7 +22,6 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         setLoading({ booking: false, reserved: false, seats: false });
         setSelectedSeats([]);
     }
-
     const handleSelect = (e, seatNo) => {
         e.preventDefault();
         // If seat is booked, then do not allow to select
@@ -177,6 +176,25 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                             )
                         }
                     </div>
+                    <div className="m-2 ">
+                        <div className="flex justify-center items-center font-semibold text-lg mb-1">Seats Price List</div>
+                        <div className="w-full mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
+                            <div className="flex rounded-md items-center flex-col md:flex-row gap-2 border border-skin-base px-2">
+                                <span className="font-semibold">A - C </span>
+                                <div className="w-fit h-fit p-1 rounded-sm " >{getCurrencyFormat(priceList?.priceRow_a_to_c)}</div>
+                            </div>
+                            <div className="flex rounded-md items-center flex-col md:flex-row gap-2 border border-skin-base px-2">
+                                <span className="font-semibold">D - H</span>
+                                <div className="w-fit h-fit  p-1 " >{getCurrencyFormat(priceList?.priceRow_d_to_h)}</div>
+                            </div>
+                            <div className="flex rounded-md items-center flex-col md:flex-row gap-2 border border-skin-base px-2">
+                                <span className="font-semibold">I - N</span>
+                                <div className="w-fit h-fit  p-1 " >{getCurrencyFormat(priceList?.priceRow_i_to_n)}</div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
                 {
