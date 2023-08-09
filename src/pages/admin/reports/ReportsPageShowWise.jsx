@@ -4,7 +4,7 @@ import Axios from '../../../lib/axiosInstance';
 import { useAuth } from '../../../lib/hooks/useAuth';
 import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
-import DataTableAdminReports from '../../../components/DataTableAdminReports';
+import DataTableAdminShowWiseReports from '../../../components/DataTableAdminShowWiseReports';
 import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
 
 
@@ -27,7 +27,6 @@ const ReportsPageShowWise = () => {
                             label: movie.title
                         }
                     })
-                    console.log(allOptions);
                     setMovieList(allOptions);
                 }
             })
@@ -91,9 +90,12 @@ const ReportsPageShowWise = () => {
             Axios('GET', `/show/daily-booking-reports/?movieId=${values?.movie}&date=${values?.date}`, null, { authRequest: true, token: token })
                 .then((res) => {
                     if (res.status === 200) {
-                        const allMovies = res?.data;
-                        console.log('allMovies', allMovies);
-                        setReport(allMovies);
+                        let reports = res?.data;
+                        if (formik?.values?.show) {
+                            reports.dailyReports = reports?.dailyReports?.filter((report) => report?.title === formik?.values?.show);
+                        }
+                        console.log('reports', reports);
+                        setReport(reports);
                     }
                 })
                 .finally(() => {
@@ -112,7 +114,6 @@ const ReportsPageShowWise = () => {
     }
     const handleShowChange = (e) => {
         formik.setFieldValue('show', e?.value || '');
-        if (!e) setReport([]);
     }
 
     return (
@@ -122,7 +123,7 @@ const ReportsPageShowWise = () => {
             </div>
             <form className='w-full flex flex-col md:flex-row justify-start items-center gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
                 <Select onChange={handleMovieChange} placeholder="Select Movie" className='min-w-[300px]' options={movieTitleList} isClearable />
-                <Select onChange={handleShowChange} placeholder="Select Show" className='min-w-[300px]' options={showTitleList} isClearable />
+                <Select onChange={handleShowChange} placeholder="Select Show" className='min-w-[300px]' options={showTitleList} isClearable isDisabled={formik.values.movie === ''} />
                 <input
                     type="date"
                     name='date'
@@ -134,7 +135,7 @@ const ReportsPageShowWise = () => {
             </form>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
-                <DataTableAdminReports data={report?.dailyReports || []} />
+                <DataTableAdminShowWiseReports data={report?.dailyReports || []} />
                 {report?.dailyReports && report?.dailyReports?.length !== 0 && (
                     <>
                         <div className='text-lg'>Total Revenue: {getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</div>
