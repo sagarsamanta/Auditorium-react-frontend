@@ -8,15 +8,19 @@ import TicketModal from '../../components/UI/TicketModal';
 import Loader from '../../components/UI/Loader';
 import SomethingWentWrong from '../../components/UI/SomethingWentWrong';
 import { BOOKING_STATUS } from '../../lib/consts';
+import { toast } from 'react-toastify';
+import LoadingButton from '../../components/UI/LoadingButton';
 
 const BookingDetails = (props) => {
-    const [bookingDetails, setBookingDetails] = useState([]);
+    const [bookingDetails, setBookingDetails] = useState({});
     const [viewTicket, setViewTicket] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [cancelLoading, setCancelLoading] = useState(true);
     const [error, setError] = useState(false);
     const { token } = useAuth();
     const { bookingId } = useParams();
     const bookedSeats = bookingDetails?.seats?.map((a) => a.seatNo).join(', ');
+
     const getShowsDetails = () => {
         Axios('GET', `/user/get-booking-details/${bookingId}`, null, { authRequest: true, token: token })
             .then((response) => {
@@ -56,23 +60,26 @@ const BookingDetails = (props) => {
         amount: bookingDetails?.totalPrice,
         language: bookingDetails?.movie?.language
     }
-    const openCancelTicketModal = () => {
+    const cancelTicketModal = () => {
+        setCancelLoading(true);
         Axios('DELETE', `/show/${bookingDetails?._id}`, null, { authRequest: true, token: token })
             .then((response) => {
                 if (response?.status === 200) {
-                    // setBookingDetails(response?.data?.booking)
-                    window.location.reload() // need to change with updated value
+                    console.log('response?.data', response?.data, response?.data?.data?.status);
+                    setBookingDetails({ ...bookingDetails, status: response?.data?.data?.status });
+                    toast.success('Booking cancelled successfully');
+                    // navigate(-1);
                 }
             })
             .finally(() => {
-                setLoading(false);
+                setCancelLoading(false);
             })
             .catch((error) => {
                 setError(true);
                 // toast.error(`${error.message}`);
             });
     }
-    const handleDownloadTickets = (data) => {       
+    const handleDownloadTickets = (data) => {
         const fileName = `${data.title.replace(' ', '-')}-${data.releaseDate}-IWS.pdf`;
         Axios('POST', '/user/ticket', data, {
             headers: { 'Content-Type': 'application/json' },
@@ -90,12 +97,14 @@ const BookingDetails = (props) => {
                 URL.revokeObjectURL(url);
             })
             .finally(() => {
-               
+
             })
             .catch((error) => {
                 console.error('Error downloading PDF:', error);
             });
     }
+
+    console.log('bookingDetails', bookingDetails);
     return (
         <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">
             {
@@ -109,8 +118,8 @@ const BookingDetails = (props) => {
                             <div className={`block py-4 text-skin-inverted transition-all`}>
                                 <div className='flex flex-col md:flex-row items-start gap-4'>
                                     <div className={`w-full md:w-1/3 h-[360px] max-h-[360px] relative overflow-hidden rounded-md shadow-lg border border-white/5`}>
-                                        <img src={bookingDetails?.movie?.poster} alt={bookingDetails?.movie?.title} className="w-full h-full absolute inset-0 object-cover bg-center z-[0] blur-lg" />
-                                        <img src={bookingDetails?.movie?.poster} alt={bookingDetails?.movie?.title} className="w-full h-full absolute inset-0 object-contain bg-center z-[2]" />
+                                        <img src={bookingDetails?.movie?.poster} alt={bookingDetails?.movie?.title} className={`w-full h-full absolute inset-0 object-cover bg-center z-[0] blur-lg ${BOOKING_STATUS.CANCEL === bookingDetails?.status ? 'grayscale' : 'grayscale-0'}`} />
+                                        <img src={bookingDetails?.movie?.poster} alt={bookingDetails?.movie?.title} className={`w-full h-full absolute inset-0 object-contain bg-center z-[2] ${BOOKING_STATUS.CANCEL === bookingDetails?.status ? 'grayscale' : 'grayscale-0'}`} />
                                     </div>
                                     <div className='flex w-full flex-col justify-end'>
                                         <div className="">
@@ -156,12 +165,13 @@ const BookingDetails = (props) => {
                                             >
                                                 Download ticket
                                             </button>
-                                            {BOOKING_STATUS.CANCEL !== bookingDetails?.status && <button
-                                                className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
-                                                onClick={openCancelTicketModal}
+                                            {BOOKING_STATUS.CANCEL !== bookingDetails?.status && <LoadingButton
+                                                className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 !bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                                                onClick={cancelTicketModal}
+                                                isLoading={cancelLoading}
+                                                text='Cancel ticket'
                                             >
-                                                Cancel ticket
-                                            </button>}
+                                            </LoadingButton>}
                                         </div>
                                     </div>
                                 </div>
