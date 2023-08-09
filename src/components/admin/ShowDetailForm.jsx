@@ -86,9 +86,9 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
             formik.setValues({
                 sTime: show.showStartTime || '10:00',
                 eTime: show.showEndTime || '12:00',
-                priceRow_a_to_c: show.price.priceRow_a_to_c || '100',
-                priceRow_d_to_h: show.price.priceRow_d_to_h || '200',
-                priceRow_i_to_n: show.price.priceRow_i_to_n || '300',
+                priceRow_a_to_c: show.price.priceRow_a_to_c || '10',
+                priceRow_d_to_h: show.price.priceRow_d_to_h || '20',
+                priceRow_i_to_n: show.price.priceRow_i_to_n || '30',
             });
             setShowData(show);
         }

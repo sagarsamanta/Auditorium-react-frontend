@@ -38,8 +38,8 @@ const CheckIn = () => {
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                 <h1 className="text-xl md:text-2xl lg:text:3xl">Check-In</h1>
                 <div>
-                    <div className='font-semibold'>{activeMovie?.title}</div>
-                    <div className='bg-green-300 text-black text-center rounded-md'>{activeMovie?.status}</div>
+                    <div className='font-semibold text-xl'>{activeMovie?.title}</div>
+                    <div className='bg-green-300 text-black text-center rounded-md px-2 py-1'>{activeMovie?.status}</div>
                 </div>
             </div>
             <div className="bg-white rounded-lg  mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-1">
