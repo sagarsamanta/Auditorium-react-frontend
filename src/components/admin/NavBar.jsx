@@ -46,10 +46,19 @@ const NavBar = () => {
             <div>Check-In</div>
           </div>
         </Link>
-        <Link to="/admin/reports" className={`${(startsWith("/admin/reports")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
+
+        <hr className="border-gray-700 my-4" />
+
+        <Link to="/admin/reports/movie-wise-report" className={`${(startsWith("/admin/reports/movie-wise-report")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
           <div className="flex justify-center items-center gap-4">
             <TbReportSearch size={20} />
-            <div>Reports</div>
+            <div>Movies-wise Reports</div>
+          </div>
+        </Link>
+        <Link to="/admin/reports/show-wise-report" className={`${(startsWith("/admin/reports/show-wise-report")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
+          <div className="flex justify-center items-center gap-4">
+            <TbReportSearch size={20} />
+            <div>Show-wise Reports</div>
           </div>
         </Link>
       </div>

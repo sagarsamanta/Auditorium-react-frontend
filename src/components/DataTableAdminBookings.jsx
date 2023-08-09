@@ -7,13 +7,18 @@ import { BOOKING_STATUS } from '../lib/consts';
 import { TbTicketOff } from "react-icons/tb";
 import { IoTicketOutline } from "react-icons/io5";
 import Modal from './UI/Modal';
+import Axios from '../lib/axiosInstance';
+import { useAuth } from '../lib/hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const DataTableAdminBookings = ({ data, className }) => {
+    const [tableRecords, setTableRecords] = useState(data);
     const [ticket, setTicket] = useState(null);
     const [openTicketModal, setOpenTicketModal] = useState(false);
     const [selectedBookingToCancel, setSelectedBookingToCancel] = useState(null);
     const [isOpenCancelBookingModal, setIsOpenCancelBookingModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    const { token } = useAuth();
 
     const askFormConfirmation = (row) => {
         setIsOpenCancelBookingModal(true);
@@ -21,8 +26,23 @@ const DataTableAdminBookings = ({ data, className }) => {
     }
 
     const handleBookingCancelation = () => {
-        // selectedBookingToCancel
-        console.log('selectedBookingToCancel', selectedBookingToCancel);
+        setLoading(true);
+        Axios('DELETE', `/show/${selectedBookingToCancel?._id}`, null, { authRequest: true, token: token })
+            .then((response) => {
+                if (response?.status === 200) {
+                    toast.success('Booking cancelled successfully');
+                    const updatedData = tableRecords.map((a) => a._id === selectedBookingToCancel?._id ? { ...a, status: BOOKING_STATUS.CANCEL } : { ...a });
+                    setTableRecords(updatedData);
+                    setIsOpenCancelBookingModal(false);
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            })
+            .catch((error) => {
+                // setError(true);
+                // toast.error(`${error.message}`);
+            });
     }
 
     const viewTicket = (row) => {
@@ -87,7 +107,7 @@ const DataTableAdminBookings = ({ data, className }) => {
             name: 'Ticket',
             cell: (row) => (
                 <>
-                    <button 
+                    <button
                         className={`shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
                         onClick={() => viewTicket(row)}
                         disabled={row.status !== BOOKING_STATUS.BOOKED}
@@ -99,14 +119,14 @@ const DataTableAdminBookings = ({ data, className }) => {
             )
         },
         {
-            name: 'Actions',
+            name: 'Cancel Ticket',
             cell: (row) => (
                 <>
                     <button
                         className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
                         onClick={() => askFormConfirmation(row)}
                         title='Cancel Ticket'
-                        disabled={row.status === BOOKING_STATUS.VISITED}
+                        disabled={row.status !== BOOKING_STATUS.BOOKED}
                     >
                         <TbTicketOff size={15} />
                     </button>
@@ -118,7 +138,7 @@ const DataTableAdminBookings = ({ data, className }) => {
         <>
             <DataTable
                 columns={columns}
-                data={data}
+                data={tableRecords}
                 className={className}
                 pagination
             />

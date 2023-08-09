@@ -5,11 +5,12 @@ import { useAuth } from '../../../lib/hooks/useAuth';
 import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminReports from '../../../components/DataTableAdminReports';
-import { getCurrencyFormat } from '../../../lib/utils';
+import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
 
 
-const ReportsPage = () => {
-    const [movieTitleList, setmovieList] = useState([]);
+const ReportsPageShowWise = () => {
+    const [movieTitleList, setMovieList] = useState([]);
+    const [showTitleList, setShowList] = useState([]);
     const [report, setReport] = useState([]);
     const [loading, setLoading] = useState(false);
     const { token } = useAuth();
@@ -27,7 +28,7 @@ const ReportsPage = () => {
                         }
                     })
                     console.log(allOptions);
-                    setmovieList(allOptions);
+                    setMovieList(allOptions);
                 }
             })
             .finally(() => {
@@ -37,29 +38,57 @@ const ReportsPage = () => {
                 console.log(err)
             });
     }
+    const getAllShows = async (movieId) => {
+        if (!movieId) {
+            setShowList([
+                {
+                    value: "Show 1",
+                    label: "Show 1",
+                },
+                {
+                    value: "Show 2",
+                    label: "Show 2",
+                },
+                {
+                    value: "Show 3",
+                    label: "Show 3",
+                },
+            ]);
+            return;
+        }
+        const { shows } = await getShowsByMovieId(movieId, token);
+        const showsList = shows?.map((show) => {
+            return {
+                value: show?.title,
+                label: show?.title,
+            }
+        });
+        setShowList(showsList);
+        return;
+    }
     const calculateTotalAmount = (data = [], field = "totalAmount") => {
         let total = 0;
         for (const entry of data) {
-            // total += entry.total;
             total += entry[`${field}`];
         }
-
         return total;
     }
 
     useEffect(() => {
-        getAllMoviesTitle()
+        getAllMoviesTitle();
+        getAllShows();
     }, []);
 
     // Handle Form
     const formik = useFormik({
         initialValues: {
             movie: '',
+            show: '',
             date: '',
         },
         onSubmit: (values) => {
             setLoading(true);
-            Axios('GET', `/movie/daily-booking-reports/?movieId=${values?.movie}&date=${values?.date}`, null, { authRequest: true, token: token })
+            Axios('GET', `/show/daily-booking-reports/?movieId=${values?.movie}&date=${values?.date}`, null, { authRequest: true, token: token })
                 .then((res) => {
                     if (res.status === 200) {
                         const allMovies = res?.data;
@@ -79,16 +108,21 @@ const ReportsPage = () => {
     const handleMovieChange = (e) => {
         formik.setFieldValue('movie', e?.value || '');
         if (!e) setReport([]);
+        getAllShows(e?.value);
+    }
+    const handleShowChange = (e) => {
+        formik.setFieldValue('show', e?.value || '');
+        if (!e) setReport([]);
     }
 
     return (
         <div>
             <div className="flex justify-between items-center p-4 mb-2 border border-slate-100 rounded-md shadow-md">
-                <h1 className="text-xl md:text-2xl lg:text:3xl">Movies-wise Reports</h1>
+                <h1 className="text-xl md:text-2xl lg:text:3xl">Show-wise Reports</h1>
             </div>
             <form className='w-full flex flex-col md:flex-row justify-start items-center gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
                 <Select onChange={handleMovieChange} placeholder="Select Movie" className='min-w-[300px]' options={movieTitleList} isClearable />
-                {/* <Select onChange={handleShowChange} placeholder="Select Show" className='min-w-[300px]' options={showsList} isClearable /> */}
+                <Select onChange={handleShowChange} placeholder="Select Show" className='min-w-[300px]' options={showTitleList} isClearable />
                 <input
                     type="date"
                     name='date'
@@ -101,7 +135,7 @@ const ReportsPage = () => {
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
                 <DataTableAdminReports data={report?.dailyReports || []} />
-                {report?.dailyReports?.length && (
+                {report?.dailyReports && report?.dailyReports?.length !== 0 && (
                     <>
                         <div className='text-lg'>Total Revenue: {getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</div>
                         <div className='text-lg'>Total Bookings: {calculateTotalAmount(report?.dailyReports, "totalBookings")}</div>
@@ -112,4 +146,4 @@ const ReportsPage = () => {
     )
 }
 
-export default ReportsPage;
+export default ReportsPageShowWise;

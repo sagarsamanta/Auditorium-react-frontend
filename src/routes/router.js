@@ -14,7 +14,7 @@ import BookingPage from "../pages/admin/user/BookingPage";
 import SeatPage from "../pages/admin/movie/SeatPage";
 import Bookings from "../pages/booking/Bookings";
 import UsersPage from "../pages/admin/user/UsersPage";
-import ReportsPage from "../pages/admin/reports/ReportsPage";
+import ReportsPageMovieWise from "../pages/admin/reports/ReportsPageMovieWise";
 
 import ProfilePage from "../pages/users/ProfilePage";
 import BookingsPage from "../pages/users/BookingsPage";
@@ -23,6 +23,7 @@ import CheckIn from "../pages/check-in/CheckIn";
 import AdminPanelLayout from "../components/admin/AdminPanelLayout";
 import UserPanelLayout from "../components/user/UserPanelLayout";
 import AdminBookingsPage from "../pages/admin/AdminBookingsPage";
+import ReportsPageShowWise from "../pages/admin/reports/ReportsPageShowWise";
 
 const router = createBrowserRouter([
     {
@@ -107,8 +108,13 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: "admin/reports",
-        element: <AuthentiCate><AdminPanelLayout><ReportsPage /></AdminPanelLayout></AuthentiCate>,
+        path: "admin/reports/movie-wise-report",
+        element: <AuthentiCate><AdminPanelLayout><ReportsPageMovieWise /></AdminPanelLayout></AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/reports/show-wise-report",
+        element: <AuthentiCate><AdminPanelLayout><ReportsPageShowWise /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {
