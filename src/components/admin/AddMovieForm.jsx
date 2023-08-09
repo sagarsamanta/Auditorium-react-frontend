@@ -85,7 +85,7 @@ const AddMovieForm = ({ movie }) => {
                                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.title && formik.errors.title) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                                     id="movie-title"
                                     type="text"
-                                    placeholder="Sholay"
+                                    placeholder="Movie Title"
                                     name="title"
                                     value={formik.values.title}
                                     onChange={formik.handleChange}

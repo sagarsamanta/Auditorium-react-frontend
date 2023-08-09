@@ -15,7 +15,7 @@ const BookingDetails = (props) => {
     const [bookingDetails, setBookingDetails] = useState({});
     const [viewTicket, setViewTicket] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [cancelLoading, setCancelLoading] = useState(true);
+    const [cancelLoading, setCancelLoading] = useState(false);
     const [error, setError] = useState(false);
     const { token } = useAuth();
     const { bookingId } = useParams();

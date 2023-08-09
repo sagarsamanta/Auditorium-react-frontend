@@ -17,9 +17,9 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
         initialValues: {
             sTime: showData?.showStartTime || '--:--',
             eTime: showData?.showEndTime || '--:--',
-            priceRow_a_to_c: showData?.price?.priceRow_a_to_c || '100',
-            priceRow_d_to_h: showData?.price?.priceRow_d_to_h || '200',
-            priceRow_i_to_n: showData?.price?.priceRow_i_to_n || '300',
+            priceRow_a_to_c: showData?.price?.priceRow_a_to_c || '10',
+            priceRow_d_to_h: showData?.price?.priceRow_d_to_h || '20',
+            priceRow_i_to_n: showData?.price?.priceRow_i_to_n || '30',
         },
         validationSchema: Yup.object({
             sTime: Yup.string().required('Please Enter Movie Title'),
@@ -152,6 +152,8 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                         name="priceRow_a_to_c"
                                         value={formik.values.priceRow_a_to_c}
                                         onChange={formik.handleChange}
+                                        min={10}
+                                        max={30}
                                     />
                                     {
                                         (formik.touched.priceRow_a_to_c && formik.errors.priceRow_a_to_c) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.priceRow_a_to_c}</p>
@@ -168,6 +170,8 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                         name="priceRow_d_to_h"
                                         value={formik.values.priceRow_d_to_h}
                                         onChange={formik.handleChange}
+                                        min={10}
+                                        max={30}
                                     />
                                     {
                                         (formik.touched.priceRow_d_to_h && formik.errors.priceRow_d_to_h) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.priceRow_d_to_h}</p>
@@ -184,6 +188,8 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                         name="priceRow_i_to_n"
                                         value={formik.values.priceRow_i_to_n}
                                         onChange={formik.handleChange}
+                                        min={10}
+                                        max={30}
                                     />
                                     {
                                         (formik.touched.priceRow_i_to_n && formik.errors.priceRow_i_to_n) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.priceRow_i_to_n}</p>

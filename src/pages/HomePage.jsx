@@ -61,7 +61,7 @@ const HomePage = () => {
                         <Loader className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' />
                     ) : (
                         error.movie || error.shows || !selectedShow ? (
-                            <SomethingWentWrong className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' text="No Shows available, Better luck next time!" />
+                            <SomethingWentWrong className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' text="No Shows available!" />
                         ) : (
                             <div className="mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4">
                                 <div className="bg-gray-800 text-skin-inverted rounded-lg p-4 flex flex-col md:flex-row gap-4 md:gap-8">

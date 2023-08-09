@@ -11,7 +11,7 @@ import { BOOKING_STATUS } from '../../lib/consts';
 const BookingsPage = () => {
     const [bookings, setBookings] = useState([]);
     const upCommingShows = bookings?.filter((booking) => !isPastDate(booking?.movie?.releaseDate) && booking?.status !== BOOKING_STATUS.VISITED);
-    const previousShows = bookings?.filter((booking) => isPastDate(booking?.movie?.releaseDate) && booking?.status !== BOOKING_STATUS.VISITED);
+    const previousShows = bookings?.filter((booking) => isPastDate(booking?.movie?.releaseDate));
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const { user, token } = useAuth();
@@ -125,7 +125,7 @@ const BookingsPage = () => {
                                                                     <p className="text-xs inline-block">({booking?.movie?.language})</p>
                                                                     <div className="mt-1">
                                                                         <span className="text-md font-semibold">Booking Date</span>
-                                                                        <p className="line-clamp-1">{displayDate(booking?.createdAt)}, {displayTime(booking?.createdAt)}</p>
+                                                                        <p className="line-clamp-1">{displayDate(booking?.createdAt)}</p>
                                                                     </div>
                                                                     <div className="w-full md:w-3/4 grid grid-cols-2">
                                                                         <div className="mt-1">
