@@ -72,6 +72,30 @@ const BookingDetails = (props) => {
                 // toast.error(`${error.message}`);
             });
     }
+    const handleDownloadTickets = (data) => {       
+        const fileName = `${data.title.replace(' ', '-')}-${data.releaseDate}-IWS.pdf`;
+        Axios('POST', '/user/ticket', data, {
+            headers: { 'Content-Type': 'application/json' },
+            responseType: 'blob',
+            authRequest: true,
+            token: token,
+        })
+            .then((response) => {
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const tempLink = document.createElement('a');
+                tempLink.href = url;
+                tempLink.setAttribute('download', fileName);
+                tempLink.click();
+                URL.revokeObjectURL(url);
+            })
+            .finally(() => {
+               
+            })
+            .catch((error) => {
+                console.error('Error downloading PDF:', error);
+            });
+    }
     return (
         <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">
             {
@@ -114,7 +138,7 @@ const BookingDetails = (props) => {
                                             </div>
                                             <div className="mt-4 space-y-1">
                                                 <span className="text-lg font-semibold">Status</span>
-                                                <p className={`line-clamp-3 ${BOOKING_STATUS.CANCEL == bookingDetails?.status ? "text-red-500" : 'text-green-500'}`}>{(bookingDetails?.status)}</p>
+                                                <p className={`line-clamp-3 ${BOOKING_STATUS.CANCEL === bookingDetails?.status ? "text-red-500" : 'text-green-500'}`}>{(bookingDetails?.status)}</p>
                                             </div>
                                         </div>
                                         <div className="mt-4 space-y-1">
@@ -126,7 +150,9 @@ const BookingDetails = (props) => {
                                             </button>
                                             <button
                                                 className={`text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
-
+                                                onClick={() => {
+                                                    handleDownloadTickets(ticketDeatils)
+                                                }}
                                             >
                                                 Download ticket
                                             </button>
@@ -144,7 +170,7 @@ const BookingDetails = (props) => {
                     )
                 )
             }
-            {!error && viewTicket && (<TicketModal closeHandler={closeTicketModal} isOpen={viewTicket} ticket={ticketDeatils} />)}
+            {!error && viewTicket && (<TicketModal handleDownloadTickets={handleDownloadTickets} closeHandler={closeTicketModal} isOpen={viewTicket} ticket={ticketDeatils} />)}
         </div>
     );
 };

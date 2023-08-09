@@ -25,9 +25,9 @@ const AddMovieForm = ({ movie }) => {
             image: '',
         },
         validationSchema: Yup.object({
-            title: Yup.string().required('Please Enter Movie Title'),
-            description: Yup.string().required('Please Enter Movie Description'),
-            date: Yup.string().required('Please Enter Show Date'),
+            title: Yup.string().required('Please enter movie title'),
+            description: Yup.string().required('Please enter movie description'),
+            date: Yup.string().required('Please enter dhow date'),
             duration: Yup.string(),
             language: Yup.string(),
         }),
@@ -91,7 +91,7 @@ const AddMovieForm = ({ movie }) => {
                                     onChange={formik.handleChange}
                                 />
                                 {
-                                    (formik.touched.title && formik.errors.title) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.title}</p>
+                                    (formik.touched.title && formik.errors.title) && <p className="text-red-500 text-sm  ">{formik.errors.title}</p>
                                 }
                             </div>
                             <div className="md:px-3">
@@ -107,7 +107,7 @@ const AddMovieForm = ({ movie }) => {
                                     onChange={formik.handleChange}
                                 ></textarea>
                                 {
-                                    (formik.touched.description && formik.errors.description) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.description}</p>
+                                    (formik.touched.description && formik.errors.description) && <div className="text-red-500  text-sm  ">{formik.errors.description}</div>
                                 }
                             </div>
                             <div className="md:px-3 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -124,7 +124,7 @@ const AddMovieForm = ({ movie }) => {
                                         onChange={formik.handleChange}
                                     />
                                     {
-                                        (formik.touched.language && formik.errors.language) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.language}</p>
+                                        (formik.touched.language && formik.errors.language) && <p className="text-red-500 text-sm">{formik.errors.language}</p>
                                     }
                                 </div>
                                 <div>
@@ -140,7 +140,7 @@ const AddMovieForm = ({ movie }) => {
                                         onChange={formik.handleChange}
                                     />
                                     {
-                                        (formik.touched.duration && formik.errors.duration) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.duration}</p>
+                                        (formik.touched.duration && formik.errors.duration) ?? <p className="text-red-500 text-sm">{formik.errors.duration}</p>
                                     }
                                 </div>
                                 <div>
@@ -157,7 +157,7 @@ const AddMovieForm = ({ movie }) => {
                                         onChange={formik.handleChange}
                                     />
                                     {
-                                        (formik.touched.date && formik.errors.date) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.date}</p>
+                                        (formik.touched.date && formik.errors.date) ?? <p className="text-red-500 text-sm">{formik.errors.date}</p>
                                     }
                                 </div>
                             </div>

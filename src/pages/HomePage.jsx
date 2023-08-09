@@ -91,7 +91,7 @@ const HomePage = () => {
                                                             <img src={`/images/blurBg.png`} alt="" className="absolute inset-0 -z-10 select-none pointer-events-none md:opacity-50" />
                                                             <Link
                                                                 to="/login"
-                                                                className="text-skin-inverted bg-skin-base focus:ring-skin-muted focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2"
+                                                                className="text-skin-inverted hover:scale-110 transition bg-skin-base focus:ring-skin-muted focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2"
                                                             >
                                                                 Login to Book ticket
                                                             </Link>

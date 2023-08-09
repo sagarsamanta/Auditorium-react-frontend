@@ -6,7 +6,7 @@ import { displayDate, displayTime, getCurrencyFormat } from "../../lib/utils";
 import Axios from "../../lib/axiosInstance";
 import { useAuth } from "../../lib/hooks/useAuth";
 
-export default function TicketModal({ isOpen, closeHandler, ticket }) {
+export default function TicketModal({ isOpen,handleDownloadTickets, closeHandler, ticket }) {
     const {
         title,
         poster,
@@ -24,32 +24,7 @@ export default function TicketModal({ isOpen, closeHandler, ticket }) {
     function closeModal() {
         closeHandler(false);
     }
-    const handleDownloadTickets = (data) => {
-        setLoading(true);
-        const fileName = `${data.title.replace(' ', '-')}-${data.releaseDate}-IWS.pdf`;
-
-        Axios('POST', '/user/ticket', data, {
-            headers: { 'Content-Type': 'application/json' },
-            responseType: 'blob',
-            authRequest: true,
-            token: token,
-        })
-            .then((response) => {
-                const blob = new Blob([response.data], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const tempLink = document.createElement('a');
-                tempLink.href = url;
-                tempLink.setAttribute('download', fileName);
-                tempLink.click();
-                URL.revokeObjectURL(url);
-            })
-            .finally(() => {
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error('Error downloading PDF:', error);
-            });
-    }
+    
 
     return (
         <>

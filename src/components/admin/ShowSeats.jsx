@@ -12,6 +12,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
     const [loading, setLoading] = useState({ booking: false, reserved: false, seats: true });
     const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
     const [isOpenSelectedSeatModal, setIsOpenSelectedSeatModal] = useState(false);
+    const [isOpenReserveConfirmSeatModal, setHandleCloseReservedConfirmModal] = useState(false);
     const [selectedReservedSeate, setSelectedReservedSeate] = useState('');
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
@@ -49,6 +50,14 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
             }
         }
     };
+    const handleCloseReservedModal = () => {
+        setIsOpenReserveSeatModal(false)
+        setSelectedSeats([])
+    }
+    const handleCloseReservedConfirmModal = () => {
+        setHandleCloseReservedConfirmModal(false)
+        setSelectedSeats([])
+    }
 
     const getSeatStatusColor = (seatNo) => {
         if (seatsList?.totalSeats) {
@@ -118,10 +127,12 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                     if (res?.status === 201) {
                         toast.success(`${res?.data?.message}`);
                     }
+                    handleCloseReservedConfirmModal()
                 })
                 .finally(() => {
                     setLoading(prev => { return { ...prev, reserved: false } });
                     fetchFreshData();
+                    handleCloseReservedConfirmModal()
                 })
                 .catch((err) => {
                     console.log('err', err);
@@ -257,7 +268,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                                         <button
                                             className="shadow transition duration-300 ease-in-out bg-skin-base hover:bg-skin-base/80 focus:shadow-outline focus:outline-none text-white py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed"
                                             type="submit"
-                                            onClick={handleSaveReserve}
+                                            onClick={() => { setHandleCloseReservedConfirmModal(true) }}
                                             disabled={selectedSeats.length === 0 || loading.booking || loading.reserved || loading.seats}
                                         >
                                             {loading.reserved && <span className="w-4 h-4 border border-r-0 border-skin-inverted inline-block rounded-full absolute top-3 left-4 animate-spin" />}
@@ -271,12 +282,24 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                 }
                 <Modal
                     isOpen={isOpenReserveSeatModal}
-                    closeHandler={setIsOpenReserveSeatModal}
+                    closeHandler={handleCloseReservedModal}
                     config={{
                         title: `Make seat no. "${selectedReservedSeate}" as Available`,
                         text: 'This will mark this seat as Available for everyone',
                         buttonText: 'Make Available',
                         buttonHandler: handleMakeAvailable,
+                        loading: loading.reserved,
+                        buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
+                    }}
+                />
+                <Modal
+                    isOpen={isOpenReserveConfirmSeatModal}
+                    closeHandler={handleCloseReservedConfirmModal}
+                    config={{
+                        title: <span>Seat no. "<span className="text-skin-base">{selectedSeats?.sort()?.join(', ')}</span>"</span>,
+                        text: 'Are you sure you want to reserved these seats?',
+                        buttonText: 'Make Reserved',
+                        buttonHandler: handleSaveReserve,
                         loading: loading.reserved,
                         buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
                     }}

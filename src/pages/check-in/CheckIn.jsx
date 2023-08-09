@@ -23,8 +23,8 @@ const CheckIn = () => {
             .then((res) => {
                 console.log(res);
                 setAllShows(res.data?.show);
-                setActiveMovie(res.data?.movie);
-                setSelectedShow(res.data?.show[0])               
+                setActiveMovie(res.data?.movie[0]);
+                setSelectedShow(res.data?.show[0])
             })
             .finally(() => {
             })
@@ -36,9 +36,13 @@ const CheckIn = () => {
     return (
         <div className="container">
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
-                    <h1 className="text-xl md:text-2xl lg:text:3xl">Check-In</h1>                   
+                <h1 className="text-xl md:text-2xl lg:text:3xl">Check-In</h1>
+                <div>
+                    <div className='font-semibold'>{activeMovie?.title}</div>
+                    <div className='bg-green-300 text-black text-center rounded-md'>{activeMovie?.status}</div>
                 </div>
-            <div className="bg-white rounded-lg  py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-1">
+            </div>
+            <div className="bg-white rounded-lg  mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-1">
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
                     <span className=" text-sm font-semibold">Total Seats</span>
                     <span className="text-sm ">{selectedShow?.totalSeats || 0}</span>
@@ -61,8 +65,8 @@ const CheckIn = () => {
                 </div>
 
             </div>
-            <div className='font-semibold text-xl'>Available Show Timings</div>
-            {shows.length===0 && <div className='p-3 flex justify-center items-center'>No shows Available</div>}
+            <div className='font-semibold text-xl mt-2'>Available Show Timings</div>
+            {shows.length === 0 && <div className='p-3 flex justify-center items-center'>No shows Available</div>}
             <div className='my-3'>
                 {shows?.map((show, index) => (
                     <button
