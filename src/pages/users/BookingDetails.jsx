@@ -26,7 +26,6 @@ const BookingDetails = (props) => {
             .then((response) => {
                 if (response?.status === 200) {
                     setBookingDetails(response?.data?.booking)
-                    console.log(response.data);
                 }
             })
             .finally(() => {
@@ -39,7 +38,6 @@ const BookingDetails = (props) => {
     }
     useEffect(() => {
         getShowsDetails()
-
     }, [])
 
     const closeTicketModal = () => {
@@ -57,6 +55,7 @@ const BookingDetails = (props) => {
         noOfSeatsBook: bookingDetails?.seats?.length,
         bookingId: bookingDetails?.bookingId,
         seatNo: bookedSeats,
+        seatsPriceObj: bookingDetails?.seats,
         amount: bookingDetails?.totalPrice,
         language: bookingDetails?.movie?.language
     }
@@ -80,7 +79,7 @@ const BookingDetails = (props) => {
             });
     }
     const handleDownloadTickets = (data) => {
-        const fileName = `${data.title.replace(' ', '-')}-${data.releaseDate}-IWS.pdf`;
+        const fileName = `${data.title}-${data.bookingId}-IWS.pdf`.replace(' ', '-');
         Axios('POST', '/user/ticket', data, {
             headers: { 'Content-Type': 'application/json' },
             responseType: 'blob',
@@ -104,7 +103,6 @@ const BookingDetails = (props) => {
             });
     }
 
-    console.log('bookingDetails', bookingDetails);
     return (
         <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">
             {
@@ -170,8 +168,7 @@ const BookingDetails = (props) => {
                                                 onClick={cancelTicketModal}
                                                 isLoading={cancelLoading}
                                                 text='Cancel ticket'
-                                            >
-                                            </LoadingButton>}
+                                            />}
                                         </div>
                                     </div>
                                 </div>
