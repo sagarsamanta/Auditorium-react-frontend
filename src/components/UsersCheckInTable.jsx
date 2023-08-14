@@ -16,10 +16,10 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
     const [isLoading, setLoading] = useState(true);
     const { token } = useAuth();
 
-    const chnageBookingStatus = (id, status) => {
+    const chnageSeatsStatus = (id, status) => {
         Axios(
             "PUT",
-            `booking/chnage-booking-status/${id}`,
+            `booking/seats-status/${id}`,
             { newStatus: status },
             { authRequest: true, token: token }
         )
@@ -61,17 +61,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
             });
     }, [show]);
 
-    // Function to handle copy button click
-    const handleCopyClick = (event, bookingId) => {
-        // Copy the bookingId to the clipboard
-        const clipboard = new Clipboard(".copy-button", {
-            text: () => bookingId,
-        });
-
-        // Trigger the copy action
-        clipboard.onClick(event);
-        toast.success("Copied");
-    };
+   
 
     const columns = [
         {
@@ -85,7 +75,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
                 <>
                     <button
                         className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
-                        // onClick={() => askFormConfirmation(row)}
+                        onClick={() => chnageSeatsStatus(row)}
                         title='Cancel Ticket'
                         disabled={row.status !== BOOKING_STATUS.BOOKED}
                     >
@@ -93,6 +83,21 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
                     </button>
                 </>
             ),
+        },
+        {
+            name: "Seats Status",
+            minWidth: "300px",
+            cell: (row) => {
+                return (
+                    <div className="flex flex-wrap gap-2">
+                        {
+                            <div className="flex gap-[2px] justify-center items-center ">
+                                <div className={`${row.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-2 rounded-sm'} ${row.status === SEATS_STATUS.VISITED && 'bg-green-500 p-2 rounded-sm'}`}>{row?.status}</div>
+                            </div>
+                        }
+                    </div>
+                );
+            },
         },
        
         {
@@ -126,21 +131,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
             minWidth: "200px",
             selector: (row) => row?.userId?.empId,
         },
-        {
-            name: "Seats Status",
-            minWidth: "300px",
-            cell: (row) => {
-                return (
-                    <div className="flex flex-wrap gap-2">
-                        {
-                            <div className="flex gap-[2px] justify-center items-center ">
-                                <div className={`${row.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-2 rounded-sm'} ${row.status === SEATS_STATUS.VISITED && 'bg-green-500 p-2 rounded-sm'}`}>{row?.status}</div>
-                            </div>
-                        }
-                    </div>
-                );
-            },
-        },
+       
         // {
         //     name: "Status",
         //     selector: (row) => row.status,
