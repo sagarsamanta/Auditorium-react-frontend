@@ -13,6 +13,12 @@ export const SEAT_RESERVED = "RESERVED";
 
 export const MOVIE_LOCALSTORAGE_KEY = "iws-movie-data";
 export const MAX_SEATS_PER_BOOKING = 5;
+export const USER_CASH_PAY_WARNING_MESSAGE = `Please seek authority for "Pay with Cash" option.`
+export const PAYMENT_METHOS = {
+  CASH: 'CASH',
+  ONLINE: 'ONLINE',
+  DEFAULT: 'ONLINE'
+};
 
 export const SEATS = {
   A: ["12", "11", "10", "09", "08", "07", "06", "05", "04", "03", "02", "01"],

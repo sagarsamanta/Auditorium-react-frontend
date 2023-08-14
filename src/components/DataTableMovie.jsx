@@ -49,7 +49,7 @@ const DataTableMovie = ({ data, className }) => {
         title: 'Are you sure you want to remove this movie ?',
         buttonText: 'Ok',
         text: showDeleteConfirm ? `Movie Name : ${showDeleteConfirm.movie}` : "",
-        buttonHandler: onOkConfirmDelete
+        buttonHandler: onOkConfirmDelete,
     }
     const columns = [
         {

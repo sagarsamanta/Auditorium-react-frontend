@@ -91,12 +91,10 @@ const UsersCheckInTable = ({ show, showStartTime}) => {
             sortable: true,
             selector: row => <div className="text-green-600">₹ {row.totalPrice}</div>,
         },
-        // {
-        //     name: 'Total Booked Seats',
-        //     sortable: true,
-        //     minwidth:'400px',
-        //     cell: row => row.seats?.length,
-        // },
+        {
+            name: 'Payment Mode',
+            selector: row => row?.paymentMode,
+        },
         {
             name: 'Booked seats',
             cell: row => {

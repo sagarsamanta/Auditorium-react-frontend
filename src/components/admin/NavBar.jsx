@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { TbReportSearch } from 'react-icons/tb'
 import { RxDashboard } from 'react-icons/rx'
 import { BsCheckCircle } from 'react-icons/bs'
+import { GoHistory } from 'react-icons/go'
 const NavBar = () => {
   const { pathname } = useLocation();
   const startsWith = (str) => pathname.startsWith(str);
@@ -39,11 +40,20 @@ const NavBar = () => {
             <BiMoviePlay size={20} />
             <div>Bookings </div>
           </div>
-        </Link>
+        </Link>        
         <Link to="/admin/check-in" className={`${(startsWith("/admin/check-in")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
           <div className="flex justify-center items-center gap-4">
             <BsCheckCircle size={19} />
             <div>Check-In</div>
+          </div>
+        </Link>
+        <Link
+          to={`/admin/history`}
+          className={`${(startsWith("/admin/history")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}
+        >
+          <div className='flex justify-center items-center gap-4'>
+            <GoHistory size={20} />
+            <div>History </div>
           </div>
         </Link>
 

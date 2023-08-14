@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
 import Modal from "../UI/Modal";
+import BookingConfirmation from "../../pages/admin/movie/booking/BookingConfirmation";
+import BookingConfirm from "../UI/BookingConfirm";
 
-const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
+const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [seatsList, setSeats] = useState(null);
     const [loading, setLoading] = useState({ booking: false, reserved: false, seats: true });
@@ -80,16 +82,18 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         return seatsObj?.reduce((total, seat) => total + seat.price, 0);
     };
 
-    const handleSave = async () => {
+    const handleSave = async (payMode) => {
         if (selectedSeats.length > 0) {
             setLoading(prev => { return { ...prev, booking: true } });
             const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
+            console.log("ppppppppppppppp",payMode);
             const seats = {
                 movieId,
                 showtimeId: showId,
                 seatIds: seatPriceObj,
                 userId: authUser.user._id,
-                totalPrice: getTotalSelectedPrice(seatPriceObj)
+                totalPrice: getTotalSelectedPrice(seatPriceObj),
+                paymentMode: payMode
             };
 
             // API call to save seats
@@ -160,12 +164,24 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
         fetchFreshData();
     }, [movieId, showId, authUser, priceList]);
 
+    const closeSeatBookinConfirmModal = () => {
+        setIsOpenSelectedSeatModal(false)
+    }
+    console.log(show);
+    const bookingConfirmationSchema = () => {
+        const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
+        const totalAmount = getTotalSelectedPrice(seatPriceObj)
+        return (
+            <BookingConfirmation handlePay={handleSave} closeModal={closeSeatBookinConfirmModal} selectedSeats={selectedSeats?.sort()?.join(', ')} totalAmount={totalAmount} show={show} />
+        )
+    }
+
     return (
         <>
             <div className="seats-wrapper">
                 <div className="info-wrapper py-3">
                     {/* Info and color code elements */}
-                    <div className="w-[95%] mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
+                    <div className="w-[95%] mx-auto color-code-wrapper flex justify-center flex-wrap items-center gap-x-3 text-sm">
                         <div className="flex items-center gap-2">
                             <div className="w-4 h-4 rounded-sm text-skin-inverted border border-green-800/70 bg-green-800/20" />
                             <span>Available</span>
@@ -237,7 +253,7 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                                                                 <>
                                                                     <button
                                                                         key={seatNo}
-                                                                        className={`seat w-7 h-7 ${getSeatStatusColor(seatNo)} p-1 rounded-md text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
+                                                                        className={`seat w-7 h-7 ${getSeatStatusColor(seatNo)} p-1 rounded-md font-semibold text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
                                                                         onClick={(e) => handleSelect(e, seatNo)}
                                                                     >
                                                                         {seatNo}
@@ -304,14 +320,11 @@ const ShowSeats = ({ movieId, showId, authUser, priceList }) => {
                         buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
                     }}
                 />
-                <Modal
+                <BookingConfirm
                     isOpen={isOpenSelectedSeatModal}
                     closeHandler={setIsOpenSelectedSeatModal}
                     config={{
-                        title: <span>Seat no. "<span className="text-skin-base">{selectedSeats?.sort()?.join(', ')}</span>"</span>,
-                        text: 'Are you sure you want to book these seats?',
-                        buttonText: 'Book Now',
-                        buttonHandler: handleSave,
+                        title: bookingConfirmationSchema,
                         loading: loading.booking,
                         buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
                     }}

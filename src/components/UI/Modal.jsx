@@ -3,7 +3,6 @@ import { Fragment } from "react";
 import LoadingButton from "./LoadingButton";
 
 export default function Modal({ isOpen, closeHandler, config }) {
-
     function closeModal() {
         closeHandler(false)
     }

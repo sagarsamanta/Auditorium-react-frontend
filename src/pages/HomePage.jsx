@@ -140,7 +140,7 @@ const HomePage = () => {
                                                         <Loader className="block" />
                                                     </div>
                                                 ) : (
-                                                    <ShowSeats movieId={movie?._id} showId={selectedShow?._id} authUser={{ user: user, token: token }} priceList={selectedShow?.price} />
+                                                    <ShowSeats show={{...selectedShow,movie}} movieId={movie?._id} showId={selectedShow?._id} authUser={{ user: user, token: token }} priceList={selectedShow?.price} />
                                                 )
                                             }
                                         </div>
