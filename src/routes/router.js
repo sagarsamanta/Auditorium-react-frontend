@@ -25,6 +25,7 @@ import UserPanelLayout from "../components/user/UserPanelLayout";
 import AdminBookingsPage from "../pages/admin/AdminBookingsPage";
 import ReportsPageShowWise from "../pages/admin/reports/ReportsPageShowWise";
 import BookingHistory from "../pages/admin/BookingHistory";
+import LiveBookings from "../pages/admin/Live-bookings/LiveBookings";
 
 const router = createBrowserRouter([
     {
@@ -111,6 +112,11 @@ const router = createBrowserRouter([
     {
         path: "/admin/check-in",
         element: <AuthentiCate><AdminPanelLayout><CheckIn /></AdminPanelLayout></AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/admin/live-bookings",
+        element: <AuthentiCate><AdminPanelLayout><LiveBookings /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

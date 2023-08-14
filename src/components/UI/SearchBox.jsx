@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { AiOutlineSearch, AiOutlineCloseCircle } from 'react-icons/ai';
 import { MdClear } from "react-icons/md";
-const SearchBox = ({ data, setData, setIsLoading, placeholder }) => {
+const SearchBox = ({ data, setData, setIsLoading, placeholder, filterKey }) => {
     const [searchText, setSearchText] = useState('');
 
     const handleInputChange = (event) => {
@@ -12,12 +12,17 @@ const SearchBox = ({ data, setData, setIsLoading, placeholder }) => {
         setIsLoading(true);
 
         // Filter the movies list based on all properties
-        const filteredMovies = data.filter((obj) =>
-            Object.values(obj).some(
-                (value) =>
-                    typeof value === "string" &&
-                    value.toLowerCase().includes(inputValue.toLowerCase())
-            )
+        const filteredMovies = data.filter((obj) => {
+            if (filterKey) {
+                return obj[filterKey].toLowerCase().includes(inputValue.toLowerCase())
+            } else {
+                return Object.values(obj).some(
+                    (value) =>
+                        typeof value === "string" &&
+                        value.toLowerCase().includes(inputValue.toLowerCase())
+                )
+            }
+        }
         );
 
         setTimeout(() => {

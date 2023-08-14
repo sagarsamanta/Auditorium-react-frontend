@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import SearchBox from '../../components/UI/SearchBox';
-import UsersCheckInTable from '../../components/UsersCheckInTable';
+import SearchBox from '../../../components/UI/SearchBox';
+import UsersCheckInTable from '../../../components/UsersCheckInTable';
 import { FiCheckCircle } from 'react-icons/fi';
-import { useAuth } from '../../lib/hooks/useAuth';
-import { displayTime } from '../../lib/utils';
-import Axios from '../../lib/axiosInstance';
+import { useAuth } from '../../../lib/hooks/useAuth';
+import { displayTime } from '../../../lib/utils';
 import { MdRadioButtonUnchecked } from 'react-icons/md';
+import Axios from '../../../lib/axiosInstance';
+import LiveBookingsTable from '../../../components/LiveBookingsTable';
 
-const CheckIn = () => {
+const LiveBookings = () => {
     // Replace these values with your actual data
 
     const [shows, setAllShows] = useState([])
@@ -36,13 +37,35 @@ const CheckIn = () => {
     return (
         <div className="container">
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
-                <h1 className="text-xl md:text-2xl lg:text:3xl">Check-In</h1>
+                <h1 className="text-xl md:text-2xl lg:text:3xl">All Bookings</h1>
                 <div>
                     <div className='font-semibold text-xl'>{activeMovie?.title}</div>
                     <div className='bg-green-300 text-black text-center rounded-md px-2 py-1'>{activeMovie?.status}</div>
                 </div>
             </div>
-            
+            <div className="bg-white rounded-lg  mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-1">
+                <div className="border p-4 rounded-lg flex flex-col shadow-md">
+                    <span className=" text-sm font-semibold">Total Seats</span>
+                    <span className="text-sm ">{selectedShow?.totalSeats || 0}</span>
+                </div>
+                <div className="border p-4 rounded-lg flex flex-col shadow-md">
+                    <span className=" text-sm font-semibold">Available Seats</span>
+                    <span className="test-sm ">{(selectedShow?.totalSeats - (selectedShow?.reservedSeats + selectedShow?.bookedSeats)) || 0}</span>
+                </div>
+                <div className="border p-4 rounded-lg flex flex-col shadow-md">
+                    <span className=" text-sm font-semibold">Reserved Seats</span>
+                    <span className="test-sm ">{selectedShow?.reservedSeats || 0}</span>
+                </div>
+                <div className="border p-4 rounded-lg flex flex-col shadow-md">
+                    <span className=" text-sm font-semibold">Booked Seats</span>
+                    <span className="test-sm ">{selectedShow?.bookedSeats || 0}</span>
+                </div>
+                <div className="border p-4 rounded-lg flex flex-col shadow-md">
+                    <span className=" text-sm font-semibold">People Inside Auditorium</span>
+                    <span className="test-sm ">{selectedShow?.peopleInsideAuditorium || 0}</span>
+                </div>
+
+            </div>
             <div className='font-semibold text-xl mt-2'>Available Show Timings</div>
             {shows.length === 0 && <div className='p-3 flex justify-center items-center'>No shows Available</div>}
             <div className='my-3'>
@@ -59,10 +82,10 @@ const CheckIn = () => {
 
             </div>
             <div>
-                {selectedShow && Object.keys(selectedShow).length > 0 && <UsersCheckInTable show={selectedShow} showStartTime={selectedShow?.showStartTime} />}
+                {selectedShow && Object.keys(selectedShow).length > 0 && <LiveBookingsTable show={selectedShow} showStartTime={selectedShow?.showStartTime} />}
             </div>
         </div>
     );
 };
 
-export default CheckIn;
+export default LiveBookings;

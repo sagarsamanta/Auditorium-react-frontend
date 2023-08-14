@@ -3,7 +3,7 @@ import { CustomDataTable as DataTable } from "./DataTable";
 import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { useState } from "react";
 import TicketModal from "./UI/TicketModal";
-import { BOOKING_STATUS } from '../lib/consts';
+import { BOOKING_STATUS, SEATS_STATUS } from '../lib/consts';
 import { TbTicketOff } from "react-icons/tb";
 import { IoTicketOutline } from "react-icons/io5";
 import Modal from './UI/Modal';
@@ -50,13 +50,14 @@ const DataTableAdminBookings = ({ data, className }) => {
             title: row?.movie?.title,
             poster: row?.movie?.poster,
             releaseDate: row?.movie?.releaseDate,
-            showTitle: row?.showtime?.showTitle,
+            showTitle: row?.showtime?.title,
             showTime: row?.showtime?.showStartTime,
             noOfSeatsBook: row?.seats?.length,
             bookingId: row?.bookingId,
-            seatNo: row?.seats?.map((a) => a.seatNo).join(", "),
+            seatsPriceObj: row?.seats,
             amount: row?.totalPrice,
-            language: row?.movie?.language
+            language: row?.movie?.language,
+
         })
         setOpenTicketModal(true)
     }
@@ -87,9 +88,17 @@ const DataTableAdminBookings = ({ data, className }) => {
         },
         {
             name: 'Booked seats',
-            cell: row => {
-                const allSeats = row?.seats?.map((a) => a.seatNo).join(", ")
-                return <span title={allSeats}>{allSeats}</span>
+            minWidth:'300px',
+            cell: (row) => {
+                return (
+                    <div className="flex flex-wrap gap-2">
+                        {row?.seats?.map((seat) => (
+                            <div className="flex gap-[2px] justify-center items-center ">
+                                <div className={`${seat.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-1 rounded-sm'} ${seat.status === SEATS_STATUS.VISITED && 'bg-green-500'}`}>{seat?.seatNo}</div>
+                            </div>
+                        ))}
+                    </div>
+                );
             },
         },
         {

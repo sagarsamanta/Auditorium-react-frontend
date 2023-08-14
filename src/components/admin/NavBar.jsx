@@ -40,7 +40,16 @@ const NavBar = () => {
             <BiMoviePlay size={20} />
             <div>Bookings </div>
           </div>
-        </Link>        
+        </Link>    
+        <Link
+          to={`/admin/live-bookings`}
+          className={`${(startsWith("/admin/live-bookings")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}
+        >
+          <div className='flex justify-center items-center gap-4'>
+            <GoHistory size={20} />
+            <div>Live Bookings </div>
+          </div>
+        </Link>    
         <Link to="/admin/check-in" className={`${(startsWith("/admin/check-in")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
           <div className="flex justify-center items-center gap-4">
             <BsCheckCircle size={19} />

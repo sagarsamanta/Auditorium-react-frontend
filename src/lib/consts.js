@@ -43,3 +43,8 @@ export const BOOKING_STATUS = {
   VISITED: "VISITED",
   CANCEL: "CANCEL"
 };
+export const SEATS_STATUS = {
+  BOOKED: "BOOKED",
+  VISITED: "VISITED",
+  CANCEL: "CANCEL"
+};
