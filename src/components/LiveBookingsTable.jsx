@@ -113,7 +113,7 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
                     <div className="flex flex-wrap gap-2">
                         {row?.seats?.map((seat) => (
                             <div className="flex gap-[2px] justify-center items-center ">
-                                <div className={`${seat.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-1 rounded-sm'} ${seat.status === SEATS_STATUS.VISITED && 'bg-green-500'}`}>{seat?.seatNo}</div>
+                                <div className={` font-semibold ${seat.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-1 rounded-lg'} ${seat.status === SEATS_STATUS.VISITED && 'bg-green-500  p-1 rounded-lg'}`}>{seat?.seatNo}</div>
                             </div>
                         ))}
                     </div>

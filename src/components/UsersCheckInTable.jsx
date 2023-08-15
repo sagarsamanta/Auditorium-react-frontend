@@ -2,40 +2,53 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../lib/hooks/useAuth";
 import SearchBox from "./UI/SearchBox";
 import Axios from "../lib/axiosInstance";
-import Clipboard from "clipboard";
-import { displayDate, displayTime } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
 
-import { AiOutlineCopy } from "react-icons/ai";
-import { toast } from "react-toastify";
+import { MdOutlineVerified } from "react-icons/md";
+import { RxCrossCircled } from "react-icons/rx";
 import { BOOKING_STATUS, SEATS_STATUS } from "../lib/consts";
-import { TbTicketOff } from "react-icons/tb";
+import Modal from "./UI/Modal";
 const UsersCheckInTable = ({ show, showStartTime }) => {
     const [data, setData] = useState([]);
     const [tempData, setTempData] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [confirmButtonLoading, setConfirmLoading] = useState(false);
+    const [confirmModal, setConfirmModal] = useState(false);
+    const [selectedSeat, setSelectedSeat] = useState(null)
     const { token } = useAuth();
 
-    const chnageSeatsStatus = (id, status) => {
+    const handleMarkAsVisited = () => {
+        setConfirmLoading(true)
         Axios(
             "PUT",
-            `booking/seats-status/${id}`,
-            { newStatus: status },
+            `booking/seats-status/${selectedSeat?._id}`,
+            { newStatus: SEATS_STATUS.VISITED },
             { authRequest: true, token: token }
         )
             .then((res) => {
+                console.log(res);
                 if (res.status === 200) {
-                    const updatedBookings = data.map((booking) => {
-                        if (booking.bookingId === id) {
-                            console.log(booking.bookingId, id);
-                            return { ...booking, status: res?.data?.status };
-                        }
-                        return booking;
-                    });
-                    setData(updatedBookings);
+                    // Find the index of the updated row in your state
+                    const rowIndex = data.findIndex((r) => r._id === selectedSeat._id);
+
+                    if (rowIndex !== -1) {
+                        // Create a new copy of the rows array with the updated row
+                        const updatedRows = [...data];
+                        updatedRows[rowIndex] = { ...selectedSeat, status: SEATS_STATUS.VISITED };
+
+                        // Update the state with the new array
+                        setData(updatedRows);
+                    }
+                    setSelectedSeat(null)
+                    setConfirmModal(false)
+                    setConfirmLoading(false)
                 }
             })
-            .finally(() => { })
+            .finally(() => {
+                setSelectedSeat(null)
+                setConfirmModal(false)
+                setConfirmLoading(false)
+            })
             .catch((err) => {
                 console.log(err);
             });
@@ -49,7 +62,6 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
         })
             .then((res) => {
                 setData(res.data?.data);
-                console.log(res.data);
                 setTempData(res.data?.data);
                 setLoading(false);
             })
@@ -61,45 +73,48 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
             });
     }, [show]);
 
-   
+
 
     const columns = [
         {
             name: "Seat No",
-            selector: (row) => <div className="text-lg font-semibold text-red-500">{row?.seatNo}</div>,
+            selector: (row) => <div className="text-lg font-semibold text-blue-700">{row?.seatNo}</div>,
         },
         {
-            name: 'Mark As Visited',
-            minWidth:'150px',
+            name: 'Visited',
+            minWidth: '100px',
             cell: (row) => (
                 <>
                     <button
-                        className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
-                        onClick={() => chnageSeatsStatus(row)}
-                        title='Cancel Ticket'
+                        className={`shadow disabled:cursor-not-allowed transition duration-300 ease-in-out  focus:shadow-outline focus:outline-none rounded disabled:opacity-50 ${row.status === SEATS_STATUS.BOOKED && 'text-red-700 border border-red-700 p-2 rounded-sm'} ${row.status === SEATS_STATUS.VISITED && 'text-green-700 p-2 rounded-sm border border-green-700'}`}
+                        onClick={() => {
+                            openConfirmModalHandelar()
+                            setSelectedSeat(row)
+                        }}
                         disabled={row.status !== BOOKING_STATUS.BOOKED}
                     >
-                        <TbTicketOff size={15} />
+                        {row.status === SEATS_STATUS.BOOKED ? <RxCrossCircled size={20} /> : <MdOutlineVerified size={20} />}
+
                     </button>
                 </>
             ),
         },
         {
             name: "Seats Status",
-            minWidth: "300px",
+            minWidth: "150px",
             cell: (row) => {
                 return (
                     <div className="flex flex-wrap gap-2">
                         {
-                            <div className="flex gap-[2px] justify-center items-center ">
-                                <div className={`${row.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-2 rounded-sm'} ${row.status === SEATS_STATUS.VISITED && 'bg-green-500 p-2 rounded-sm'}`}>{row?.status}</div>
+                            <div className="flex gap-[2px] justify-center items-center font-semibold">
+                                <div className={`${row.status === SEATS_STATUS.BOOKED && 'text-red-700 p-2 rounded-lg'} ${row.status === SEATS_STATUS.VISITED && 'text-green-700 p-2  rounded-lg'}`}>{row?.status}</div>
                             </div>
                         }
                     </div>
                 );
             },
         },
-       
+
         {
             name: "Booking Id",
             selector: (row) => (
@@ -131,55 +146,15 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
             minWidth: "200px",
             selector: (row) => row?.userId?.empId,
         },
-       
-        // {
-        //     name: "Status",
-        //     selector: (row) => row.status,
-        //     cell: (row) => (
-        //         <div className="space-x-4 flex justify-center">
-        //             <div
-        //                 className={`${row.status === BOOKING_STATUS.VISITED &&
-        //                     "bg-green-400 text-black "
-        //                     } ${row.status === BOOKING_STATUS.BOOKED &&
-        //                     "bg-yellow-300 text-black "
-        //                     } ${row.status === BOOKING_STATUS.CANCEL && "bg-red-400 text-black"
-        //                     } p-2 rounded-lg transition duration-200 border text-center `}
-        //             >
-        //                 {row?.status}
-        //             </div>
-        //         </div>
-        //     ),
-        // },
 
-        // {
-        //     name: "Actions",
-        //     minWidth: "150px",
-        //     cell: (row) => (
-        //         <div className="space-x-4 flex justify-center">
-        //             <button
-        //                 disabled={row.status === BOOKING_STATUS.CANCEL}
-        //                 onClick={() => {
-        //                     const status =
-        //                         row.status === BOOKING_STATUS.VISITED
-        //                             ? BOOKING_STATUS.BOOKED
-        //                             : BOOKING_STATUS.VISITED;
-        //                     chnageBookingStatus(row?.bookingId, status);
-        //                 }}
-        //                 className={`${row.status === BOOKING_STATUS.VISITED &&
-        //                     "border-red-400 text-red-700 hover:bg-red-500 hover:text-white "
-        //                     }  ${row.status === BOOKING_STATUS.BOOKED &&
-        //                     "border-green-600 text-green-700 hover:bg-green-300 disabled:opacity-50 hover:text-black "
-        //                     } p-2 disabled:opacity-50 rounded-lg transition duration-200 border  text-center`}
-        //             >
-        //                 {row.status === BOOKING_STATUS.VISITED
-        //                     ? "Mark As Booked"
-        //                     : "Mark As Visited"}
-        //             </button>
-        //         </div>
-        //     ),
-        // },
+
     ];
-   
+    const openConfirmModalHandelar = () => {
+        setConfirmModal(true)
+    }
+    const closeConfirmModalHandelar = () => {
+        setConfirmModal(false)
+    }
     return (
         <>
             <SearchBox
@@ -198,6 +173,18 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
                 paginationPerPage={20}
                 title="All Booked seats"
                 progressPending={isLoading}
+            />
+            <Modal
+                isOpen={confirmModal}
+                closeHandler={closeConfirmModalHandelar}
+                config={{
+                    title: <span >Make <span className="text-green-500">{selectedSeat?.seatNo}</span> as VISITED !</span>,
+                    text: 'This will make the seats stats as VISITED.',
+                    buttonText: 'Ok',
+                    buttonHandler: handleMarkAsVisited,
+                    loading: confirmButtonLoading,
+                    buttonClassName: 'bg-red-600 text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
+                }}
             />
         </>
     );
