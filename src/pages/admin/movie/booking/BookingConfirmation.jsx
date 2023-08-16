@@ -3,15 +3,23 @@ import { displayDate, displayTime, getCurrencyFormat } from '../../../../lib/uti
 import { MdClose } from 'react-icons/md';
 import { PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
 import { useAuth } from '../../../../lib/hooks/useAuth';
+import SabpaisaPaymentGateway from '../../../../payments/Payment';
 
 const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, handlePay }) => {
 
     const { showStartTime, movie, showEndTime } = show;
     const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOS.DEFAULT);
+    const [payerName, setPayerName] = useState("Tanuj Patra");
+    const [payerEmail, setPayerEmail] = useState("anand.kumar@sabpaisa.in");
+    const [payerMobile, setPayerMobile] = useState("6291312929");
+    const [isOpen, setIsOpen] = useState(false);
 
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);
     };
+    const openPaymentModal = (payMode) => {
+        setIsOpen(true)
+    }
     const { user } = useAuth();
     const isNotValidPayment = user?.role === USER_EMPLOYEE_ROLE && paymentMethod === PAYMENT_METHOS.CASH
     return (
@@ -60,11 +68,12 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
                     </div>
                     {<div className={`text-sm bg-yellow-200 px-3 py-1 rounded-full transition ${isNotValidPayment ? 'opacity-100' : 'opacity-0'}`}>{USER_CASH_PAY_WARNING_MESSAGE}</div>}
 
-                    <button disabled={isNotValidPayment} onClick={() => handlePay(paymentMethod)} className="bg-blue-500 hover:bg-blue-600  text-white py-2 px-4 rounded-full w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button disabled={isNotValidPayment} onClick={() => openPaymentModal(paymentMethod)} className="bg-blue-500 hover:bg-blue-600  text-white py-2 px-4 rounded-full w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed">
                         Proceed to Pay
                     </button>
                 </div>
             </div>
+            <SabpaisaPaymentGateway payerName={payerName} payerEmail={payerEmail} payerMobile={payerMobile} isOpen={isOpen} />
         </div>
     );
 };
