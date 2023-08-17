@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { displayDate, displayTime, getCurrencyFormat } from '../../../../lib/utils';
 import { MdClose } from 'react-icons/md';
-import { BASE_DOMAIN, PAYMENT, PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
+import { API_ROOT, BASE_DOMAIN, PAYMENT, PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
 import { useAuth } from '../../../../lib/hooks/useAuth';
 import SabpaisaPaymentGateway from '../../../../payments/Payment';
 import Axios from '../../../../lib/axiosInstance';
@@ -14,12 +14,19 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
     const [payerEmail, setPayerEmail] = useState("anand.kumar@sabpaisa.in");
     const [payerMobile, setPayerMobile] = useState("6291312929");
     const [isOpen, setIsOpen] = useState(false);
-    const [paymentData, setPaymentData] = useState({ encData: '', clientCode: 'TM001' });
     const { user } = useAuth();
     const paymentFormRef = useRef();
+    const clientCodeRef = useRef();
+    const encDataRef = useRef();
+    const clientCode = "TM001"
 
-    console.log('user', user);
-
+    function randomStr(len, arr) {
+        var ans = "";
+        for (var i = len; i > 0; i--) {
+          ans += arr[Math.floor(Math.random() * arr.length)];
+        }
+        return ans;
+      }
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);
     };
@@ -29,23 +36,24 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
             payerName: user.name,
             payerEmail: user.email,
             payerMobile: "9876543210",
-            clientTxnId: "abcdefghijklmnopurst-001",
+            clientTxnId: randomStr(20, "12345abcde"),
             amount: totalAmount,
             clientCode: "TM001",
             transUserName: "spuser_2013",
             transUserPassword: "RIADA_SP336",
-            callbackUrl: `${BASE_DOMAIN}/admin/payment/`,
+            callbackUrl: `${API_ROOT}/payment/decrypt-data`,
             channelId: "W",
             mcc: "5666",
             transData: new Date(),
-        }).then((res) => {
+            udf1:'userId',
+            udf2:'showtimeId',
+            udf3:'seatIds',
+            udf4:'paymentMode',
+        }).then(async (res) => {
             if (res.status === 200) {
-                const formData = {
-                    encData: res.data.data,
-                    clientCode: "TM001",
-                };
-                setPaymentData(formData);
-                // paymentFormRef.current.submit();
+                encDataRef.current.value = res?.data?.data
+                clientCodeRef.current.value = clientCode
+                paymentFormRef.current.submit();
             }
             console.log('res', res);
         }).catch((err) => {
@@ -53,6 +61,7 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
         });
         setIsOpen(true);
     }
+
     const isNotValidPayment = user?.role === USER_EMPLOYEE_ROLE && paymentMethod === PAYMENT_METHOS.CASH
     return (
         <div className="relative  flex justify-center items-center p-0 md:p-0">
@@ -104,8 +113,8 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
                         Proceed to Pay
                     </button>
                     <form action={PAYMENT.spURL} method="post" ref={paymentFormRef}>
-                        <input type="text" name="encData" value={paymentData.encData} />
-                        <input type="text" name="clientCode" value={paymentData?.clientCode} />
+                        <input type="text" name="encData" ref={encDataRef} />
+                        <input type="text" name="clientCode" ref={clientCodeRef} />
                     </form>
                 </div>
             </div>
