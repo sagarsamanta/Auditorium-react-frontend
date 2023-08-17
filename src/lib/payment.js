@@ -11,7 +11,7 @@ function randomStr(len, arr) {
 const clientCode = "TM001";
 
 export const redirectToPaymentGateway = (user, totalAmount, bookingData, paymentFormRefs) => {
-    if (!user || bookingData?._id) return;
+    if (!user || !bookingData?._id) return;
 
     console.log('user', user);
     console.log('totalAmount', totalAmount);
