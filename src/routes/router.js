@@ -26,6 +26,7 @@ import AdminBookingsPage from "../pages/admin/AdminBookingsPage";
 import ReportsPageShowWise from "../pages/admin/reports/ReportsPageShowWise";
 import BookingHistory from "../pages/admin/BookingHistory";
 import LiveBookings from "../pages/admin/Live-bookings/LiveBookings";
+import SuccessConfirm from "../pages/payment/SuccessConfirm";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
     {
         path: "admin",
         element: <AuthentiCate><AdminPanelLayout><div>admin</div></AdminPanelLayout></AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/payment",
+        element: <AuthentiCate><AdminPanelLayout><SuccessConfirm /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

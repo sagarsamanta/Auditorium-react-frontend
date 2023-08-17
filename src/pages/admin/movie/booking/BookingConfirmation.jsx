@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { displayDate, displayTime, getCurrencyFormat } from '../../../../lib/utils';
 import { MdClose } from 'react-icons/md';
-import { PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
+import { BASE_DOMAIN, PAYMENT, PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
 import { useAuth } from '../../../../lib/hooks/useAuth';
 import SabpaisaPaymentGateway from '../../../../payments/Payment';
+import Axios from '../../../../lib/axiosInstance';
 
 const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, handlePay }) => {
 
@@ -13,14 +14,45 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
     const [payerEmail, setPayerEmail] = useState("anand.kumar@sabpaisa.in");
     const [payerMobile, setPayerMobile] = useState("6291312929");
     const [isOpen, setIsOpen] = useState(false);
+    const [paymentData, setPaymentData] = useState({ encData: '', clientCode: 'TM001' });
+    const { user } = useAuth();
+    const paymentFormRef = useRef();
+
+    console.log('user', user);
 
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);
     };
-    const openPaymentModal = (payMode) => {
-        setIsOpen(true)
+    const proceedToPay = (payMode) => {
+        // POST request to backend
+        Axios("POST", "/payment/encryot-data", {
+            payerName: user.name,
+            payerEmail: user.email,
+            payerMobile: "9876543210",
+            clientTxnId: "abcdefghijklmnopurst-001",
+            amount: totalAmount,
+            clientCode: "TM001",
+            transUserName: "spuser_2013",
+            transUserPassword: "RIADA_SP336",
+            callbackUrl: `${BASE_DOMAIN}/admin/payment/`,
+            channelId: "W",
+            mcc: "5666",
+            transData: new Date(),
+        }).then((res) => {
+            if (res.status === 200) {
+                const formData = {
+                    encData: res.data.data,
+                    clientCode: "TM001",
+                };
+                setPaymentData(formData);
+                // paymentFormRef.current.submit();
+            }
+            console.log('res', res);
+        }).catch((err) => {
+            console.log('err', err);
+        });
+        setIsOpen(true);
     }
-    const { user } = useAuth();
     const isNotValidPayment = user?.role === USER_EMPLOYEE_ROLE && paymentMethod === PAYMENT_METHOS.CASH
     return (
         <div className="relative  flex justify-center items-center p-0 md:p-0">
@@ -68,12 +100,16 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
                     </div>
                     {<div className={`text-sm bg-yellow-200 px-3 py-1 rounded-full transition ${isNotValidPayment ? 'opacity-100' : 'opacity-0'}`}>{USER_CASH_PAY_WARNING_MESSAGE}</div>}
 
-                    <button disabled={isNotValidPayment} onClick={() => openPaymentModal(paymentMethod)} className="bg-blue-500 hover:bg-blue-600  text-white py-2 px-4 rounded-full w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button disabled={isNotValidPayment} onClick={() => proceedToPay(paymentMethod)} className="bg-blue-500 hover:bg-blue-600  text-white py-2 px-4 rounded-full w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed">
                         Proceed to Pay
                     </button>
+                    <form action={PAYMENT.spURL} method="post" ref={paymentFormRef}>
+                        <input type="text" name="encData" value={paymentData.encData} />
+                        <input type="text" name="clientCode" value={paymentData?.clientCode} />
+                    </form>
                 </div>
             </div>
-            <SabpaisaPaymentGateway payerName={payerName} payerEmail={payerEmail} payerMobile={payerMobile} isOpen={isOpen} />
+            {/* <SabpaisaPaymentGateway payerName={payerName} payerEmail={payerEmail} payerMobile={payerMobile} isOpen={isOpen} /> */}
         </div>
     );
 };
