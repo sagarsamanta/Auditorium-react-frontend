@@ -1,12 +1,13 @@
 import Axios from "../../lib/axiosInstance";
-import { MAX_SEATS_PER_BOOKING, SEATS, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../../lib/consts";
+import { MAX_SEATS_PER_BOOKING, PAYMENT, SEATS, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../../lib/consts";
 import { getCurrencyFormat, getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../UI/Loader";
 import Modal from "../UI/Modal";
 import BookingConfirmation from "../../pages/admin/movie/booking/BookingConfirmation";
 import BookingConfirm from "../UI/BookingConfirm";
+import { redirectToPaymentGateway } from "../../lib/payment";
 
 const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
@@ -17,6 +18,11 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const [isOpenReserveConfirmSeatModal, setHandleCloseReservedConfirmModal] = useState(false);
     const [selectedReservedSeate, setSelectedReservedSeate] = useState('');
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
+
+    const paymentFormRef = useRef();
+    const clientCodeRef = useRef();
+    const encDataRef = useRef();
+    const paymentFormRefs = { paymentFormRef, clientCodeRef, encDataRef };
 
     const fetchFreshData = async () => {
         if (authUser?.user?.role !== USER_ADMIN_ROLE) setLoading({ ...loading, seats: true });
@@ -98,9 +104,10 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
 
             // API call to save seats
             Axios('POST', `/booking/book-movie/${movieId}`, seats, { authRequest: true, token: authUser.token })
-                .then((res) => {
+                .then(async (res) => {
                     if (res?.status === 201) {
-                        toast.success(`${res?.data?.message}`);
+                        // toast.success(`${res?.data?.message}`);
+                        await redirectToPaymentGateway(authUser.user, seats.totalPrice, res?.data?.data, paymentFormRefs);
                     }
                 })
                 .finally(() => {
@@ -329,6 +336,10 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                         buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
                     }}
                 />
+                <form action={PAYMENT.spURL} method="post" ref={paymentFormRef}>
+                    <input type="text" name="encData" ref={encDataRef} />
+                    <input type="text" name="clientCode" ref={clientCodeRef} />
+                </form>
             </div>
         </>
     );
