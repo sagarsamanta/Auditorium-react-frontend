@@ -92,7 +92,6 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         if (selectedSeats.length > 0) {
             setLoading(prev => { return { ...prev, booking: true } });
             const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
-            console.log("ppppppppppppppp", payMode);
             const seats = {
                 movieId,
                 showtimeId: showId,
@@ -174,7 +173,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const closeSeatBookinConfirmModal = () => {
         setIsOpenSelectedSeatModal(false)
     }
-    console.log(show);
+    
     const bookingConfirmationSchema = () => {
         const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
         const totalAmount = getTotalSelectedPrice(seatPriceObj)
