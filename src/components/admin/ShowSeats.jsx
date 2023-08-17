@@ -173,7 +173,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const closeSeatBookinConfirmModal = () => {
         setIsOpenSelectedSeatModal(false)
     }
-    
+
     const bookingConfirmationSchema = () => {
         const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
         const totalAmount = getTotalSelectedPrice(seatPriceObj)
@@ -243,30 +243,39 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                                         <div className="screen mb-6 h-6 bg-skin-muted/50 text-center">
                                             Screen
                                         </div>
-                                        {Object.keys(SEATS).map((row) => {
-                                            const seats = SEATS[row];
+                                        {Object.keys(SEATS).map((row_set) => {
+                                            const rows = SEATS[row_set];
                                             return (
-                                                <div
-                                                    key={row}
-                                                    className={`row row-${row} my-1 flex justify-center items-center gap-5`}
-                                                >
+                                                <div key={row_set} className={`${row_set} pt-2 pb-4 px-4 my-3 bg-skin-muted/10 rounded-md`}>
                                                     <div
-                                                        className={`seats-${row} flex gap-2 justify-around items-center`}
+                                                        className={`seats-${row_set} flex flex-col gap-1`}
                                                     >
-                                                        {seats.map((seat) => {
-                                                            const seatNo = `${row}${seat}`;
-                                                            return (
-                                                                <>
-                                                                    <button
-                                                                        key={seatNo}
-                                                                        className={`seat w-7 h-7 ${getSeatStatusColor(seatNo)} p-1 rounded-md font-semibold text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
-                                                                        onClick={(e) => handleSelect(e, seatNo)}
-                                                                    >
-                                                                        {seatNo}
-                                                                    </button>
-                                                                </>
-                                                            );
-                                                        })}
+                                                        <span className="capitalize m-auto">{row_set.replace('_to_', ' - ')} - {getCurrencyFormat(priceList[`priceRow_${row_set}`])}</span>
+                                                        {
+                                                            Object.keys(rows).map((row) => {
+                                                                const seats = rows[row];
+                                                                return (
+                                                                    <div className="w-full flex justify-center items-center gap-1">
+                                                                    {
+                                                                        seats.map((seat) => {
+                                                                            const seatNo = `${row}${seat}`;
+                                                                            return (
+                                                                                <>
+                                                                                    <button
+                                                                                        key={seatNo}
+                                                                                        className={`seat w-7 h-7 ${getSeatStatusColor(seatNo)} p-1 rounded-md font-semibold text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
+                                                                                        onClick={(e) => handleSelect(e, seatNo)}
+                                                                                    >
+                                                                                        {seatNo}
+                                                                                    </button>
+                                                                                </>
+                                                                            );
+                                                                        })
+                                                                    }
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
                                                     </div>
                                                 </div>
                                             );
