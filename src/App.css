@@ -1,3 +1,7 @@
+* {
+    @apply scrollbar-thin scrollbar-thumb-rounded-full;
+}
+
 #sidebar {
     --tw-translate-x: -100%;
 }

@@ -84,6 +84,11 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         return `${availableTextColor} border transition bg-green-800/20 hover:bg-green-800/40 border-green-800/70 focus:ring-green-800/70`;
     }
 
+    const getRowBgColor = () => {
+        const bgColor = authUser?.user?.role === USER_ADMIN_ROLE ? 'bg-gray-200/50' : 'bg-skin-muted/10';
+        return `${bgColor}`;
+    }
+
     const getTotalSelectedPrice = (seatsObj) => {
         return seatsObj?.reduce((total, seat) => total + seat.price, 0);
     };
@@ -240,38 +245,38 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                             <div className="seats overflow-hidden flex justify-center">
                                 <div className="wrapper-1 overflow-x-auto">
                                     <div className="seats-container mt-5 w-max">
-                                        <div className="screen mb-6 h-6 bg-skin-muted/50 text-center">
+                                        <div className="screen mb-6 h-6 bg-skin-muted/50 text-center rounded-md">
                                             Screen
                                         </div>
                                         {Object.keys(SEATS).map((row_set) => {
                                             const rows = SEATS[row_set];
                                             return (
-                                                <div key={row_set} className={`${row_set} pt-2 pb-4 px-4 my-3 bg-skin-muted/10 rounded-md`}>
+                                                <div key={row_set} className={`${row_set} pt-2 pb-4 px-4 my-3 ${getRowBgColor()} rounded-md`}>
                                                     <div
                                                         className={`seats-${row_set} flex flex-col gap-1`}
                                                     >
-                                                        <span className="capitalize m-auto">{row_set.replace('_to_', ' - ')} - {getCurrencyFormat(priceList[`priceRow_${row_set}`])}</span>
+                                                        <span className="capitalize text-center mx-auto">{row_set.replace('_to_', '-')} ({getCurrencyFormat(priceList[`priceRow_${row_set}`])})</span>
                                                         {
                                                             Object.keys(rows).map((row) => {
                                                                 const seats = rows[row];
                                                                 return (
                                                                     <div className="w-full flex justify-center items-center gap-1">
-                                                                    {
-                                                                        seats.map((seat) => {
-                                                                            const seatNo = `${row}${seat}`;
-                                                                            return (
-                                                                                <>
-                                                                                    <button
-                                                                                        key={seatNo}
-                                                                                        className={`seat w-7 h-7 ${getSeatStatusColor(seatNo)} p-1 rounded-md font-semibold text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
-                                                                                        onClick={(e) => handleSelect(e, seatNo)}
-                                                                                    >
-                                                                                        {seatNo}
-                                                                                    </button>
-                                                                                </>
-                                                                            );
-                                                                        })
-                                                                    }
+                                                                        {
+                                                                            seats.map((seat) => {
+                                                                                const seatNo = `${row}${seat}`;
+                                                                                return (
+                                                                                    <>
+                                                                                        <button
+                                                                                            key={seatNo}
+                                                                                            className={`seat w-7 h-7 ${getSeatStatusColor(seatNo)} p-1 rounded-md font-semibold text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
+                                                                                            onClick={(e) => handleSelect(e, seatNo)}
+                                                                                        >
+                                                                                            {seatNo}
+                                                                                        </button>
+                                                                                    </>
+                                                                                );
+                                                                            })
+                                                                        }
                                                                     </div>
                                                                 )
                                                             })
@@ -344,9 +349,9 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                         buttonClassName: 'bg-skin-base text-white font-bold py-2 px-10 rounded relative disabled:opacity-75 disabled:cursor-not-allowed'
                     }}
                 />
-                <form action={PAYMENT.spURL} method="post" ref={paymentFormRef}>
-                    <input type="text" name="encData" ref={encDataRef} />
-                    <input type="text" name="clientCode" ref={clientCodeRef} />
+                <form action={PAYMENT.spURL} method="post" ref={paymentFormRef} className="hidden">
+                    <input type="hidden" name="encData" ref={encDataRef} />
+                    <input type="hidden" name="clientCode" ref={clientCodeRef} />
                 </form>
             </div>
         </>
