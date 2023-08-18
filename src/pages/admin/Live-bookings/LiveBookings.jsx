@@ -46,7 +46,7 @@ const LiveBookings = () => {
                     <div className='font-semibold text-base md:text-xl'>{activeMovie?.title}</div>
                 </div>}
             </div>
-            <div className="bg-white rounded-lg  mt-2 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-1">
+            <div className="bg-white rounded-lg  mt-2 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-1">
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
                     <span className=" text-sm font-semibold">Total Collection</span>
                     <span className="text-sm ">{getCurrencyFormat(0)}</span>
