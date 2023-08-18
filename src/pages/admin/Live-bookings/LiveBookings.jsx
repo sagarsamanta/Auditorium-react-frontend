@@ -48,20 +48,20 @@ const LiveBookings = () => {
             </div>
             <div className="bg-white rounded-lg  mt-2 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-1">
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
-                    <span className=" text-sm font-semibold">Total Collection</span>
-                    <span className="text-sm ">{getCurrencyFormat(0)}</span>
+                    <span className="text-lg font-semibold">{getCurrencyFormat(0)}</span>
+                    <span className="text-sm">Total Collection</span>
                 </div>
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
-                    <span className=" text-sm font-semibold">Available Seats</span>
-                    <span className="test-sm ">{(selectedShow?.totalSeats - (selectedShow?.reservedSeats + selectedShow?.bookedSeats)) || 0}</span>
+                    <span className="text-lg font-semibold">{(selectedShow?.totalSeats - (selectedShow?.reservedSeats + selectedShow?.bookedSeats)) || 0}</span>
+                    <span className="text-sm">Available Seats</span>
                 </div>
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
-                    <span className=" text-sm font-semibold">Reserved Seats</span>
-                    <span className="test-sm ">{selectedShow?.reservedSeats || 0}</span>
+                    <span className="text-lg font-semibold">{selectedShow?.reservedSeats || 0}</span>
+                    <span className="text-sm">Reserved Seats</span>
                 </div>
                 <div className="border p-4 rounded-lg flex flex-col shadow-md">
-                    <span className=" text-sm font-semibold">Booked Seats</span>
-                    <span className="test-sm ">{selectedShow?.bookedSeats || 0}</span>
+                    <span className="text-lg font-semibold">{selectedShow?.bookedSeats || 0}</span>
+                    <span className="text-sm">Booked Seats</span>
                 </div>
             </div>
             <div className='font-semibold text-xl mt-2'>Available Show Timings</div>

@@ -52,7 +52,7 @@ const BookingsPage = () => {
                                         {
                                             upCommingShows?.map((booking) => {
                                                 return (
-                                                    <div key={booking?._id} className={`py-4 text-skin-inverted transition-all flex flex-col md:flex-row items-center gap-4 ${booking?.status === BOOKING_STATUS.VISITED ? 'grayscale' : ''}`}>
+                                                    <div key={booking?._id} className={`p-4 text-skin-inverted transition-all flex flex-col md:flex-row items-center gap-4 bg-gray-700/30 rounded-md ${booking?.status === BOOKING_STATUS.VISITED ? 'grayscale' : ''}`}>
                                                         <div className={`w-full md:w-1/2 h-[300px] min-h-[300px] max-h-[300px] relative overflow-hidden rounded-md shadow-lg border border-white/5`}>
                                                             <img src={booking?.movie?.poster} alt={booking?.movie?.title} className="w-full h-full absolute inset-0 object-cover bg-center z-[0] blur-lg" />
                                                             <img src={booking?.movie?.poster} alt={booking?.movie?.title} className="w-full h-full absolute inset-0 object-contain bg-center z-[2]" />

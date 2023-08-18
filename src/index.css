@@ -15,8 +15,8 @@
     --color-button-muted: 99, 102, 241;
 
     --color-seat-available: 217, 217, 217;
-    --color-seat-selected: 113, 215, 117;
-    --color-seat-booked: 137, 137, 137;
+    --color-seat-selected: 137, 137, 137;
+    --color-seat-booked: 113, 215, 117;
     --color-seat-reserved: 230, 213, 64;
   }
 }

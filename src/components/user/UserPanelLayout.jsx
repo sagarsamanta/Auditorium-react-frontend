@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const UserPanelLayout = ({ children }) => {
     const { isAdmin } = useAuth();
     if (isAdmin) {
-        return <Navigate to="/admin" />;
+        return <Navigate to="/admin/movies" />;
     }
     return (
         <>

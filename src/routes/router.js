@@ -39,11 +39,11 @@ const router = createBrowserRouter([
         element: <UserPanelLayout><LoginPage /></UserPanelLayout>,
         errorElement: <ErrorPage />,
     },
-    {
-        path: "admin",
-        element: <AuthentiCate><AdminPanelLayout><div>admin</div></AdminPanelLayout></AuthentiCate>,
-        errorElement: <ErrorPage />,
-    },
+    // {
+    //     path: "admin",
+    //     element: <AuthentiCate><AdminPanelLayout><div>admin</div></AdminPanelLayout></AuthentiCate>,
+    //     errorElement: <ErrorPage />,
+    // },
     {
         path: "admin/payment",
         element: <AuthentiCate><AdminPanelLayout><SuccessConfirm /></AdminPanelLayout></AuthentiCate>,

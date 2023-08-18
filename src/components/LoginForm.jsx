@@ -42,7 +42,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (userContext && userContext?.authUser?.isAuthenticated) {
-            if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin');
+            if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin/movies');
             if (userContext?.authUser?.user?.role === USER_EMPLOYEE_ROLE) navigate('/');
         }
     }, [userContext?.authUser?.isAuthenticated, userContext?.authUser?.role]);

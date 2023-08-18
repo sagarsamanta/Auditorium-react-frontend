@@ -14,12 +14,12 @@ const NavBar = () => {
             className="flexjustify-between flex-col"
         >
             <div className="flex flex-col gap-3">
-                <Link to="/admin" className={`${(pathname === "/admin") && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
+                {/* <Link to="/admin" className={`${(pathname === "/admin") && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
                     <div className="flex justify-center items-center gap-4">
                         <RxDashboard size={20} />
                         <div>Dashboard</div>
                     </div>
-                </Link>
+                </Link> */}
                 <Link to="/admin/movies" className={`${(startsWith("/admin/movies") || startsWith("/admin/shows")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
                     <div className="flex justify-center items-center gap-4">
                         <BiMoviePlay size={20} />

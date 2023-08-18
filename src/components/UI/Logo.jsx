@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const Logo = ({ to = '/', className = '' }) => {
     return (
         <>
             <Link
                 to={to}
-                className={`text-white font-bold flex items-center space-x-2 ${className}`}
+                className={`text-white font-bold flex items-center space-x-2 max-h-full ${className}`}
             >
-                <svg
+                {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 flex-0"
                     fill="none"
@@ -23,7 +23,8 @@ const Logo = ({ to = '/', className = '' }) => {
                 </svg>
                 <span className="text-2xl font-extrabold whitespace-nowrap truncate">
                     IWS
-                </span>
+                </span> */}
+                <img src="/images/opgc-logo.jpg" alt="OPGC" style={{ height: "56px", width: "56px", objectFit: "cover", objectPosition: "center", borderRadius: "10px" }} />
             </Link>
         </>
     )

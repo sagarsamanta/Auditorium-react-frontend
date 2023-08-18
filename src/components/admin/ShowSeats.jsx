@@ -216,16 +216,16 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                     </div>
                     <div className="m-2 ">
                         <div className="flex justify-center items-center font-semibold text-lg mb-1">Seats Price List</div>
-                        <div className="w-full mx-auto color-code-wrapper flex justify-center items-center gap-x-3 text-sm">
-                            <div className="flex rounded-md items-center flex-col md:flex-row gap-2 border border-skin-base px-2">
+                        <div className="w-full mx-auto color-code-wrapper flex flex-col justify-center items-center gap-1 text-sm">
+                            <div className="flex rounded-md items-center flex-row gap-2 border border-skin-base px-2">
                                 <span className="font-semibold">A - C </span>
                                 <div className="w-fit h-fit p-1 rounded-sm " >{getCurrencyFormat(priceList?.priceRow_a_to_c)}</div>
                             </div>
-                            <div className="flex rounded-md items-center flex-col md:flex-row gap-2 border border-skin-base px-2">
+                            <div className="flex rounded-md items-center flex-row gap-2 border border-skin-base px-2">
                                 <span className="font-semibold">D - H</span>
                                 <div className="w-fit h-fit  p-1 " >{getCurrencyFormat(priceList?.priceRow_d_to_h)}</div>
                             </div>
-                            <div className="flex rounded-md items-center flex-col md:flex-row gap-2 border border-skin-base px-2">
+                            <div className="flex rounded-md items-center flex-row gap-2 border border-skin-base px-2">
                                 <span className="font-semibold">I - N</span>
                                 <div className="w-fit h-fit  p-1 " >{getCurrencyFormat(priceList?.priceRow_i_to_n)}</div>
                             </div>
@@ -255,7 +255,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                                                     <div
                                                         className={`seats-${row_set} flex flex-col gap-1`}
                                                     >
-                                                        <span className="capitalize text-center mx-auto">{row_set.replace('_to_', '-')} ({getCurrencyFormat(priceList[`priceRow_${row_set}`])})</span>
+                                                        <span className="capitalize text-center mx-auto font-semibold">{row_set.replace('_to_', '-')} ({getCurrencyFormat(priceList[`priceRow_${row_set}`])})</span>
                                                         {
                                                             Object.keys(rows).map((row) => {
                                                                 const seats = rows[row];

@@ -1,3 +1,4 @@
+export const OPGC = "Odisha Power Generation Corporation LTD."
 export const API_ROOT = process.env.API_ROOT || "http://localhost:5000/api";
 export const BASE_DOMAIN = process.env.BASE_DOMAIN || "http://localhost:5000/api/payment/decrypt-data";
 
