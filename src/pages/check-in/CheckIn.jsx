@@ -6,6 +6,7 @@ import { useAuth } from '../../lib/hooks/useAuth';
 import { displayTime } from '../../lib/utils';
 import Axios from '../../lib/axiosInstance';
 import { MdRadioButtonUnchecked } from 'react-icons/md';
+import { STATUS_ACTIVE } from '../../lib/consts';
 
 const CheckIn = () => {
     // Replace these values with your actual data
@@ -34,15 +35,15 @@ const CheckIn = () => {
 
     }, []);
     return (
-        <div className="container">
+        <div className="relative min-h-screen">
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                 <h1 className="text-xl md:text-2xl lg:text:3xl">Check-In</h1>
-                <div>
-                    <div className='font-semibold text-xl'>{activeMovie?.title}</div>
-                    <div className='bg-green-300 text-black text-center rounded-md px-2 py-1'>{activeMovie?.status}</div>
-                </div>
+                {activeMovie?.status === STATUS_ACTIVE && <div className='min-h-[32px]'>
+                    <span className='bg-green-300 text-black text-sm text-center rounded-md px-2 py-1 capitalize'>Active Movie</span>
+                    <div className='font-semibold text-base md:text-xl'>{activeMovie?.title}</div>
+                </div>}
             </div>
-            
+
             <div className='font-semibold text-xl mt-2'>Available Show Timings</div>
             {shows.length === 0 && <div className='p-3 flex justify-center items-center'>No shows Available</div>}
             <div className='my-3'>

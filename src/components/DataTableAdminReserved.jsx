@@ -13,7 +13,6 @@ const DataTableAdminReserved = ({ data, className }) => {
     const [selectedReservedSeat, setSelecterReservedSeat] = useState(null);
     const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
     const [loading, setLoading] = useState(false);
-    console.log('data', data);
 
     const askFormConfirmation = (row) => {
         setIsOpenReserveSeatModal(true);
@@ -41,15 +40,13 @@ const DataTableAdminReserved = ({ data, className }) => {
     }
     const columns = [
         {
-            name: 'Movie Date',
+            name: <>Movie Date</>,
+            maxWidth: '150px',
             cell: row => displayDate(row?.movieId?.releaseDate),
         },
         {
-            name: 'Show',
-            cell: row => row?.showId?.title,
-        },
-        {
-            name: 'Movie',
+            name: <>Movie</>,
+            minWidth: '200px',
             cell: row => (
                 <span title={row?.movieId?.title}>
                     {row?.movieId?.title}
@@ -57,24 +54,34 @@ const DataTableAdminReserved = ({ data, className }) => {
             ),
         },
         {
-            name: 'Seat No.',
+            name: <>Seat No.</>,
+            maxWidth: '100px',
             cell: row => row?.seatNo,
         },
         {
-            name: 'Start Time',
+            name: <>Show</>,
+            maxWidth: '100px',
+            cell: row => row?.showId?.title,
+        },
+        {
+            name: <>Start Time</>,
+            maxWidth: '150px',
             cell: row => displayTime(row?.showId?.showStartTime),
         },
         {
-            name: 'Cost',
+            name: <>Cost</>,
+            maxWidth: '150px',
             selector: row => row?.price,
             cell: row => getCurrencyFormat(row?.price),
         },
         {
-            name: 'Status',
+            name: <>Status</>,
+            maxWidth: '150px',
             cell: row => row?.status,
         },
         {
-            name: 'Action',
+            name: <>Action</>,
+            maxWidth: '150px',
             cell: (row) => (
                 <>
                     <button

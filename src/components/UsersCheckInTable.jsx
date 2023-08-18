@@ -77,11 +77,11 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
 
     const columns = [
         {
-            name: "Seat No",
+            name: <>Seat No</>,
             selector: (row) => <div className="text-lg font-semibold text-blue-700">{row?.seatNo}</div>,
         },
         {
-            name: 'Visited',
+            name: <>Visited</>,
             minWidth: '100px',
             cell: (row) => (
                 <>
@@ -100,7 +100,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
             ),
         },
         {
-            name: "Seats Status",
+            name: <>Seats Status</>,
             minWidth: "150px",
             cell: (row) => {
                 return (

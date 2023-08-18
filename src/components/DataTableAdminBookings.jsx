@@ -67,11 +67,13 @@ const DataTableAdminBookings = ({ data, className }) => {
 
     const columns = [
         {
-            name: 'Date',
+            name: <>Movie Date</>,
+            maxWidth: '150px',
             cell: row => displayDate(row?.showtime?.movie?.releaseDate),
         },
         {
-            name: 'Movie',
+            name: <>Movie</>,
+            minWidth: '200px',
             cell: row => (
                 <span title={row?.movie?.title}>
                     {row?.movie?.title}
@@ -79,22 +81,24 @@ const DataTableAdminBookings = ({ data, className }) => {
             ),
         },
         {
-            name: 'Start Time',
+            name: <>Start Time</>,
+            maxWidth: '150px',
             cell: row => displayTime(row?.showtime?.showStartTime),
         },
         {
-            name: 'Total Seats',
+            name: <>Total Seats</>,
+            maxWidth: '100px',
             cell: row => row?.seats.length,
         },
         {
-            name: 'Booked seats',
-            minWidth:'300px',
+            name: <>Booked seats</>,
+            maxWidth: '250px',
             cell: (row) => {
                 return (
                     <div className="flex flex-wrap gap-2">
                         {row?.seats?.map((seat) => (
                             <div className="flex gap-[2px] justify-center items-center ">
-                                <div className={`${seat.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-1 rounded-lg'} ${seat.status === SEATS_STATUS.VISITED && 'bg-green-500 p-1 rounded-lg'}`}>{seat?.seatNo}</div>
+                                <div className={`${seat.status === SEATS_STATUS.BOOKED && 'bg-green-800/20 p-1 rounded-md'} ${seat.status === SEATS_STATUS.VISITED && 'bg-gray-200 p-1 rounded-lg'}`}>{seat?.seatNo}</div>
                             </div>
                         ))}
                     </div>
@@ -102,18 +106,21 @@ const DataTableAdminBookings = ({ data, className }) => {
             },
         },
         {
-            name: 'Total Amount',
+            name: <>Total Amount</>,
+            maxWidth: '100px',
             sortable: true,
             selector: row => row?.totalPrice,
             cell: row => getCurrencyFormat(row?.totalPrice),
         },
         {
             name: 'Status',
+            maxWidth: '100px',
             selector: row => row.status,
             sortable: true,
         },
         {
             name: 'Ticket',
+            maxWidth: '100px',
             cell: (row) => (
                 <>
                     <button
@@ -128,7 +135,8 @@ const DataTableAdminBookings = ({ data, className }) => {
             )
         },
         {
-            name: 'Cancel Ticket',
+            name: <>Cancel Ticket</>,
+            maxWidth: '100px',
             cell: (row) => (
                 <>
                     <button

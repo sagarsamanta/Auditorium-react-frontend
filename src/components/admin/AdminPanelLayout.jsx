@@ -15,7 +15,7 @@ const AdminPanelLayout = ({ children }) => {
                 <input type="checkbox" id="menu-open" className="hidden" />
                 <label
                     htmlFor="menu-open"
-                    className="absolute right-2 bottom-2 shadow-lg rounded-full p-2 bg-gray-100 text-gray-600 md:hidden"
+                    className="absolute right-2 bottom-2 shadow-lg rounded-full p-2 bg-gray-100 text-gray-600 md:hidden z-50"
                     data-dev-hint="floating action button"
                 >
                     <svg

@@ -3,7 +3,7 @@ import { useAuth } from "../lib/hooks/useAuth";
 import SearchBox from "./UI/SearchBox";
 import Axios from "../lib/axiosInstance";
 import Clipboard from "clipboard";
-import { displayDate, displayTime } from "../lib/utils";
+import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
 
 import { AiOutlineCopy } from "react-icons/ai";
@@ -74,11 +74,11 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
 
     const columns = [
         {
-            name: "Name",
+            name: <>Name</>,
             selector: (row) => row.user?.name,
         },
         {
-            name: "Booking Id",
+            name: <>Booking Id</>,
             selector: (row) => (
                 <div
                     className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center"
@@ -89,31 +89,31 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
             ),
         },
         {
-            name: "Time",
+            name: <>Time</>,
             sortable: true,
             selector: (row) => `${displayTime(showStartTime)}`,
         },
         {
-            name: "Amount",
+            name: <>Amount</>,
             sortable: true,
             selector: (row) => (
-                <div className="text-green-600">₹ {row.totalPrice}</div>
+                <div className="text-green-600">{getCurrencyFormat(row.totalPrice)}</div>
             ),
         },
         {
-            name: "Payment Mode",
+            name: <>Payment Mode</>,
             minWidth: "200px",
             selector: (row) => row?.paymentMode,
         },
         {
-            name: "Booked seats & Status",
+            name: <>Booked seats & Status</>,
             minWidth: "300px",
             cell: (row) => {
                 return (
                     <div className="flex flex-wrap gap-2">
                         {row?.seats?.map((seat) => (
                             <div className="flex gap-[2px] justify-center items-center ">
-                                <div className={` font-semibold ${seat.status === SEATS_STATUS.BOOKED && 'bg-red-400 p-1 rounded-lg'} ${seat.status === SEATS_STATUS.VISITED && 'bg-green-500  p-1 rounded-lg'}`}>{seat?.seatNo}</div>
+                                <div className={` font-semibold ${seat.status === SEATS_STATUS.BOOKED && 'bg-green-800/30 p-1 rounded-lg'} ${seat.status === SEATS_STATUS.VISITED && 'bg-gray-200 p-1 rounded-lg'}`}>{seat?.seatNo}</div>
                             </div>
                         ))}
                     </div>
@@ -121,7 +121,7 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
             },
         },
     ];
-   
+
 
     return (
         <>
@@ -136,7 +136,7 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
                 data={data}
                 // className={className}
                 pagination
-                paginationPerPage={20}                
+                paginationPerPage={20}
                 title="Shows All Bookings"
                 progressPending={isLoading}
             />
