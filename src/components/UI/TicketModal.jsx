@@ -32,7 +32,7 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
     function closeModal() {
         closeHandler(false);
     }
-    
+
 
     return (
         <>
@@ -86,10 +86,9 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
                                                         </div>
                                                         <div className="my-3 border-dashed border-2 border-gray-100 relative before:content-[''] before:absolute before:w-5 before:h-5 before:bg-gray-100 before:rounded-full before:top-1/2 before:left-[-10px] before:-translate-y-1/2 before:shadow-inner  after:content-[''] after:absolute after:w-5 after:h-5 after:bg-gray-100 after:rounded-full after:top-1/2 after:right-[-10px] after:-translate-y-1/2 after:shadow-inner" />
                                                         <div className="p-3">
-                                                            {/* <p className="text-center capitalize text-gray-600 font-semibold">{noOfSeatsBook} Ticket(s)</p> */}
-                                                            <p className="text-center uppercase text-lg font-semibold">{showTitle}</p>
-                                                            <p className="text-center capitalize font-semibold text-gray-600">{seat?.seatNo}</p>
-                                                            <p className="text-center uppercase text-lg font-semibold">Booking Id: <span className="tracking-wider">{bookingId}-{seat?.seatNo}</span></p>
+                                                            <p className="text-center uppercase text-lg font-semibold">{seat?.seatNo}</p>
+                                                            <p className="text-center capitalize font-semibold text-gray-600">{showTitle}</p>
+                                                            <p className="text-center uppercase text-lg font-semibold">Booking Id: <span className="tracking-wider">{bookingId}</span></p>
                                                         </div>
                                                         <div className="p-3 flex justify-between">
                                                             <span>Total Amount:</span>
@@ -120,7 +119,6 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
                                                 </>
                                             ))
                                         }
-                                    
                                     </Slider>
                                 </Dialog.Panel>
                             </Transition.Child>
