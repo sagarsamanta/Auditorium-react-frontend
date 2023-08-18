@@ -16,8 +16,6 @@ const BookingsPage = () => {
     const [error, setError] = useState(false);
     const { user, token } = useAuth();
 
-    console.log('upCommingShows', upCommingShows);
-
     useEffect(() => {
         Axios('GET', `/user/get-all-booked-movie/${user?._id}`, null, { authRequest: true, token: token })
             .then((response) => {
