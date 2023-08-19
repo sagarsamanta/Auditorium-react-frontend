@@ -95,12 +95,12 @@ const DataTableAdminBookings = ({ data, className }) => {
             maxWidth: '250px',
             cell: (row) => {
                 return (
-                    <div className="flex flex-wrap gap-2">
-                        {row?.seats?.map((seat) => (
-                            <div className="flex gap-[2px] justify-center items-center ">
-                                <div className={`${seat.status === SEATS_STATUS.BOOKED && 'bg-green-800/20 p-1 rounded-md'} ${seat.status === SEATS_STATUS.VISITED && 'bg-gray-200 p-1 rounded-lg'}`}>{seat?.seatNo}</div>
-                            </div>
-                        ))}
+                    <div className="w-full overflow-x-auto scrollbar-w-1">
+                        <div className="w-max flex items-center gap-2">
+                            {row?.seats?.map((seat) => (
+                                <span className={`${seat.status === SEATS_STATUS.BOOKED && 'bg-green-800/20 p-1 rounded-md'} ${seat.status === SEATS_STATUS.VISITED && 'bg-gray-200 p-1 rounded-lg'}`}>{seat?.seatNo}</span>
+                            ))}
+                        </div>
                     </div>
                 );
             },

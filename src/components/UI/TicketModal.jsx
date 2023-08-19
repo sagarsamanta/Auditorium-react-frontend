@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { MdClose } from 'react-icons/md';
 import Axios from '../../lib/axiosInstance';
 import { useAuth } from '../../lib/hooks/useAuth';
+import { OPGC } from '../../lib/consts';
 
 export default function TicketModal({ isOpen, handleDownloadTickets, closeHandler, ticket }) {
     const {
@@ -110,7 +111,7 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
                                                                 <h5 className="text-xl uppercase font-semibold line-clamp-2">{title}</h5>
                                                                 <p>({language})</p>
                                                                 <p>{displayDate(releaseDate, "ddd, DD MMM")} | {displayTime(showTime)}</p>
-                                                                <p>{"kolkata,VR Mall"}</p>
+                                                                <p>{OPGC}</p>
                                                             </div>
                                                         </div>
                                                         <div className="my-3 border-dashed border-2 border-gray-100 relative before:content-[''] before:absolute before:w-5 before:h-5 before:bg-gray-100 before:rounded-full before:top-1/2 before:left-[-10px] before:-translate-y-1/2 before:shadow-inner  after:content-[''] after:absolute after:w-5 after:h-5 after:bg-gray-100 after:rounded-full after:top-1/2 after:right-[-10px] after:-translate-y-1/2 after:shadow-inner" />

@@ -58,17 +58,20 @@ const DataTableMovie = ({ data, className }) => {
         },
         {
             name: 'Release Date',
+            maxWidth: '150px',
             sortable: true,
             selector: row => `${displayDate(row.releaseDate)}`,
         },
         {
             name: 'Show Times',
+            maxWidth: '150px',
             cell: row => <Link to={`/admin/shows?movie=${row._id}`} className="text-xs inline-block py-2 px-4 rounded-lg transition duration-200 bg-blue-300 hover:bg-blue-400 border border-blue-500">All Show</Link>,
         },
         {
             name: "Enable",
             selector: (row) => row.status,
             sortable: true,
+            maxWidth: '150px',
             cell: (row) => (
                 <button
                     title={`${row.status === STATUS_ACTIVE
@@ -87,10 +90,11 @@ const DataTableMovie = ({ data, className }) => {
         },
         {
             name: 'Actions',
+            maxWidth: '50px',
             cell: row => (
                 <div className="space-x-4 flex justify-center">
                     <Link to={`/admin/movies/${row._id}`} className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white" title="Edit"><MdEdit size={15} /></Link>
-                    <button onClick={()=>openConfirmModal(row.title)} to={`/admin/movies/${row._id}`} className="p-2 rounded-lg transition duration-200 border border-red-500 text-center text-red-500 font-serif hover:bg-red-500 hover:text-white" title="Remove"><AiOutlineDelete size={15} /></button>
+                    {/* <button onClick={()=>openConfirmModal(row.title)} to={`/admin/movies/${row._id}`} className="p-2 rounded-lg transition duration-200 border border-red-500 text-center text-red-500 font-serif hover:bg-red-500 hover:text-white" title="Remove"><AiOutlineDelete size={15} /></button> */}
                 </div>
             ),
         },
