@@ -8,12 +8,15 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
 
     const { showStartTime, movie, showEndTime } = show;
     const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOS.DEFAULT);
+    const [payerName, setPayerName] = useState("Tanuj Patra");
+    const [payerEmail, setPayerEmail] = useState("anand.kumar@sabpaisa.in");
+    const [payerMobile, setPayerMobile] = useState("6291312929");
     const { user } = useAuth();
 
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);
     };
-    const proceedToPay = (payMode) => {
+    const proceedToPay = (payMode) => {       
         handlePay(payMode);
     }
 
