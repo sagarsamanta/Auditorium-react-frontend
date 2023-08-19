@@ -1,5 +1,5 @@
 import Axios from "../../lib/axiosInstance";
-import { MAX_SEATS_PER_BOOKING, PAYMENT, SEATS, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../../lib/consts";
+import { MAX_SEATS_PER_BOOKING, PAYMENT, PAYMENT_METHOS, SEATS, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../../lib/consts";
 import { getCurrencyFormat, getSeatPriceObj, getSeatsForShow, organizeSeatsByStatus } from "../../lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -17,6 +17,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const [isOpenSelectedSeatModal, setIsOpenSelectedSeatModal] = useState(false);
     const [isOpenReserveConfirmSeatModal, setHandleCloseReservedConfirmModal] = useState(false);
     const [selectedReservedSeate, setSelectedReservedSeate] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOS.DEFAULT);
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
     const paymentFormRef = useRef();
@@ -110,7 +111,11 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
             Axios('POST', `/booking/book-movie/${movieId}`, seats, { authRequest: true, token: authUser.token })
                 .then(async (res) => {
                     if (res?.status === 201) {
-                        await redirectToPaymentGateway(authUser.user, seats.totalPrice, res?.data?.data, paymentFormRefs);
+                        if (paymentMethod === PAYMENT_METHOS.ONLINE) {
+                            await redirectToPaymentGateway(authUser.user, seats.totalPrice, res?.data?.data, paymentFormRefs);
+                        } else {
+                            toast.success(`Booked Successfully!`);
+                        }
                     }
                 })
                 .finally(() => {
@@ -187,7 +192,9 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                 closeModal={closeSeatBookinConfirmModal}
                 selectedSeats={selectedSeats?.sort()?.join(', ')}
                 totalAmount={totalAmount}
-                show={show} 
+                show={show}
+                paymentMethod={paymentMethod}
+                setPaymentMethod={setPaymentMethod}
                 isLoading={loading.booking}
             />
         )
@@ -222,7 +229,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                     </div>
                     <div className="m-2 ">
                         <div className="flex justify-center items-center font-semibold text-lg mb-1">Seats Price List</div>
-                        <div className="w-full mx-auto color-code-wrapper flex flex-col justify-center items-center gap-1 text-sm">
+                        <div className="w-full mx-auto color-code-wrapper flex flex-col md:flex-row justify-center items-center gap-1 md:gap-3 text-sm">
                             <div className="flex rounded-md items-center flex-row gap-2 border border-skin-base px-2">
                                 <span className="font-semibold">A - C </span>
                                 <div className="w-fit h-fit p-1 rounded-sm " >{getCurrencyFormat(priceList?.priceRow_a_to_c)}</div>
