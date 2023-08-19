@@ -182,7 +182,14 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
         const totalAmount = getTotalSelectedPrice(seatPriceObj)
         return (
-            <BookingConfirmation handlePay={handleSave} closeModal={closeSeatBookinConfirmModal} selectedSeats={selectedSeats?.sort()?.join(', ')} totalAmount={totalAmount} show={show} />
+            <BookingConfirmation 
+                handlePay={handleSave}
+                closeModal={closeSeatBookinConfirmModal}
+                selectedSeats={selectedSeats?.sort()?.join(', ')}
+                totalAmount={totalAmount}
+                show={show} 
+                isLoading={loading.booking}
+            />
         )
     }
 
