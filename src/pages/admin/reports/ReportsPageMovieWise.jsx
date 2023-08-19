@@ -114,37 +114,32 @@ const ReportsPageMovieWise = () => {
             </div>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
-            <div className='flex justify-between items-center'>
-                    <div className='text-lg font-semibold mx-3 bg-yellow-300 px-1 inline-block'>All Movies Reports</div>
-                    <button className='border border-blue-500 p-1 rounded-md'>
-                        <div className='flex items-center gap-1 text-blue-700'>
-                            <AiOutlineDownload size={20}  /> <span>Download</span>
-                        </div>
+                <div className='flex justify-between items-center'>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>All Movies Reports</h3>
+                    <button className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'>
+                        <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>
                 <DataTableMoviesReports data={movies} />
             </div>
 
-            <form className='w-full flex flex-col md:flex-row justify-start items-center gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
-                <Select onChange={handleMovieChange} placeholder="Select Movie" className='min-w-[300px]' options={movieTitleList} isClearable />
-                {/* <Select onChange={handleShowChange} placeholder="Select Show" className='min-w-[300px]' options={showsList} isClearable /> */}
+            <form className='w-full flex flex-col md:flex-row justify-start items-center flex-wrap gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
+                <Select onChange={handleMovieChange} placeholder="Select Movie" className='w-[300px]' options={movieTitleList} isClearable />
                 <input
                     type="date"
                     name='date'
                     onChange={formik.handleChange}
                     value={formik.values.date}
-                    className={`min-w-[300px] block text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white`}
+                    className={`w-[300px] block text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white`}
                 />
                 <LoadingButton isLoading={loading} text={"Generate Report"} isDisable={formik.values.movie === ""} />
             </form>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
                 <div className='flex justify-between items-center'>
-                    <div className='text-lg font-semibold mx-3 bg-yellow-300 px-1 inline-block'>Movies Reports</div>
-                    <button className='border border-blue-500 p-1 rounded-md'>
-                        <div className='flex items-center gap-1 text-blue-700'>
-                            <AiOutlineDownload size={20}  /> <span>Download</span>
-                        </div>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies Reports</h3>
+                    <button className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'>
+                        <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>
                 <DataTableAdminReports data={report?.dailyReports || []} />

@@ -144,15 +144,15 @@ const ReportsPageShowWise = () => {
             <div className="flex justify-between items-center p-4 mb-2 border border-slate-100 rounded-md shadow-md">
                 <h1 className="text-xl md:text-2xl lg:text:3xl">Show-wise Reports</h1>
             </div>
-            <form className='w-full flex flex-col md:flex-row justify-start items-center gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
-                <Select onChange={handleMovieChange} placeholder="Select Movie" className='min-w-[300px]' options={movieTitleList} isClearable />
-                <Select onChange={handleShowChange} placeholder="Select Show" className='min-w-[300px]' options={showTitleList} isClearable isDisabled={formik.values.movie === ''} />
+            <form className='w-full flex flex-col md:flex-row justify-start items-center flex-wrap gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
+                <Select onChange={handleMovieChange} placeholder="Select Movie" className='w-[250px]' options={movieTitleList} isClearable />
+                <Select onChange={handleShowChange} placeholder="Select Show" className='w-[250px]' options={showTitleList} isClearable isDisabled={formik.values.movie === ''} />
                 <input
                     type="date"
                     name='date'
                     onChange={formik.handleChange}
                     value={formik.values.date}
-                    className={`min-w-[300px] block text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white`}
+                    className={`w-[250px] block text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white`}
                 />
                 <LoadingButton isLoading={loading} text={"Generate Report"} isDisable={formik.values.movie === ""} />
             </form>
