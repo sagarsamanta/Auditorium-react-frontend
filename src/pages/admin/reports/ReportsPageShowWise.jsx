@@ -7,7 +7,7 @@ import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminShowWiseReports from '../../../components/DataTableAdminShowWiseReports';
 import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
 import { AiOutlineDownload } from 'react-icons/ai'
-import { downloadCSV } from '../../../lib/downloadCsv';
+import { downloadCSV, generateReportFileName } from '../../../lib/downloadCsv';
 
 
 const ReportsPageShowWise = () => {
@@ -129,14 +129,8 @@ const ReportsPageShowWise = () => {
         formik.setFieldValue('show', e?.value || '');
     }
     const downloadReports = () => {
-        let fileTitle = "Movie-reports"
-        if (selectedMovie && selectedShow) {
-            fileTitle = `${selectedMovie}-${formik.values.show}`
-        } else if (selectedMovie) {
-            fileTitle = `${selectedMovie}`
-        }
-        console.log(fileTitle);
-        downloadCSV(report?.dailyReports, fileTitle)
+        const reportFileTitle = generateReportFileName(selectedMovie, selectedShow, formik.values.date);
+        downloadCSV(report?.dailyReports, reportFileTitle)
     }
 
     return (
@@ -159,11 +153,12 @@ const ReportsPageShowWise = () => {
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
                 <div className='flex justify-between items-center'>
-                    <div className='text-lg font-semibold mx-3 bg-yellow-300 px-1 inline-block'>Shows Reports</div>
-                    <button className='border border-blue-500 p-1 rounded-md' onClick={downloadReports}>
-                        <div className='flex items-center gap-1 text-blue-700'>
-                            <AiOutlineDownload size={20} /> <span>Download</span>
-                        </div>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Shows Reports</h3>
+                    <button className='border border-blue-500 p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-blue-700'
+                        onClick={downloadReports}
+                        disabled={!report?.dailyReports}
+                    >
+                        <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>
                 <DataTableAdminShowWiseReports data={report?.dailyReports || []} />
