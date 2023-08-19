@@ -7,7 +7,7 @@ import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminReports from '../../../components/DataTableAdminReports';
 import { getCurrencyFormat } from '../../../lib/utils';
 import DataTableMoviesReports from '../../../components/DataTableMoviesReports';
-
+import { AiOutlineDownload } from 'react-icons/ai'
 
 const ReportsPageMovieWise = () => {
     const [movieTitleList, setmovieList] = useState([]);
@@ -114,7 +114,14 @@ const ReportsPageMovieWise = () => {
             </div>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
-                <div className='text-lg font-semibold mx-3'>All Movies Reports</div>
+            <div className='flex justify-between items-center'>
+                    <div className='text-lg font-semibold mx-3 bg-yellow-300 px-1 inline-block'>All Movies Reports</div>
+                    <button className='border border-blue-500 p-1 rounded-md'>
+                        <div className='flex items-center gap-1 text-blue-700'>
+                            <AiOutlineDownload size={20}  /> <span>Download</span>
+                        </div>
+                    </button>
+                </div>
                 <DataTableMoviesReports data={movies} />
             </div>
 
@@ -132,8 +139,16 @@ const ReportsPageMovieWise = () => {
             </form>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
-            <div className='text-lg font-semibold mx-3'>Movies Reports</div>
+                <div className='flex justify-between items-center'>
+                    <div className='text-lg font-semibold mx-3 bg-yellow-300 px-1 inline-block'>Movies Reports</div>
+                    <button className='border border-blue-500 p-1 rounded-md'>
+                        <div className='flex items-center gap-1 text-blue-700'>
+                            <AiOutlineDownload size={20}  /> <span>Download</span>
+                        </div>
+                    </button>
+                </div>
                 <DataTableAdminReports data={report?.dailyReports || []} />
+
                 {report?.dailyReports && report?.dailyReports?.length !== 0 && (
                     <>
                         <div className='text-lg'>Total Revenue: {getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</div>
