@@ -5,7 +5,7 @@ import { useAuth } from '../../../lib/hooks/useAuth';
 import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminShowWiseReports from '../../../components/DataTableAdminShowWiseReports';
-import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
+import { displayDate, getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
 import { AiOutlineDownload } from 'react-icons/ai'
 import { downloadCSV, generateReportFileName } from '../../../lib/downloadCsv';
 
@@ -129,8 +129,14 @@ const ReportsPageShowWise = () => {
         formik.setFieldValue('show', e?.value || '');
     }
     const downloadReports = () => {
+        const reportData = report?.dailyReports?.map((row) => ({
+            "DATE": `${displayDate(row?.date)}`,
+            "SHOW": row?.title,
+            "TOTAL COLLECTION": row?.totalAmount,
+            "TOTAL BOOKINGS": row?.totalBookings,
+        }));
         const reportFileTitle = generateReportFileName(selectedMovie, selectedShow, formik.values.date);
-        downloadCSV(report?.dailyReports, reportFileTitle)
+        downloadCSV(reportData, reportFileTitle);
     }
 
     return (

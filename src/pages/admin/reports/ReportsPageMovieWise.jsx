@@ -5,9 +5,10 @@ import { useAuth } from '../../../lib/hooks/useAuth';
 import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminReports from '../../../components/DataTableAdminReports';
-import { getCurrencyFormat } from '../../../lib/utils';
+import { displayDate, getCurrencyFormat } from '../../../lib/utils';
 import DataTableMoviesReports from '../../../components/DataTableMoviesReports';
 import { AiOutlineDownload } from 'react-icons/ai'
+import { downloadCSV, generateReportFileName } from '../../../lib/downloadCsv';
 
 const ReportsPageMovieWise = () => {
     const [movieTitleList, setmovieList] = useState([]);
@@ -32,7 +33,6 @@ const ReportsPageMovieWise = () => {
                             label: movie.title
                         }
                     })
-                    console.log(allOptions);
                     setmovieList(allOptions);
                 }
             })
@@ -107,6 +107,29 @@ const ReportsPageMovieWise = () => {
         if (!e) setReport([]);
     }
 
+    const downloadAllMoviesReport = () => {
+        const reportData = movies.map((row) => ({
+            "MOVIE": row?.movie?.title,
+            "TOTAL COLLECTION": row?.totalAmountCollected,
+            "RELEASE DATE": `${displayDate(row?.movie?.releaseDate)}`,
+            "BOOKED SEATS": row?.bookedSeats,
+            "RESERVED SEATS": row?.reservedSeats,
+        }));
+        const reportFileName = `Movie-wise_Collection_${displayDate(new Date(), "DD-MM-YYYY_hhmmss")}`;
+        downloadCSV(reportData, reportFileName);
+    }
+
+    const downloadMovieDateWiseReport = () => {
+        const movie = movieTitleList.filter((movie) => (movie.value === formik.values.movie));
+        const reportData = report?.dailyReports.map((row) => ({
+            "DATE": `${displayDate(row?.createdAt)}`,
+            "TOTAL COLLECTION": row?.totalAmount,
+            "TOTAL BOOKINGS": row?.totalBookings,
+        }));
+        const reportFileName = generateReportFileName(movie[0]?.label, '', formik.values.date);
+        downloadCSV(reportData, reportFileName);
+    }
+
     return (
         <div>
             <div className="flex justify-between items-center p-4 mb-2 border border-slate-100 rounded-md shadow-md">
@@ -115,30 +138,36 @@ const ReportsPageMovieWise = () => {
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
                 <div className='flex justify-between items-center'>
-                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>All Movies Reports</h3>
-                    <button className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies-wise Collection</h3>
+                    <button
+                        className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
+                        onClick={downloadAllMoviesReport}
+                    >
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>
                 <DataTableMoviesReports data={movies} />
             </div>
 
-            <form className='w-full flex flex-col md:flex-row justify-start items-center flex-wrap gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
-                <Select onChange={handleMovieChange} placeholder="Select Movie" className='w-[300px]' options={movieTitleList} isClearable />
-                <input
-                    type="date"
-                    name='date'
-                    onChange={formik.handleChange}
-                    value={formik.values.date}
-                    className={`w-[300px] block text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white`}
-                />
-                <LoadingButton isLoading={loading} text={"Generate Report"} isDisable={formik.values.movie === ""} />
-            </form>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
+                <form className='w-full flex flex-col md:flex-row justify-start items-center flex-wrap gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
+                    <Select onChange={handleMovieChange} placeholder="Select Movie" className='w-[300px]' options={movieTitleList} isClearable />
+                    <input
+                        type="date"
+                        name='date'
+                        onChange={formik.handleChange}
+                        value={formik.values.date}
+                        className={`w-[300px] block text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white`}
+                    />
+                    <LoadingButton isLoading={loading} text={"Generate Report"} isDisable={formik.values.movie === ""} />
+                </form>
                 <div className='flex justify-between items-center'>
-                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies Reports</h3>
-                    <button className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies Date-wise Collection</h3>
+                    <button
+                        className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
+                        onClick={downloadMovieDateWiseReport}
+                    >
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>

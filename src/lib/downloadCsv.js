@@ -1,24 +1,10 @@
-import { getCurrencyFormat } from "./utils";
-
-const convertKeysToUpperCaseWithDashes = (data) => {
-    if (!data) return data;
-    return data.map(item => {
-        const newItem = {};
-        for (const key in item) {
-            if (item.hasOwnProperty(key)) {
-                const convertedKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toUpperCase();
-                newItem[convertedKey] = (key.toLowerCase().includes('amount')) ? getCurrencyFormat(item[key]) : item[key];
-            }
-        }
-        return newItem;
-    });
-}
+import { displayDate, getCurrencyFormat } from "./utils";
 
 export const generateReportFileName = (movieTitle = '', showTitle = '', date = '') => {
-    let movie = movieTitle || 'All Movie';
-    let show = showTitle || 'All Shows';
-    let reportDate = date || 'All Time';
-    return `${movie}--${show}--${reportDate}`;
+    let movie = movieTitle;
+    let show = showTitle ? `_${showTitle.replaceAll(' ', '-')}` : '';
+    let reportDate = date ? `_${date}` : '';
+    return `${movie}${show}${reportDate}__${displayDate(new Date(), "DD-MM-YYYY_hhmmss")}`;
 }
 
 export const convertToCSV = (data) => {
@@ -34,8 +20,7 @@ export const convertToCSV = (data) => {
     return csvRows.join('\n');
 };
 export const downloadCSV = (jsonData, title) => {
-    const modifiedJsonData = convertKeysToUpperCaseWithDashes(jsonData);
-    const csvData = convertToCSV(modifiedJsonData);
+    const csvData = convertToCSV(jsonData);
 
     const blob = new Blob([csvData], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
