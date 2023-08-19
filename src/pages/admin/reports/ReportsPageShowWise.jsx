@@ -6,6 +6,8 @@ import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminShowWiseReports from '../../../components/DataTableAdminShowWiseReports';
 import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
+import { AiOutlineDownload } from 'react-icons/ai'
+import { downloadCSV } from '../../../lib/downloadCsv';
 
 
 const ReportsPageShowWise = () => {
@@ -13,6 +15,8 @@ const ReportsPageShowWise = () => {
     const [showTitleList, setShowList] = useState([]);
     const [report, setReport] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState("")
+    const [selectedShow, setSelectedShows] = useState("")
     const { token } = useAuth();
 
     const getAllMoviesTitle = () => {
@@ -76,6 +80,10 @@ const ReportsPageShowWise = () => {
     useEffect(() => {
         getAllMoviesTitle();
         getAllShows();
+        return ()=>{
+            setSelectedMovie("")
+            setSelectedShows("")
+        }
     }, []);
 
     // Handle Form
@@ -109,11 +117,26 @@ const ReportsPageShowWise = () => {
 
     const handleMovieChange = (e) => {
         formik.setFieldValue('movie', e?.value || '');
-        if (!e) setReport([]);
+        setSelectedMovie(e?.label)
+        if (!e) {
+            setReport([])
+            setSelectedShows("")
+        };
         getAllShows(e?.value);
     }
     const handleShowChange = (e) => {
+        setSelectedShows(e?.label)
         formik.setFieldValue('show', e?.value || '');
+    }
+    const downloadReports = () => {
+        let fileTitle = "Movie-reports"
+        if (selectedMovie && selectedShow) {
+            fileTitle = `${selectedMovie}-${formik.values.show}`
+        } else if (selectedMovie) {
+            fileTitle = `${selectedMovie}`
+        }
+        console.log(fileTitle);
+        downloadCSV(report?.dailyReports, fileTitle)
     }
 
     return (
@@ -135,6 +158,14 @@ const ReportsPageShowWise = () => {
             </form>
 
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
+                <div className='flex justify-between items-center'>
+                    <div className='text-lg font-semibold mx-3 bg-yellow-300 px-1 inline-block'>Shows Reports</div>
+                    <button className='border border-blue-500 p-1 rounded-md' onClick={downloadReports}>
+                        <div className='flex items-center gap-1 text-blue-700'>
+                            <AiOutlineDownload size={20} /> <span>Download</span>
+                        </div>
+                    </button>
+                </div>
                 <DataTableAdminShowWiseReports data={report?.dailyReports || []} />
                 {report?.dailyReports && report?.dailyReports?.length !== 0 && (
                     <>
