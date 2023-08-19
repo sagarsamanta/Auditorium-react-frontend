@@ -13,11 +13,6 @@ const clientCode = "TM001";
 export const redirectToPaymentGateway = (user, totalAmount, bookingData, paymentFormRefs) => {
     if (!user || !bookingData?._id) return;
 
-    console.log('user', user);
-    console.log('totalAmount', totalAmount);
-    console.log('bookingData', bookingData?._id);
-    console.log('paymentFormRefs', paymentFormRefs);
-
     Axios("POST", "/payment/encryot-data", {
         payerName: user.name,
         payerEmail: user.email,

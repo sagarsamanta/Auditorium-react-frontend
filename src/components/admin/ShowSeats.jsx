@@ -110,7 +110,6 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
             Axios('POST', `/booking/book-movie/${movieId}`, seats, { authRequest: true, token: authUser.token })
                 .then(async (res) => {
                     if (res?.status === 201) {
-                        // toast.success(`${res?.data?.message}`);
                         await redirectToPaymentGateway(authUser.user, seats.totalPrice, res?.data?.data, paymentFormRefs);
                     }
                 })

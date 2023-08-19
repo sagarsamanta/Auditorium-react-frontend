@@ -1,55 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { displayDate, displayTime, getCurrencyFormat } from '../../../../lib/utils';
 import { MdClose } from 'react-icons/md';
-import { API_ROOT, BASE_DOMAIN, PAYMENT, PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
+import { PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
 import { useAuth } from '../../../../lib/hooks/useAuth';
-import SabpaisaPaymentGateway from '../../../../payments/Payment';
-import Axios from '../../../../lib/axiosInstance';
 
 const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, handlePay }) => {
 
     const { showStartTime, movie, showEndTime } = show;
     const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOS.DEFAULT);
-    const [payerName, setPayerName] = useState("Tanuj Patra");
-    const [payerEmail, setPayerEmail] = useState("anand.kumar@sabpaisa.in");
-    const [payerMobile, setPayerMobile] = useState("6291312929");
-    const [isOpen, setIsOpen] = useState(false);
     const { user } = useAuth();
-    const clientCode = "TM001"
 
     const handlePaymentMethodChange = (event) => {
         setPaymentMethod(event.target.value);
     };
     const proceedToPay = (payMode) => {
-        // POST request to backend
-        // Axios("POST", "/payment/encryot-data", {
-        //     payerName: user.name,
-        //     payerEmail: user.email,
-        //     payerMobile: "9876543210",
-        //     clientTxnId: randomStr(20, "12345abcde"),
-        //     amount: totalAmount,
-        //     clientCode: "TM001",
-        //     transUserName: "spuser_2013",
-        //     transUserPassword: "RIADA_SP336",
-        //     callbackUrl: `${API_ROOT}/payment/decrypt-data`,
-        //     channelId: "W",
-        //     mcc: "5666",
-        //     transData: new Date(),
-        //     udf1:'userId',
-        //     udf2:'showtimeId',
-        //     udf3:'seatIds',
-        //     udf4:'paymentMode',
-        // }).then(async (res) => {
-        //     if (res.status === 200) {
-        //         encDataRef.current.value = res?.data?.data
-        //         clientCodeRef.current.value = clientCode
-        //         paymentFormRef.current.submit();
-        //     }
-        //     console.log('res', res);
-        // }).catch((err) => {
-        //     console.log('err', err);
-        // });
-        setIsOpen(true);
         handlePay(payMode);
     }
 
@@ -105,7 +69,6 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
                     </button>
                 </div>
             </div>
-            {/* <SabpaisaPaymentGateway payerName={payerName} payerEmail={payerEmail} payerMobile={payerMobile} isOpen={isOpen} /> */}
         </div>
     );
 };
