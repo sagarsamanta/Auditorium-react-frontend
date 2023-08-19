@@ -79,7 +79,7 @@ const BookingDetails = (props) => {
             });
     }
     const handleDownloadTickets = (data) => {
-        const fileName = `${data.title}-${data.bookingId}-IWS.pdf`.replace(' ', '-');
+        const fileName = `${data.title}-${data.bookingId}-OPGC.pdf`.replace(' ', '-');
         Axios('POST', '/user/ticket', data, {
             headers: { 'Content-Type': 'application/json' },
             responseType: 'blob',

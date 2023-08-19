@@ -7,6 +7,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { MdClose } from 'react-icons/md';
+import Axios from '../../lib/axiosInstance';
+import { useAuth } from '../../lib/hooks/useAuth';
 
 export default function TicketModal({ isOpen, handleDownloadTickets, closeHandler, ticket }) {
     const {
@@ -28,9 +30,36 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
         slidesToScroll: 1,
         lazyLoad: true,
     };
+    const {token} = useAuth();
     const [loading, setLoading] = useState(false);
     function closeModal() {
         closeHandler(false);
+    }
+
+    // FIX: handleDownloadTickets from props not working
+    const handleDownloadTickets1 = (data) => {
+        const fileName = `${data.title}-${data.bookingId}-OPGC.pdf`.replace(' ', '-');
+        Axios('POST', '/user/ticket', data, {
+            headers: { 'Content-Type': 'application/json' },
+            responseType: 'blob',
+            authRequest: true,
+            token: token,
+        })
+            .then((response) => {
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const tempLink = document.createElement('a');
+                tempLink.href = url;
+                tempLink.setAttribute('download', fileName);
+                tempLink.click();
+                URL.revokeObjectURL(url);
+            })
+            .finally(() => {
+
+            })
+            .catch((error) => {
+                console.error('Error downloading PDF:', error);
+            });
     }
 
 
@@ -102,7 +131,7 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
                                                             isLoading={loading}
                                                             icon={<GoDownload size={15} />}
                                                             className={`transition delay-150 border border-transparent bg-skin-base py-1 text-sm font-medium text-skin-inverted hover:bg-skin-base/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-skin-base focus-visible:ring-offset-2`}
-                                                            onClick={() => handleDownloadTickets({
+                                                            onClick={() => handleDownloadTickets1({
                                                                 title,
                                                                 poster,
                                                                 releaseDate,
