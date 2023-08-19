@@ -4,7 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import { TbReportSearch } from 'react-icons/tb'
 import { RxDashboard } from 'react-icons/rx'
 import { BsCheckCircle } from 'react-icons/bs'
-import { GoHistory } from 'react-icons/go'
+import { GoHistory } from 'react-icons/go';
+import { BiTime } from 'react-icons/bi';
+
 const NavBar = () => {
     const { pathname } = useLocation();
     const startsWith = (str) => pathname.startsWith(str);
@@ -38,7 +40,7 @@ const NavBar = () => {
                 >
                     <div className='flex justify-center items-center gap-4'>
                         <BiMoviePlay size={20} />
-                        <div>Bookings </div>
+                        <div>Bookings</div>
                     </div>
                 </Link>
                 <Link
@@ -46,8 +48,8 @@ const NavBar = () => {
                     className={`${(startsWith("/admin/live-bookings")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}
                 >
                     <div className='flex justify-center items-center gap-4'>
-                        <GoHistory size={20} />
-                        <div>Live Bookings </div>
+                        <BiTime size={21} />
+                        <div>Live Bookings</div>
                     </div>
                 </Link>
                 <Link to="/admin/check-in" className={`${(startsWith("/admin/check-in")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}>
@@ -61,8 +63,8 @@ const NavBar = () => {
                     className={`${(startsWith("/admin/history")) && "bg-skin-base"} flex items-center space-x-2 py-2 px-4 transition duration-200 hover:bg-gray-700 hover:text-white`}
                 >
                     <div className='flex justify-center items-center gap-4'>
-                        <GoHistory size={20} />
-                        <div>History </div>
+                        <GoHistory size={19} />
+                        <div>My History</div>
                     </div>
                 </Link>
 
