@@ -46,7 +46,7 @@ const LoginForm = () => {
         title: 'Forgot Password?',
         text: (
             <>
-                <p className="bg-yellow-200 p-4 rounded">{MESSAGE.FORGOT_PASSWORD}</p>
+                <p className="bg-yellow-200 font-semibold text-black p-4 rounded">{MESSAGE.FORGOT_PASSWORD}</p>
             </>
         ),
         onlyCloseableBtn: {

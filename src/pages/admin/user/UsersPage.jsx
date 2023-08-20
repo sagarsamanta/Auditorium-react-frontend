@@ -5,6 +5,7 @@ import { getAllUsers } from "../../../lib/utils";
 import Loader from "../../../components/UI/Loader";
 import DataTableUsers from "../../../components/DataTableUsers";
 import { useAuth } from "../../../lib/hooks/useAuth";
+import { AiOutlineUserAdd } from "react-icons/ai";
 
 const UsersPage = () => {
     const [data, setResponse] = useState([]);
@@ -30,7 +31,7 @@ const UsersPage = () => {
                         className="text-sm inline-block px-2 py-2 md:px-4 md:py-3 rounded-lg bg-skin-base text-skin-inverted"
                     >
                         <div className="flex gap-2 items-center">
-                            <div>Add New Users</div>
+                          <AiOutlineUserAdd size={18} />  <div>Add New User</div>
                         </div>
                     </Link>
                 </div>

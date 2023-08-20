@@ -153,7 +153,6 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                         value={formik.values.priceRow_a_to_c}
                                         onChange={formik.handleChange}
                                         min={10}
-                                        max={30}
                                     />
                                     {
                                         (formik.touched.priceRow_a_to_c && formik.errors.priceRow_a_to_c) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.priceRow_a_to_c}</p>
@@ -171,7 +170,6 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                         value={formik.values.priceRow_d_to_h}
                                         onChange={formik.handleChange}
                                         min={10}
-                                        max={30}
                                     />
                                     {
                                         (formik.touched.priceRow_d_to_h && formik.errors.priceRow_d_to_h) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.priceRow_d_to_h}</p>
@@ -189,7 +187,6 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                                         value={formik.values.priceRow_i_to_n}
                                         onChange={formik.handleChange}
                                         min={10}
-                                        max={30}
                                     />
                                     {
                                         (formik.touched.priceRow_i_to_n && formik.errors.priceRow_i_to_n) ?? <p className="text-red-500 text-xs italic capitalize">{formik.errors.priceRow_i_to_n}</p>

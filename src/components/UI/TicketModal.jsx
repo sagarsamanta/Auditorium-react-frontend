@@ -141,14 +141,14 @@ export default function TicketModal({ isOpen, closeHandler, ticket }) {
                           <div className="px-3 flex justify-between">
                             <span>Ticket Status :</span>
                             <span
-                              className={`${
-                                seat.status === SEATS_STATUS.BOOKED &&
-                                "text-green-600"
-                              } ${
-                                seat?.status === SEATS_STATUS.VISITED &&
-                                "text-red-600"
-                              } font-semibold`}
-                            >
+                  className={`${
+                    seat.status === SEATS_STATUS.BOOKED &&
+                    "bg-green-400 p-1 rounded-md"
+                  } ${
+                    seat.status === SEATS_STATUS.VISITED &&
+                    "bg-yellow-600 text-white p-1 rounded-lg"
+                  } font-semibold`}
+                >
                               {seat?.status}
                             </span>
                           </div>

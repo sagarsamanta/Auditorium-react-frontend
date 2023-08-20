@@ -4,7 +4,7 @@ import Loader from "../../../components/UI/Loader";
 import { getAllUserBookings } from "../../../lib/utils";
 import DataTableUsersBookings from "../../../components/DataTableUsersBookings";
 import { useAuth } from "../../../lib/hooks/useAuth";
-
+import {HiUsers} from 'react-icons/hi'
 const UserMovieBooking = () => {
     const [data, setResponse] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,6 +18,7 @@ const UserMovieBooking = () => {
         };
         response();
     }, [userId]);
+
     return (
         <>
             <main className="movies-page">
@@ -28,7 +29,7 @@ const UserMovieBooking = () => {
                         className="text-sm inline-block px-2 py-2 md:px-4 md:py-3 rounded-lg bg-skin-base text-skin-inverted"
                     >
                         <div className="flex gap-2 items-center">
-                            <div>All Users</div>
+                           <HiUsers size={18}/> <div>All Users</div>
                         </div>
                     </Link>
                 </div>

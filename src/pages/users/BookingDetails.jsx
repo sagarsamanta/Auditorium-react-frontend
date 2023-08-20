@@ -187,17 +187,17 @@ const BookingDetails = (props) => {
                         )}
                         {bookingDetails?.seats?.map((seat) => {
                           return (
-                            <div
+                            <span
                               className={`${
                                 seat.status === SEATS_STATUS.BOOKED &&
-                                "bg-green-600"
+                                "bg-green-400 p-1 rounded-md"
                               } ${
-                                seat?.status === SEATS_STATUS.VISITED &&
-                                "bg-red-600"
-                              } font-semibold p-1 rounded-sm`}
+                                seat.status === SEATS_STATUS.VISITED &&
+                                "bg-yellow-600 text-white p-1 rounded-lg"
+                              } font-semibold`}
                             >
                               {seat.seatNo}
-                            </div>
+                            </span>
                           );
                         })}
                       </div>
