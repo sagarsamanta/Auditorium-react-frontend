@@ -182,6 +182,9 @@ const BookingDetails = (props) => {
                     <span className="text-lg font-semibold">Seats</span>
                     <p className="line-clamp-3">
                       <div className="flex gap-1 flex-wrap">
+                        {bookingDetails?.seats.length == 0 && (
+                          <div>No Record to show</div>
+                        )}
                         {bookingDetails?.seats?.map((seat) => {
                           return (
                             <div
@@ -203,7 +206,7 @@ const BookingDetails = (props) => {
                   <div className="mt-4 space-y-1">
                     <span className="text-lg font-semibold">Total Amount </span>
                     <p className="line-clamp-3">
-                       {getCurrencyFormat(bookingDetails?.totalPrice)}
+                      {getCurrencyFormat(bookingDetails?.totalPrice)}
                     </p>
                   </div>
                   <div className="mt-4 space-y-1">
@@ -221,30 +224,24 @@ const BookingDetails = (props) => {
                     </p>
                   </div>
                 </div>
-                <div className="mt-4 space-y-1">
-                  <button
-                    className={`text-skin-inverted border border-skin-base/70 hover:bg-skin-base/20 focus:ring-skin-base/70 bg-skin-base/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
-                    onClick={openTicketModal}
-                  >
-                    View ticket
-                  </button>
-                  {/* <button
-                                                className={`text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
-                                                onClick={() => {
-                                                    handleDownloadTickets(ticketDeatils)
-                                                }}
-                                            >
-                                                Download ticket
-                                            </button> */}
-                  {BOOKING_STATUS.CANCEL !== bookingDetails?.status && (
-                    <LoadingButton
-                      className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 !bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
-                      onClick={cancelTicketModal}
-                      isLoading={cancelLoading}
-                      text="Cancel ticket"
-                    />
-                  )}
-                </div>
+                {bookingDetails?.seats.length > 0 && (
+                  <div className="mt-4 space-y-1">
+                    <button
+                      className={`text-skin-inverted border border-skin-base/70 hover:bg-skin-base/20 focus:ring-skin-base/70 bg-skin-base/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                      onClick={openTicketModal}
+                    >
+                      View ticket
+                    </button>
+                    {BOOKING_STATUS.CANCEL !== bookingDetails?.status && (
+                      <LoadingButton
+                        className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 !bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                        onClick={cancelTicketModal}
+                        isLoading={cancelLoading}
+                        text="Cancel ticket"
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
