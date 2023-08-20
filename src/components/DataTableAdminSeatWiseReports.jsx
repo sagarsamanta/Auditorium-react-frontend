@@ -51,7 +51,7 @@ const DataTableAdminSeatWiseReports = ({ data, className, isLoading }) => {
                   return (
                     <td key={showTitle} className="px-2 py-1 border">
                       <table className="table-auto">
-                        <tbody>
+                        <tbody className="">
                           {show?.dates.map((dateInfo) => (
                             <tr key={dateInfo.date}>
                               <td className="px-1 py-1 text-center text-xs">
@@ -60,7 +60,7 @@ const DataTableAdminSeatWiseReports = ({ data, className, isLoading }) => {
                               {dateInfo.statusCounts.map((statusCount) => (
                                 <React.Fragment key={statusCount.status}>
                                   <td className="px-1 py-1 text-center">
-                                    <span className={`text-${statusCount.status === 'BOOKED' ? 'blue-600' : 'green-600'} text-xs`}>
+                                    <span className={`${statusCount.status === 'BOOKED' ? 'text-blue-600' : 'text-green-600'} text-xs`}>
                                       {statusCount.status}
                                     </span>
                                   </td>

@@ -20,6 +20,7 @@ const BookingsPage = () => {
         Axios('GET', `/user/get-all-booked-movie/${user?._id}`, null, { authRequest: true, token: token })
             .then((response) => {
                 if (response?.status === 200) {
+                    console.log(response.data);
                     setBookings(response?.data?.bookings)
                 }
             })
@@ -70,8 +71,12 @@ const BookingsPage = () => {
                                                             </div>
                                                             <div className="flex flex-col md:flex-row justify-between items-start gap-2">
                                                                 <div className="mt-4">
-                                                                    <span className="text-lg font-semibold">Movie Date</span>
+                                                                    <span className="text-lg font-semibold">Realese Date</span>
                                                                     <p className="line-clamp-3">{displayDate(booking?.movie?.releaseDate)} | {displayTime(booking?.showtime?.showStartTime)}</p>
+                                                                </div>
+                                                                <div className="mt-4">
+                                                                    <span className="text-lg font-semibold">Booking Date</span>
+                                                                    <p className="line-clamp-3">{displayDate(booking?.createdAt)}</p>
                                                                 </div>
                                                                 <div className="w-full md:w-1/3 grid grid-cols-2">
                                                                     <div className="mt-4">
@@ -79,7 +84,7 @@ const BookingsPage = () => {
                                                                         <p className="line-clamp-3">{`${booking?.seats?.map(seat => seat?.seatNo).join(', ')}`.trim()}</p>
                                                                     </div>
                                                                     <div className="mt-4">
-                                                                        <span className="text-lg font-semibold">Total</span>
+                                                                        <span className="text-lg font-semibold">Total Amount</span>
                                                                         <p className="line-clamp-3">{getCurrencyFormat(booking?.totalPrice)}</p>
                                                                     </div>
                                                                 </div>

@@ -129,6 +129,7 @@ const ReportsPageMovieWise = () => {
         const reportFileName = generateReportFileName(movie[0]?.label, '', formik.values.date);
         downloadCSV(reportData, reportFileName);
     }
+    console.log(movies);
 
     return (
         <div>
