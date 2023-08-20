@@ -184,7 +184,7 @@ const ReportsPageSeatWise = () => {
           isClearable
           value={movieTitleList.find(
             (movie) => movie.value === formik.values.movie
-          )}
+          ) || ""}
           ref={movieSelectRef}
         />
 
@@ -197,7 +197,7 @@ const ReportsPageSeatWise = () => {
           isDisabled={formik.values.movie === ""}
           value={showTitleList.find(
             (show) => show.value === formik.values.show
-          )}
+          ) || ""}
           ref={showSelectRef}
         />
         <input
