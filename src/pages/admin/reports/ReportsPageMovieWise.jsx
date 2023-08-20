@@ -146,7 +146,7 @@ const ReportsPageMovieWise = () => {
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>
-                <DataTableMoviesReports data={movies} />
+                <DataTableMoviesReports isLoading={loadingMoviesReports} data={movies}  />
             </div>
 
 

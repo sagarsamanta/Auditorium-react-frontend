@@ -5,7 +5,7 @@ import { useAuth } from '../../../lib/hooks/useAuth';
 import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminShowWiseReports from '../../../components/DataTableAdminShowWiseReports';
-import { displayDate, getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
+import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
 import { AiOutlineDownload } from 'react-icons/ai'
 import { downloadCSV, generateReportFileName } from '../../../lib/downloadCsv';
 
@@ -80,7 +80,7 @@ const ReportsPageShowWise = () => {
     useEffect(() => {
         getAllMoviesTitle();
         getAllShows();
-        return ()=>{
+        return () => {
             setSelectedMovie("")
             setSelectedShows("")
         }
@@ -129,14 +129,8 @@ const ReportsPageShowWise = () => {
         formik.setFieldValue('show', e?.value || '');
     }
     const downloadReports = () => {
-        const reportData = report?.dailyReports?.map((row) => ({
-            "DATE": `${displayDate(row?.date)}`,
-            "SHOW": row?.title,
-            "TOTAL COLLECTION": row?.totalAmount,
-            "TOTAL BOOKINGS": row?.totalBookings,
-        }));
         const reportFileTitle = generateReportFileName(selectedMovie, selectedShow, formik.values.date);
-        downloadCSV(reportData, reportFileTitle);
+        downloadCSV(report?.dailyReports, reportFileTitle)
     }
 
     return (
@@ -162,7 +156,7 @@ const ReportsPageShowWise = () => {
                     <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Shows Reports</h3>
                     <button className='border border-blue-500 p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-blue-700'
                         onClick={downloadReports}
-                        disabled={!report?.dailyReports}
+                        disabled={report?.dailyReports?.length === 0}
                     >
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>

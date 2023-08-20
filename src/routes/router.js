@@ -27,6 +27,7 @@ import ReportsPageShowWise from "../pages/admin/reports/ReportsPageShowWise";
 import BookingHistory from "../pages/admin/BookingHistory";
 import LiveBookings from "../pages/admin/Live-bookings/LiveBookings";
 import SuccessConfirm from "../pages/payment/SuccessConfirm";
+import ReportsPageSeatWise from "../pages/admin/reports/ReportsPageSeatWise";
 
 const router = createBrowserRouter([
     {
@@ -133,6 +134,11 @@ const router = createBrowserRouter([
     {
         path: "admin/reports/show-wise-report",
         element: <AuthentiCate><AdminPanelLayout><ReportsPageShowWise /></AdminPanelLayout></AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "admin/reports/seat-wise-report",
+        element: <AuthentiCate><AdminPanelLayout><ReportsPageSeatWise /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },
     {

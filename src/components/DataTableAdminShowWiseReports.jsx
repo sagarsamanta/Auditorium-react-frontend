@@ -1,7 +1,7 @@
 import { displayDate, getCurrencyFormat } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
 
-const DataTableAdminReports = ({ data, className }) => {
+const DataTableAdminReports = ({ data, className, isLoading }) => {
     const columns = [
         {
             name: 'Booking Date',
@@ -29,6 +29,8 @@ const DataTableAdminReports = ({ data, className }) => {
                 data={data}
                 className={className}
                 pagination
+                loading={true}
+                progressPending={isLoading}
             />
 
             {/* <Modal
