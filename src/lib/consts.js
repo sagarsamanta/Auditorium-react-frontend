@@ -15,7 +15,6 @@ export const SEAT_RESERVED = "RESERVED";
 
 export const MOVIE_LOCALSTORAGE_KEY = "iws-movie-data";
 export const MAX_SEATS_PER_BOOKING = 5;
-export const USER_CASH_PAY_WARNING_MESSAGE = `Please seek authority for "Pay with Cash" option.`
 export const PAYMENT_METHOS = {
     CASH: 'CASH',
     ONLINE: 'ONLINE',
@@ -59,4 +58,9 @@ export const SEATS_STATUS = {
 
 export const PAYMENT = {
     spURL: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1", // Staging environment
+};
+
+export const MESSAGE = {
+    USER_CASH_PAY_WARNING_MESSAGE: `Please seek authority for "Pay with Cash" option.`,
+    FORGOT_PASSWORD: `Please seek authority to change your password!`,
 };

@@ -82,7 +82,6 @@ const router = createBrowserRouter([
     },
     {
         path: "admin/users",
-
         element: <AuthentiCate><AdminPanelLayout><UsersPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },

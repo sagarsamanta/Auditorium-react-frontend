@@ -47,20 +47,36 @@ export default function Modal({ isOpen, closeHandler, config }) {
                                         </p>
                                     </div>
 
-                                    <div className="mt-4 space-x-3">
-                                        <LoadingButton
-                                            text={config?.buttonText}
-                                            isLoading={config?.loading}
-                                            className={`transition delay-150 border border-transparent bg-skin-base py-2 text-sm font-medium text-skin-inverted hover:bg-skin-base/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-skin-base focus-visible:ring-offset-2 ${config?.buttonClassName}`}
-                                            onClick={config?.buttonHandler}
-                                        />
-                                        <button
-                                            type="button"
-                                            className="inline-flex justify-center rounded-md transition delay-150 border border-red-500 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-500 hover:text-skin-inverted focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                                            onClick={closeModal}
-                                        >
-                                            Cancel
-                                        </button>
+                                    <div className="mt-4 space-x-3 text-right">
+                                        {
+                                            config?.onlyCloseableBtn ? (
+                                                <>
+                                                    <button
+                                                        type="button"
+                                                        className="inline-flex justify-center rounded-md transition delay-150 border border-skin-base px-4 py-2 text-sm font-medium text-skin-inverted bg-skin-base hover:bg-skin-inverted hover:text-skin-base focus:outline-none focus-visible:ring-2 focus-visible:ring-skintext-skin-base focus-visible:ring-offset-2"
+                                                        onClick={closeModal}
+                                                    >
+                                                        {config?.onlyCloseableBtn?.text}
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <LoadingButton
+                                                        text={config?.buttonText}
+                                                        isLoading={config?.loading}
+                                                        className={`transition delay-150 border border-transparent bg-skin-base py-2 text-sm font-medium text-skin-inverted hover:bg-skin-base/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-skin-base focus-visible:ring-offset-2 ${config?.buttonClassName}`}
+                                                        onClick={config?.buttonHandler}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="inline-flex justify-center rounded-md transition delay-150 border border-red-500 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-500 hover:text-skin-inverted focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                                                        onClick={closeModal}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { displayDate, displayTime, getCurrencyFormat } from '../../../../lib/utils';
 import { MdClose } from 'react-icons/md';
-import { PAYMENT_METHOS, USER_CASH_PAY_WARNING_MESSAGE, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
+import { MESSAGE, PAYMENT_METHOS, USER_EMPLOYEE_ROLE } from '../../../../lib/consts';
 import { useAuth } from '../../../../lib/hooks/useAuth';
 import LoadingButton from '../../../../components/UI/LoadingButton';
 
@@ -66,7 +66,7 @@ const BookingConfirmation = ({ selectedSeats, show, totalAmount, closeModal, han
                         <p className="text-lg text-center md:text-base">:</p>
                         <p className="text-sm md:text-xl font-semibold">{getCurrencyFormat(totalAmount)}</p>
                     </div>
-                    {<div className={`text-sm bg-yellow-200 px-3 py-1 rounded-full transition ${isNotValidPayment ? 'opacity-100' : 'opacity-0'}`}>{USER_CASH_PAY_WARNING_MESSAGE}</div>}
+                    {<div className={`text-sm bg-yellow-200 px-3 py-1 rounded-full transition ${isNotValidPayment ? 'opacity-100' : 'opacity-0'}`}>{MESSAGE.USER_CASH_PAY_WARNING_MESSAGE}</div>}
 
                     <LoadingButton
                         text='Proceed to Pay'

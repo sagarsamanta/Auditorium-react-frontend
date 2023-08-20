@@ -1,5 +1,6 @@
 import Logo from "../components/UI/Logo";
 import LoginForm from "../components/LoginForm";
+import { OPGC } from "../lib/consts";
 
 const LoginPage = () => {
     return (
@@ -11,7 +12,7 @@ const LoginPage = () => {
                             <Logo />
                         </div>
                         <p className="mt-6 font-normal text-center md:mt-0">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. In commodi odit modi repudiandae autem, aliquam?
+                            {OPGC}
                         </p>
                     </div>
                     <LoginForm />

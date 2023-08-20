@@ -1,14 +1,16 @@
 import Axios from "../lib/axiosInstance";
-import { USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../lib/consts";
+import { MESSAGE, USER_ADMIN_ROLE, USER_EMPLOYEE_ROLE } from "../lib/consts";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
+import Modal from "./UI/Modal";
 
 const LoginForm = () => {
     const userContext = useContext(UserContext);
     const [loading, setLoading] = useState(false);
+    const [isOpenForgetPasswordModal, setIsOpenForgetPasswordModal] = useState(false);
     const [error, setError] = useState("")
     const navigate = useNavigate();
     const formik = useFormik({
@@ -40,6 +42,22 @@ const LoginForm = () => {
         setError("");
     };
 
+    const forgetPasswordConfig = {
+        title: 'Forgot Password?',
+        text: (
+            <>
+                <p className="bg-yellow-200 p-4 rounded">{MESSAGE.FORGOT_PASSWORD}</p>
+            </>
+        ),
+        onlyCloseableBtn: {
+            text: 'Ok'
+        },
+    };
+
+    const forgetPasswordModalCloseHandler = () => {
+        setIsOpenForgetPasswordModal(false);
+    }
+
     useEffect(() => {
         if (userContext && userContext?.authUser?.isAuthenticated) {
             if (userContext?.authUser?.user?.role === USER_ADMIN_ROLE) navigate('/admin/movies');
@@ -68,7 +86,6 @@ const LoginForm = () => {
                     <div className="flex flex-col space-y-1">
                         <div className="flex items-center justify-between">
                             <label htmlFor="password" className="text-sm font-semibold text-skin-inverted">Password</label>
-                            {/* <a href="#" className="text-sm text-skin-inverted hover:underline">Forgot Password?</a> */}
                         </div>
                         <input
                             type="password"
@@ -94,7 +111,14 @@ const LoginForm = () => {
                         </button>
                     </div>
                 </form>
+                <button 
+                    className="text-sm mt-4 float-right text-skin-inverted hover:underline"
+                    onClick={() => setIsOpenForgetPasswordModal(!isOpenForgetPasswordModal)}
+                >
+                    Forgot Password?
+                </button>
                 {error && <div className="text-red-500 text-right p-1">{error}</div>}
+                <Modal isOpen={isOpenForgetPasswordModal} closeHandler={forgetPasswordModalCloseHandler} config={forgetPasswordConfig} />
             </div>
         </>
     )
