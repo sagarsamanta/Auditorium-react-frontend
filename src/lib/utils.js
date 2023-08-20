@@ -108,6 +108,15 @@ export const lowResImageUrl = (imageUrl) => {
     return imageUrl.replace('image/upload', 'image/upload/c_fill,h_150,w_150');
 }
 
+export const generateRandomString = (length = 7) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomString += characters.charAt(randomIndex);
+    }
+    return randomString;
+}
 
 /** API methods */
 export const getAllMovies = async (token) => {
