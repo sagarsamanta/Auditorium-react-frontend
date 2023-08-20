@@ -2,7 +2,7 @@ import DataTable from "react-data-table-component";
 import {PiSpinnerGapThin} from 'react-icons/pi'
 
 export const CustomDataTable = ({ columns, data, className, ...rest }) => {
-    return (
+        return (
         <>
             <DataTable
                 columns={columns}
