@@ -139,7 +139,7 @@ export default function TicketModal({ isOpen, handleDownloadTickets, closeHandle
                                                                 showTitle,
                                                                 showTime,
                                                                 noOfSeatsBook: 1,
-                                                                bookingId: `${bookingId}-${seat?.seatNo}`,
+                                                                bookingId: `${bookingId}`,
                                                                 seatNo: seat?.seatNo,
                                                                 amount: seat?.price,
                                                                 language

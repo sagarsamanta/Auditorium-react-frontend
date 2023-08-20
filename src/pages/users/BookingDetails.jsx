@@ -155,14 +155,14 @@ const BookingDetails = (props) => {
                                             >
                                                 View ticket
                                             </button>
-                                            <button
+                                            {/* <button
                                                 className={`text-skin-inverted border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
                                                 onClick={() => {
                                                     handleDownloadTickets(ticketDeatils)
                                                 }}
                                             >
                                                 Download ticket
-                                            </button>
+                                            </button> */}
                                             {BOOKING_STATUS.CANCEL !== bookingDetails?.status && <LoadingButton
                                                 className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 !bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
                                                 onClick={cancelTicketModal}
