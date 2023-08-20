@@ -89,7 +89,7 @@ const AdminPanelLayout = ({ children }) => {
             <Logo to="/admin" className="ml-4" />
 
             <NavBar />
-            <div className="absolute bottom-3 w-full ">
+            <div className="w-full">
               <LogoutBtn />
             </div>
           </div>
