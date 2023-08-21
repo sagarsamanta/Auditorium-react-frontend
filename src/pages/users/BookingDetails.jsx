@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import TicketModal from "../../components/UI/TicketModal";
 import Loader from "../../components/UI/Loader";
 import SomethingWentWrong from "../../components/UI/SomethingWentWrong";
-import { BOOKING_STATUS, SEATS_STATUS } from "../../lib/consts";
+import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../../lib/consts";
 import { toast } from "react-toastify";
 import LoadingButton from "../../components/UI/LoadingButton";
 
@@ -221,6 +221,27 @@ const BookingDetails = (props) => {
                       }`}
                     >
                       {bookingDetails?.status}
+                    </p>
+                  </div>
+                  <div className="mt-4 space-y-1">
+                    <span className="text-lg font-semibold">
+                      Payment Status
+                    </span>
+                    <p
+                      className={`${
+                        bookingDetails?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
+                        "text-green-700"
+                      } ${
+                        bookingDetails?.paymentStatus ===
+                          PAYMENTS_STATUS.REFUND_REQUESTED && "text-yellow-400"
+                      } 
+                            ${
+                              bookingDetails?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+                              "text-red-400"
+                            } 
+                            font-semibold `}
+                    >
+                      {bookingDetails?.paymentStatus}
                     </p>
                   </div>
                 </div>

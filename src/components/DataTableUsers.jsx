@@ -117,7 +117,7 @@ const DataTableUsers = ({ data, className }) => {
         newPassword: changePasswordModal.newPassword,
       };
       setChangePasswordModal({ ...changePasswordModal, loading: true });
-      Axios("PUT", "user/chnage-password", newUserPassword, {
+      Axios("PUT", "user/change-password", newUserPassword, {
         authRequest: true,
         token: token,
       })
@@ -209,11 +209,11 @@ const DataTableUsers = ({ data, className }) => {
       )}
 
       {/* Chnage Password Modal */}
-      <Modal
-        isOpen={changePasswordModal?.show}
-        closeHandler={changePasswordModalHandler}
-        config={chnagePasswordModalConfig}
-      />
+        <Modal
+          isOpen={changePasswordModal?.show}
+          closeHandler={changePasswordModalHandler}
+          config={chnagePasswordModalConfig}
+        />
     </>
   );
 };
