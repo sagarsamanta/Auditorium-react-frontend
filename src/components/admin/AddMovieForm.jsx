@@ -15,6 +15,7 @@ const AddMovieForm = ({ movie }) => {
     const [loading, setLoading] = useState(false);
     const { token } = useAuth();
     const navigate = useNavigate();
+    const languages = ['Bangla', 'Odia', 'Hindi', 'English'];
     const formik = useFormik({
         initialValues: {
             title: movie?.title || '',
@@ -68,6 +69,7 @@ const AddMovieForm = ({ movie }) => {
         imgPreviewRef.current.src = imgUri;
         formik.setFieldValue('image', file);
     }
+    console.log('formik.values', formik.values);
     return (
         <>
             <form className="w-full" onSubmit={formik.handleSubmit}>
@@ -111,18 +113,26 @@ const AddMovieForm = ({ movie }) => {
                                 }
                             </div>
                             <div className="md:px-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
+                                <div className="relative">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="movie-language">
                                         Language
                                     </label>
-                                    <input
-                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.language && formik.errors.language) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                                        id="movie-language"
-                                        type="text"
+                                    <select
                                         name="language"
-                                        value={formik.values.language}
+                                        id="movie-language"
+                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.language && formik.errors.language) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                                         onChange={formik.handleChange}
-                                    />
+                                    >
+                                        <option value="">Select Language</option>
+                                        {
+                                            languages.map(lang => (
+                                                <option value={lang} selected={lang === movie?.language}>{lang}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <div class="pointer-events-none absolute top-1/2 right-3 flex items-center px-2 text-gray-700">
+                                        <i class="w-[7px] h-[7px] rotate-45 border-[#9494a1] border-r-2 border-b-2"></i>
+                                    </div>
                                     {
                                         (formik.touched.language && formik.errors.language) && <p className="text-red-500 text-sm">{formik.errors.language}</p>
                                     }
