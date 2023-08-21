@@ -117,20 +117,17 @@ const DataTableUsers = ({ data, className }) => {
         newPassword: changePasswordModal.newPassword,
       };
       setChangePasswordModal({ ...changePasswordModal, loading: true });
-      Axios("PUT", "user/chnage-password", newUserPassword, {
+      Axios("PUT", "user/change-password", newUserPassword, {
         authRequest: true,
         token: token,
       })
         .then((res) => {
           if (res.status === 200) {
-            toast.success(res?.data?.data?.message);
             setChangePasswordModal({ ...changePasswordModal, show: false });
+            toast.success(res?.data?.message);
           } else {
-            toast.error(res?.data?.data?.error);
+            toast.error(res?.data?.message);
           }
-        })
-        .finally(() => {
-          setChangePasswordModal({ ...changePasswordModal, loading: false });
         })
         .catch((err) => {
           console.log("err", err);
