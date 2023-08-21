@@ -123,7 +123,7 @@ const AddMovieForm = ({ movie }) => {
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${(formik.touched.language && formik.errors.language) ? 'border-red-500' : 'border-gray-200'} rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                                         onChange={formik.handleChange}
                                     >
-                                        <option value="">Select Language</option>
+                                        <option value="" disabled>Select Language</option>
                                         {
                                             languages.map(lang => (
                                                 <option value={lang} selected={lang === movie?.language}>{lang}</option>
