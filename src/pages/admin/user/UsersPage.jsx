@@ -26,14 +26,14 @@ const UsersPage = () => {
             <main className="movies-page  ">
                 <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                     <h1 className="text-xl md:text-2xl lg:text:3xl">Users</h1>
-                    <Link
+                    {/* <Link
                         to=""
                         className="text-sm inline-block px-2 py-2 md:px-4 md:py-3 rounded-lg bg-skin-base text-skin-inverted"
                     >
                         <div className="flex gap-2 items-center">
-                          <AiOutlineUserAdd size={18} />  <div>Add New User</div>
+                          <AiOutlineUserAdd size={18} /> <div>Add New User</div>
                         </div>
-                    </Link>
+                    </Link> */}
                 </div>
 
                 <div className="movies-table-wrapper p-4 shadow-md mt-5">
