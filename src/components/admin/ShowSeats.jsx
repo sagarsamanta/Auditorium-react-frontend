@@ -20,6 +20,13 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOS.DEFAULT);
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [employeeOptions, setEmployeeOptions] = useState([
+        {value: 'emp1', label: 'Employee 1'},
+        {value: 'emp2', label: 'Employee 2'},
+        {value: 'emp3', label: 'Employee 3'},
+    ]);
+
     const paymentFormRef = useRef();
     const clientCodeRef = useRef();
     const encDataRef = useRef();
@@ -107,25 +114,28 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                 paymentMode: payMode
             };
 
-            // API call to save seats
-            Axios('POST', `/booking/book-movie/${movieId}`, seats, { authRequest: true, token: authUser.token })
-                .then(async (res) => {
-                    if (res?.status === 201) {
-                        if (paymentMethod === PAYMENT_METHOS.ONLINE) {
-                            await redirectToPaymentGateway(authUser.user, seats.totalPrice, res?.data?.data, paymentFormRefs);
-                        } else {
+            if (paymentMethod === PAYMENT_METHOS.ONLINE) {
+                // Online Payment
+                await redirectToPaymentGateway(authUser.user, seats, paymentFormRefs);
+            }
+            else if (paymentMethod === PAYMENT_METHOS.CASH && authUser?.user?.role === USER_ADMIN_ROLE) {
+                // Cash Payment By Admin
+                Axios('POST', `/booking/book-movie-byCash/${movieId}`, seats, { authRequest: true, token: authUser.token })
+                    .then(async (res) => {
+                        if (res?.status === 201) {
                             toast.success(`Booked Successfully!`);
                         }
-                    }
-                })
-                .finally(() => {
-                    setLoading(prev => { return { ...prev, booking: false } });
-                    setIsOpenSelectedSeatModal(false);
-                    fetchFreshData();
-                })
-                .catch((err) => {
-                    console.log('err', err);
-                });
+                    })
+                    .finally(() => {
+                        setLoading(prev => { return { ...prev, booking: false } });
+                        setIsOpenSelectedSeatModal(false);
+                        fetchFreshData();
+                    })
+                    .catch((err) => {
+                        console.log('err', err);
+                    });
+            }
+
         }
     }
     const handleSaveReserve = async () => {
@@ -196,6 +206,10 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                 paymentMethod={paymentMethod}
                 setPaymentMethod={setPaymentMethod}
                 isLoading={loading.booking}
+                selectedEmployee={selectedEmployee}
+                setSelectedEmployee={setSelectedEmployee}
+                employeeOptions={employeeOptions}
+                setEmployeeOptions={setEmployeeOptions}
             />
         )
     }

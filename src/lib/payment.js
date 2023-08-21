@@ -10,15 +10,26 @@ function randomStr(len, arr) {
 }
 const clientCode = "TM001";
 
-export const redirectToPaymentGateway = (user, totalAmount, bookingData, paymentFormRefs) => {
-    if (!user || !bookingData?._id) return;
+export const redirectToPaymentGateway = (user, seats, paymentFormRefs) => {
+    if (!user) return;
+
+    const udf = {
+        udf1: seats.movieId || '',    // movie Id
+        udf2: seats.showtimeId || '',     // showtimeId
+        udf3: JSON.stringify(seats.seatIds),     // Array of seats object [{price: Number, seatNo: String}]
+        udf4: seats.userId || '',     // Booking User Id
+        udf5: `${seats.totalPrice}` || '',       // totalPrice
+        udf6: seats.paymentMode || '',       // paymentMode
+    };
+
+    console.log('udf', udf);
 
     Axios("POST", "/payment/encryot-data", {
         payerName: user.name,
         payerEmail: user.email,
         payerMobile: "9876543210",  // user.mobile
         clientTxnId: randomStr(20, "12345abcdefghujklmnopqrstuvwxyz"),
-        amount: totalAmount,
+        amount: seats.totalPrice,
         clientCode: "TM001",
         transUserName: "spuser_2013",
         transUserPassword: "RIADA_SP336",
@@ -26,12 +37,10 @@ export const redirectToPaymentGateway = (user, totalAmount, bookingData, payment
         channelId: "W",
         mcc: "5666",
         transData: new Date(),
-        udf1: bookingData?._id, // Booking Id
-        udf2: 'showtimeId',
-        udf3: 'seatIds',
-        udf4: 'paymentMode',
+        ...udf,
     }).then(async (res) => {
         if (res.status === 200) {
+            // Submit all data to SubPaisa
             paymentFormRefs.encDataRef.current.value = res?.data?.data
             paymentFormRefs.clientCodeRef.current.value = clientCode
             paymentFormRefs.paymentFormRef.current.submit();
