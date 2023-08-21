@@ -71,6 +71,7 @@ const BookingConfirmation = ({
     }
     const handleUserTypeChange = (e) => {
         setUserType(e.target.value);
+        setSelectedEmployee(null);
     }
 
     const isNotValidPayment =
