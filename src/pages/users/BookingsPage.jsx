@@ -104,16 +104,16 @@ const BookingsPage = () => {
                           </span>
                         </div>
                         <div className="mt-4">
-                          <span className="text-lg font-semibold">
+                          <span className="text-base font-bold">
                             Description
                           </span>
                           <p className="line-clamp-3">
                             {booking?.movie?.description}
                           </p>
                         </div>
-                        <div className="grid grid-cols-2 gap-1">
-                          <div className="mt-4">
-                            <span className="text-lg font-semibold">
+                        <div className="grid grid-cols-2">
+                          <div className="mt-2">
+                            <span className="text-base font-semibold">
                               Realese Date
                             </span>
                             <p className="line-clamp-3">
@@ -121,16 +121,16 @@ const BookingsPage = () => {
                               {displayTime(booking?.showtime?.showStartTime)}
                             </p>
                           </div>
-                          <div className="mt-4">
-                            <span className="text-lg font-semibold">
+                          <div className="mt-2">
+                            <span className="text-base font-semibold">
                               Booking Date
                             </span>
                             <p className="line-clamp-3">
                               {displayDate(booking?.createdAt)}
                             </p>
                           </div>
-                          <div className="mt-4">
-                            <span className="text-lg font-semibold">
+                          <div className="mt-2">
+                            <span className="text-base font-semibold">
                               Seats
                             </span>
                             <p className="line-clamp-3">
@@ -139,16 +139,14 @@ const BookingsPage = () => {
                                 .join(", ")}`.trim()}
                             </p>
                           </div>
-                          <div className="mt-4">
-                            <span className="text-lg font-semibold">
+                          <div className="mt-2">
+                            <span className="text-base font-semibold">
                               Total Amount
                             </span>
                             <p className="line-clamp-3">
                               {getCurrencyFormat(booking?.totalPrice)}
                             </p>
                           </div>
-                          {/* <div className="w-full md:w-1/3 grid grid-cols-2">
-                          </div> */}
                         </div>
 
                         <div className="mt-4 space-y-1">
