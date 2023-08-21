@@ -43,7 +43,6 @@ const DataTableMovie = ({ data, className }) => {
       })
       .catch((err) => {
         if (err?.response?.status === 302) {
-          console.log(`${err?.response?.data?.message}`);
           toast.warning(`${err?.response?.data?.message}`);
         }
         if (err?.response?.status === 500) {
@@ -53,7 +52,6 @@ const DataTableMovie = ({ data, className }) => {
       });
   };
   const onOkConfirmDelete = () => {
-    console.log("Api called for delete");
     closeConfirmModal();
   };
   const confirmConfig = {

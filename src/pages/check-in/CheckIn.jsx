@@ -22,7 +22,6 @@ const CheckIn = () => {
     useEffect(() => {
         Axios('GET', `movie/movie-shows-timings`, null, { authRequest: true, token: token })
             .then((res) => {
-                console.log(res);
                 setAllShows(res.data?.show);
                 setActiveMovie(res.data?.movie[0]);
                 setSelectedShow(res.data?.show[0])

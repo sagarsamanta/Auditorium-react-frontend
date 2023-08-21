@@ -22,7 +22,6 @@ export const redirectToPaymentGateway = (user, seats, paymentFormRefs) => {
         udf6: seats.paymentMode || '',       // paymentMode
     };
 
-    console.log('udf', udf);
 
     Axios("POST", "/payment/encryot-data", {
         payerName: user.name,
@@ -45,7 +44,6 @@ export const redirectToPaymentGateway = (user, seats, paymentFormRefs) => {
             paymentFormRefs.clientCodeRef.current.value = clientCode
             paymentFormRefs.paymentFormRef.current.submit();
         }
-        console.log('res', res);
     }).catch((err) => {
         console.log('err', err);
     });

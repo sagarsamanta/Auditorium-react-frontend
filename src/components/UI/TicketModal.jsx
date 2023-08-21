@@ -25,7 +25,6 @@ export default function TicketModal({ isOpen, closeHandler, ticket }) {
     amount,
     language,
   } = ticket;
-  console.log(ticket);
   const slickSliderSettings = {
     dots: true,
     slidesToShow: 1,

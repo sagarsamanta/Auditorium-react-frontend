@@ -73,7 +73,6 @@ const DataTableUsers = ({ data, className }) => {
     },
   ];
   const onOkConfirmDelete = () => {
-    console.log("Api called for delete");
     closeConfirmModal();
   };
   const confirmConfig = {

@@ -16,6 +16,8 @@ const LiveBookings = () => {
   const [activeMovie, setActiveMovie] = useState([]);
   const [selectedShow, setSelectedShow] = useState({});
   const [totalAmountCollected, setTotalAmountCollected] = useState(0);
+  const [totalAmountCollectedOnShow, setTotalAmountCollectedOnShow] = useState(0);
+
   const { token } = useAuth();
   const getShowsRecords = (id) => {
     const show = shows.filter((show) => show._id === id);
@@ -38,7 +40,6 @@ const LiveBookings = () => {
       });
   }, []);
 
-  console.log("selectedShow", selectedShow);
   return (
     <div className="relative min-h-screen">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-y-4 p-4 border border-slate-100 rounded-md shadow-md">
@@ -54,12 +55,18 @@ const LiveBookings = () => {
           </div>
         )}
       </div>
-      <div className="bg-white rounded-lg  mt-2 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-1">
+      <div className="bg-white rounded-lg  mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1">
         <div className="border p-4 rounded-lg flex flex-col shadow-md">
           <span className="text-lg font-semibold">
             {getCurrencyFormat(totalAmountCollected)}
           </span>
-          <span className="text-sm">Total Collection</span>
+          <span className="text-sm">Movie Total Collection</span>
+        </div>
+        <div className="border p-4 rounded-lg flex flex-col shadow-md">
+          <span className="text-lg font-semibold">
+            {getCurrencyFormat(totalAmountCollectedOnShow)}
+          </span>
+          <span className="text-sm">Show Total Collection</span>
         </div>
         <div className="border p-4 rounded-lg flex flex-col shadow-md">
           <span className="text-lg font-semibold">
@@ -112,6 +119,7 @@ const LiveBookings = () => {
           <LiveBookingsTable
             show={selectedShow}
             showStartTime={selectedShow?.showStartTime}
+            setTotalAmountCollectedOnShow={setTotalAmountCollectedOnShow}
           />
         )}
       </div>

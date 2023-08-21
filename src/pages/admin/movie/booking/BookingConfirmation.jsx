@@ -63,7 +63,6 @@ const BookingConfirmation = ({
       token: token,
     })
       .then(async (res) => {
-        console.log("res", res);
         setIsEverythingOk(res?.status === 200);
         if (res.status !== 200) {
           setError(res.data.data?.message);
@@ -71,7 +70,6 @@ const BookingConfirmation = ({
       })
       .catch((err) => {
         setError(err?.response?.data?.message);
-        console.log("err", err?.response?.data?.message);
       });
   }, [selectedSeats, totalAmount]);
 

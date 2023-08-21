@@ -102,7 +102,6 @@ const ReportsPageShowWise = () => {
                         if (formik?.values?.show) {
                             reports.dailyReports = reports?.dailyReports?.filter((report) => report?.title === formik?.values?.show);
                         }
-                        console.log('reports', reports);
                         setReport(reports);
                     }
                 })

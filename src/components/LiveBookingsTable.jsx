@@ -9,12 +9,11 @@ import { CustomDataTable as DataTable } from "./DataTable";
 import { AiOutlineCopy } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../lib/consts";
-const LiveBookingsTable = ({ show, showStartTime }) => {
+const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }) => {
   const [data, setData] = useState([]);
   const [tempData, setTempData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const { token } = useAuth();
-  const [totalAmountCollected, setTotalAmountCollected] = useState(0);
 
   const chnageBookingStatus = (id, status) => {
     Axios(
@@ -27,7 +26,6 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
         if (res.status === 200) {
           const updatedBookings = data.map((booking) => {
             if (booking.bookingId === id) {
-              console.log(booking.bookingId, id);
               return { ...booking, status: res?.data?.status };
             }
             return booking;
@@ -49,9 +47,8 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
     })
       .then((res) => {
         setData(res.data?.bookings);
-        console.log(res.data);
         setTempData(res.data?.bookings);
-        setTotalAmountCollected(res?.data?.totalAmountCollected);
+        setTotalAmountCollectedOnShow(res?.data?.amountCollectedOnShow);
         setLoading(false);
       })
       .finally(() => {

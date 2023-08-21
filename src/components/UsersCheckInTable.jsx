@@ -26,7 +26,6 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       { authRequest: true, token: token }
     )
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           // Find the index of the updated row in your state
           const rowIndex = data.findIndex((r) => r._id === selectedSeat._id);
@@ -195,7 +194,6 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
   const closeConfirmModalHandelar = () => {
     setConfirmModal(false);
   };
-  console.log(data);
   return (
     <>
       <SearchBox

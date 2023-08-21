@@ -3,7 +3,6 @@ import { displayDate, displayTime } from "../lib/utils";
 import { BOOKING_STATUS, SEATS_STATUS } from "../lib/consts";
 
 const DataTableUsersBookings = ({ data, className }) => {
-  console.log(data);
   const columns = [
     {
       name: "Date",

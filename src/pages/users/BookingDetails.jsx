@@ -48,7 +48,6 @@ const BookingDetails = (props) => {
   const openTicketModal = () => {
     setViewTicket(true);
   };
-  console.log(bookingDetails);
   const ticketDeatils = {
     title: bookingDetails?.movie?.title,
     poster: bookingDetails?.movie?.poster,

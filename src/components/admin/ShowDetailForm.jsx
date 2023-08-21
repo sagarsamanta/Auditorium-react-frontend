@@ -52,7 +52,6 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                 // Update Show
                 Axios('PUT', `/show/${movie._id}/${showId}`, show, { authRequest: true, token: token })
                     .then((request) => {
-                        console.log('request', request);
                         toast.success('Show Updated Successfully');
                     })
                     .finally(() => {
@@ -66,7 +65,6 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                 // Create Show
                 Axios('POST', `/show/${movie._id}`, [show], { authRequest: true, token: token })
                     .then((request) => {
-                        console.log('request', request);
                         toast.success('Show Created Successfully');
                         navigate(-1);
                     })

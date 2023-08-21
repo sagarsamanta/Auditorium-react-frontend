@@ -17,7 +17,6 @@ const UsersPage = () => {
             const data = await getAllUsers(token)
             setResponse(data?.users);
             setLoading(false);
-            console.log(data);
         };
         response();
     }, []);
