@@ -206,11 +206,11 @@ const DataTableUsers = ({ data, className }) => {
       )}
 
       {/* Chnage Password Modal */}
-      <Modal
-        isOpen={changePasswordModal?.show}
-        closeHandler={changePasswordModalHandler}
-        config={chnagePasswordModalConfig}
-      />
+        <Modal
+          isOpen={changePasswordModal?.show}
+          closeHandler={changePasswordModalHandler}
+          config={chnagePasswordModalConfig}
+        />
     </>
   );
 };
