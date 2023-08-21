@@ -96,7 +96,7 @@ const BookingsPage = () => {
                       </div>
                       <div className="flex w-full flex-col justify-end">
                         <div className="">
-                          <h5 className="font-semibold w-full text-3xl uppercase line-clamp-1 leading-tight">
+                          <h5 className="font-semibold w-full text-lg uppercase leading-tight">
                             {booking?.movie?.title}
                           </h5>
                           <span className="capitalize">
@@ -111,7 +111,7 @@ const BookingsPage = () => {
                             {booking?.movie?.description}
                           </p>
                         </div>
-                        <div className="flex flex-col md:flex-row justify-between items-start gap-2">
+                        <div className="grid grid-cols-2 gap-1">
                           <div className="mt-4">
                             <span className="text-lg font-semibold">
                               Realese Date
@@ -129,26 +129,26 @@ const BookingsPage = () => {
                               {displayDate(booking?.createdAt)}
                             </p>
                           </div>
-                          <div className="w-full md:w-1/3 grid grid-cols-2">
-                            <div className="mt-4">
-                              <span className="text-lg font-semibold">
-                                Seats
-                              </span>
-                              <p className="line-clamp-3">
-                                {`${booking?.seats
-                                  ?.map((seat) => seat?.seatNo)
-                                  .join(", ")}`.trim()}
-                              </p>
-                            </div>
-                            <div className="mt-4">
-                              <span className="text-lg font-semibold">
-                                Total Amount
-                              </span>
-                              <p className="line-clamp-3">
-                                {getCurrencyFormat(booking?.totalPrice)}
-                              </p>
-                            </div>
+                          <div className="mt-4">
+                            <span className="text-lg font-semibold">
+                              Seats
+                            </span>
+                            <p className="line-clamp-3">
+                              {`${booking?.seats
+                                ?.map((seat) => seat?.seatNo)
+                                .join(", ")}`.trim()}
+                            </p>
                           </div>
+                          <div className="mt-4">
+                            <span className="text-lg font-semibold">
+                              Total Amount
+                            </span>
+                            <p className="line-clamp-3">
+                              {getCurrencyFormat(booking?.totalPrice)}
+                            </p>
+                          </div>
+                          {/* <div className="w-full md:w-1/3 grid grid-cols-2">
+                          </div> */}
                         </div>
 
                         <div className="mt-4 space-y-1">
