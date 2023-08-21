@@ -37,8 +37,9 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     }
     const handleSelect = (e, seatNo) => {
         e.preventDefault();
-        // If seat is booked, then do not allow to select
+        // If seat is booked / visited, then do not allow to select
         if (seatsByStatus?.BOOKED?.seatNo?.includes(seatNo)) return;
+        if (seatsByStatus?.VISITED?.seatNo?.includes(seatNo)) return;
 
         if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
             setIsOpenReserveSeatModal(true);
@@ -73,7 +74,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
 
     const getSeatStatusColor = (seatNo) => {
         if (seatsList?.totalSeats) {
-            if (seatsByStatus?.BOOKED?.seatNo.includes(seatNo)) {
+            if (seatsByStatus?.BOOKED?.seatNo.includes(seatNo) || seatsByStatus?.VISITED?.seatNo.includes(seatNo)) {
                 return 'bg-skin-seat-booked cursor-not-allowed';
             }
             if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
