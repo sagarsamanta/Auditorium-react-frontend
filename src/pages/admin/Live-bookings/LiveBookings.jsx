@@ -28,7 +28,7 @@ const LiveBookings = () => {
     })
       .then((res) => {
         setTotalAmountCollected(res?.data?.totalAmountCollected);
-        setAllShows(res.data?.show);
+        setAllShows(res.data?.show.filter((show) => show.status === STATUS_ACTIVE));
         setActiveMovie(res.data?.movie[0]);
         setSelectedShow(res.data?.show[0]);
       })
