@@ -21,11 +21,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const seatsByStatus = organizeSeatsByStatus(seatsList?.seats);
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [employeeOptions, setEmployeeOptions] = useState([
-        {value: 'emp1', label: 'Employee 1'},
-        {value: 'emp2', label: 'Employee 2'},
-        {value: 'emp3', label: 'Employee 3'},
-    ]);
+    const [employeeOptions, setEmployeeOptions] = useState([]);
 
     const paymentFormRef = useRef();
     const clientCodeRef = useRef();
@@ -109,7 +105,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                 movieId,
                 showtimeId: showId,
                 seatIds: seatPriceObj,
-                userId: authUser.user._id,
+                userId: selectedEmployee ? selectedEmployee.value : authUser.user._id,
                 totalPrice: getTotalSelectedPrice(seatPriceObj),
                 paymentMode: payMode
             };
@@ -187,6 +183,21 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
 
     useEffect(() => {
         fetchFreshData();
+        if (authUser?.user?.role === USER_ADMIN_ROLE) {
+            Axios("GET", "/user", null, {authRequest: true, token: authUser?.token})
+            .then((res) => {
+                if (res.status === 200) {
+                    const userList = res?.data?.users.filter((user) => user.role !== USER_ADMIN_ROLE).map((user) => ({
+                        label: user.empId,
+                        value: user._id,
+                    }));
+                    setEmployeeOptions(userList);
+                }
+            })
+            .catch((err) => {
+                console.log('err', err.message);
+            })
+        }
     }, [movieId, showId, authUser, priceList]);
 
     const closeSeatBookinConfirmModal = () => {
