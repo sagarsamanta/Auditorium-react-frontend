@@ -3,7 +3,7 @@ import { CustomDataTable as DataTable } from "./DataTable";
 import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { useState } from "react";
 import TicketModal from "./UI/TicketModal";
-import { BOOKING_STATUS, SEATS_STATUS } from "../lib/consts";
+import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../lib/consts";
 import { TbTicketOff } from "react-icons/tb";
 import { IoTicketOutline } from "react-icons/io5";
 import Modal from "./UI/Modal";
@@ -131,6 +131,29 @@ const DataTableAdminBookings = ({ data, className }) => {
       selector: (row) => row.status,
       sortable: true,
     },
+    {
+      name: <>Payment Status</>,
+      minWidth: "150px",
+      selector: (row) => (
+        <div
+          className={`${
+            row?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
+            "text-green-700"
+          } ${
+            row?.paymentStatus ===
+              PAYMENTS_STATUS.REFUND_REQUESTED && "text-yellow-400"
+          } 
+                ${
+                  row?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+                  "text-red-400"
+                } 
+                font-semibold `}
+        >
+          {row?.paymentStatus}
+        </div>
+      ),
+    },
+
     {
       name: "Ticket",
       maxWidth: "100px",

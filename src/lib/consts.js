@@ -20,7 +20,13 @@ export const PAYMENT_METHOS = {
     ONLINE: 'ONLINE',
     DEFAULT: 'ONLINE'
 };
-
+export const PAYMENTS_STATUS = {
+    SUCCESS: 'SUCCESS',
+    PENDING: 'PENDING',
+    FAILED:'FAILED',
+    REFUND_INITIATED: 'REFUND_INITIATED',
+    REFUND_REQUESTED: 'REFUND_REQUESTED',
+  }
 export const SEATS = {
     a_to_c: {
         A: ["12", "11", "10", "09", "08", "07", "06", "05", "04", "03", "02", "01"],

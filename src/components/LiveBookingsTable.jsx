@@ -8,7 +8,7 @@ import { CustomDataTable as DataTable } from "./DataTable";
 
 import { AiOutlineCopy } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { BOOKING_STATUS, SEATS_STATUS } from "../lib/consts";
+import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../lib/consts";
 const LiveBookingsTable = ({ show, showStartTime }) => {
   const [data, setData] = useState([]);
   const [tempData, setTempData] = useState([]);
@@ -84,7 +84,7 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
       selector: (row) => (
         <div
           className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center"
-        //   onClick={(e) => handleCopyClick(e, row.bookingId)}
+          //   onClick={(e) => handleCopyClick(e, row.bookingId)}
         >
           <span>{row.bookingId}</span>
         </div>
@@ -108,6 +108,27 @@ const LiveBookingsTable = ({ show, showStartTime }) => {
       name: <>Payment Mode</>,
       minWidth: "200px",
       selector: (row) => row?.paymentMode,
+    },
+    {
+      name: <>Payment Status</>,
+      minWidth: "200px",
+      selector: (row) => (
+        <div
+          className={`${
+            row?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
+          } ${
+            row?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
+            "text-yellow-400"
+          } 
+          ${
+            row?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+            "text-red-400"
+          } 
+          font-semibold `}
+        >
+          {row?.paymentStatus}
+        </div>
+      ),
     },
     {
       name: <>Booking Status</>,
