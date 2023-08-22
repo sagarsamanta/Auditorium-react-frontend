@@ -18,7 +18,7 @@ const DataTableMoviesReports = ({ data, className, isLoading }) => {
       sortable: true,
     },
     {
-      name: "Booked Seats",
+      name: "No.Of Bookings",
       selector: (row) => row?.bookedSeats,
     },
     {
