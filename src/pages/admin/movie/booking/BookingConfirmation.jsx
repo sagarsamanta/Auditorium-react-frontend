@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   displayDate,
   displayTime,
@@ -30,11 +30,15 @@ const BookingConfirmation = ({
   setSelectedEmployee,
   employeeOptions,
   setEmployeeOptions,
+  seatGuests,
+  setSeatGuests,
 }) => {
   const { showStartTime, movie, showEndTime } = show;
   const [isEverythingOk, setIsEverythingOk] = useState(false);
   const [error, setError] = useState("");
   const [userType, setUserType] = useState("guest");
+  const selectedSeatsArr = selectedSeats?.split(",") || [];
+  const seatPriceObj = getSeatPriceObj(selectedSeatsArr, show?.price);
 
   const { user, token } = useAuth();
 
@@ -47,8 +51,6 @@ const BookingConfirmation = ({
   };
 
   useEffect(() => {
-    const selectedSeatsArr = selectedSeats?.split(",") || [];
-    const seatPriceObj = getSeatPriceObj(selectedSeatsArr, show?.price);
     const seats = {
       movieId: movie?._id,
       showtimeId: show?._id,
@@ -80,6 +82,11 @@ const BookingConfirmation = ({
     setUserType(e.target.value);
     setSelectedEmployee(null);
   };
+
+  // WIP
+  const handleGuestChange = (seat, e, field) => {
+    const guestObj = [...seatGuests];
+  }
 
   const isNotValidPayment =
     user?.role === USER_EMPLOYEE_ROLE && paymentMethod === PAYMENT_METHOS.CASH;
@@ -177,6 +184,31 @@ const BookingConfirmation = ({
                   <span className="text-sm md:text-base">Employee</span>
                 </label>
               </div>
+              {userType === "guest" && (
+                selectedSeatsArr.map((seat) => {
+                  return (
+                    <div className="mt-2 flex justify-between items-center gap-2">
+                      <span className="text-sm font-semibold w-7">{seat}</span>
+                      <input
+                        className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
+                        id="guest-name"
+                        type="text"
+                        placeholder="Guest Name"
+                        name="guest-name"
+                        onChange={(e) => handleGuestChange(seat, e, 'name')}
+                      />
+                      <input
+                        className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
+                        id="guest-phn-no"
+                        type="text"
+                        placeholder="Guest Phone No."
+                        name="guest-phn-no"
+                        onChange={(e) => handleGuestChange(seat, e, 'phone')}
+                      />
+                    </div>
+                  )
+                })
+              )}
               {userType === "employee" && (
                 <div className="mt-2">
                   <label
@@ -216,9 +248,8 @@ const BookingConfirmation = ({
           </div>
           {
             <div
-              className={`text-sm bg-yellow-200 px-3 py-1 mb-2 rounded-full transition ${
-                isNotValidPayment ? "opacity-100" : "opacity-0"
-              }`}
+              className={`text-sm bg-yellow-200 px-3 py-1 mb-2 rounded-full transition ${isNotValidPayment ? "opacity-100" : "opacity-0"
+                }`}
             >
               {MESSAGE.USER_CASH_PAY_WARNING_MESSAGE}
             </div>
