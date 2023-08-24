@@ -12,15 +12,28 @@ const DataTableAdminReports = ({ data, className, isLoading }) => {
             cell: row => row?.title,
         },
         {
+            name: 'Total Bookings',
+            selector: row => row?.totalBookings,
+        },
+        {
             name: 'Total Amount',
             selector: row => row?.totalAmount,
             cell: row => getCurrencyFormat(row?.totalAmount),
             sortable: true,
         },
         {
-            name: 'Total Bookings',
-            selector: row => row?.totalBookings,
+            name: 'Cash Amount',
+            selector: row => row?.totalAmountCash,
+            cell: row => getCurrencyFormat(row?.totalAmountCash),
+            sortable: true,
         },
+        {
+            name: 'Online Amount',
+            selector: row => row?.totalAmountOnline,
+            cell: row => getCurrencyFormat(row?.totalAmountOnline),
+            sortable: true,
+        },
+       
     ];
     return (
         <>

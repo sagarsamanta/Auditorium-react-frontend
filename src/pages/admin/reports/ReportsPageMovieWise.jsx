@@ -122,8 +122,11 @@ const ReportsPageMovieWise = () => {
         const movie = movieTitleList.filter((movie) => (movie.value === formik.values.movie));
         const reportData = report?.dailyReports.map((row) => ({
             "DATE": `${displayDate(row?.createdAt)}`,
-            "TOTAL COLLECTION": row?.totalAmount,
+            "NO OF SHOWS": row?.totalShows,
             "TOTAL BOOKINGS": row?.totalBookings,
+            "CASH COLLECTION": row?.totalAmountCash,
+            "ONLINE COLLECTION": row?.totalAmountOnline,
+            "TOTAL COLLECTION": row?.totalAmount,
         }));
         const reportFileName = generateReportFileName(movie[0]?.label, '', formik.values.date);
         downloadCSV(reportData, reportFileName);
@@ -134,21 +137,6 @@ const ReportsPageMovieWise = () => {
             <div className="flex justify-between items-center p-4 mb-2 border border-slate-100 rounded-md shadow-md">
                 <h1 className="text-xl md:text-2xl lg:text:3xl">Movies Reports</h1>
             </div>
-
-            <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
-                <div className='flex justify-between items-center'>
-                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies-wise Collection</h3>
-                    <button
-                        className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
-                        onClick={downloadAllMoviesReport}
-                    >
-                        <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
-                    </button>
-                </div>
-                <DataTableMoviesReports isLoading={loadingMoviesReports} data={movies}  />
-            </div>
-
-
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
                 <form className='w-full flex flex-col md:flex-row justify-start items-center flex-wrap gap-4 py-4 mb-2' onSubmit={formik.handleSubmit}>
                     <Select onChange={handleMovieChange} placeholder="Select Movie" className='w-[300px]' options={movieTitleList} isClearable />
@@ -179,6 +167,21 @@ const ReportsPageMovieWise = () => {
                     </>
                 )}
             </div>
+            <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
+                <div className='flex justify-between items-center'>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies-wise Collection</h3>
+                    <button
+                        className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
+                        onClick={downloadAllMoviesReport}
+                    >
+                        <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
+                    </button>
+                </div>
+                <DataTableMoviesReports isLoading={loadingMoviesReports} data={movies}  />
+            </div>
+
+
+          
         </div>
     )
 }

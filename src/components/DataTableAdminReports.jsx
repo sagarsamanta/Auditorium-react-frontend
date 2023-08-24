@@ -8,14 +8,29 @@ const DataTableAdminReports = ({ data, className }) => {
             cell: row => `${displayDate(row?.createdAt)}`,
         },
         {
+            name: 'Total Bookings',
+            selector: row => row?.totalBookings,
+        },
+        {
+            name: 'No.of Shows',
+            selector: row => row?.totalShows,
+        },
+        {
+            name: 'Online Amount',
+            selector: row => row?.totalAmountOnline,
+            cell: row => getCurrencyFormat(row?.totalAmountOnline),
+            sortable: true,
+        },
+      
+        {
+            name: 'Cash Amount',
+            selector: row => row?.totalAmountCash,
+            cell: row => getCurrencyFormat(row?.totalAmountCash),
+        },
+        {
             name: 'Total Amount',
             selector: row => row?.totalAmount,
             cell: row => getCurrencyFormat(row?.totalAmount),
-            sortable: true,
-        },
-        {
-            name: 'Total Bookings',
-            selector: row => row?.totalBookings,
         },
     ];
     return (

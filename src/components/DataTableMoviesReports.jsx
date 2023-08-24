@@ -12,19 +12,33 @@ const DataTableMoviesReports = ({ data, className, isLoading }) => {
       cell: (row) => `${displayDate(row?.movie?.releaseDate)}`,
     },
     {
-      name: "Amount Collected",
-      selector: (row) => row?.totalAmountCollected,
-      cell: (row) => getCurrencyFormat(row?.totalAmountCollected),
-      sortable: true,
-    },
-    {
       name: "No.Of Bookings",
       selector: (row) => row?.bookedSeats,
     },
     {
-      name: "Reserved Seats",
+      name: "Reserved Seats Count",
       selector: (row) => row?.reservedSeats,
     },
+    
+    {
+      name: "Online Amount",
+      selector: (row) => row?.totalAmountCollected,
+      cell: (row) => getCurrencyFormat(row?.totalAmountCollected?.online),
+      sortable: true,
+    },
+    {
+      name: "Cash Amount",
+      selector: (row) => row?.totalAmountCollected,
+      cell: (row) => getCurrencyFormat(row?.totalAmountCollected?.cash),
+      sortable: true,
+    },
+    {
+      name: "Total Amount",
+      selector: (row) => row?.totalAmountCollected,
+      cell: (row) => getCurrencyFormat(row?.totalAmountCollected?.total),
+      sortable: true,
+    },
+    
   ];
   return (
     <>
