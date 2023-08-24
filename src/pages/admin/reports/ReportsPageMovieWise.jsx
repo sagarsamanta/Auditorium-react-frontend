@@ -109,10 +109,15 @@ const ReportsPageMovieWise = () => {
     const downloadAllMoviesReport = () => {
         const reportData = movies.map((row) => ({
             "MOVIE": row?.movie?.title,
-            "TOTAL COLLECTION": row?.totalAmountCollected,
-            "RELEASE DATE": `${displayDate(row?.movie?.releaseDate)}`,
+            "MOVIE LANGUAGE": row?.movie?.language,
+            "MOVIE STATUS": row?.movie?.status,
             "BOOKED SEATS": row?.bookedSeats,
             "RESERVED SEATS": row?.reservedSeats,
+            "REFUNDABLE": row?.movie?.isRefundable ? 'YES':'NO' ,
+            "RELEASE DATE": `${displayDate(row?.movie?.releaseDate)}`,
+            "TOTAL ONLINE COLLECTION": row?.totalAmountCollected?.online,
+            "TOTAL CASH COLLECTION": row?.totalAmountCollected?.cash,
+            "TOTAL AMOUNT COLLECTION": row?.totalAmountCollected?.total,
         }));
         const reportFileName = `Movie-wise_Collection_${displayDate(new Date(), "DD-MM-YYYY_hhmmss")}`;
         downloadCSV(reportData, reportFileName);
@@ -149,10 +154,11 @@ const ReportsPageMovieWise = () => {
                     />
                     <LoadingButton isLoading={loading} text={"Generate Report"} isDisable={formik.values.movie === ""} />
                 </form>
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center '>
                     <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies Date-wise Collection</h3>
                     <button
-                        className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
+                        disabled={formik.values.movie === "" || report.length === 0 || report?.dailyReports?.length === 0}
+                        className='border border-blue-500 p-1 px-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-md flex items-center gap-1 text-blue-700'
                         onClick={downloadMovieDateWiseReport}
                     >
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
@@ -177,11 +183,11 @@ const ReportsPageMovieWise = () => {
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>
                 </div>
-                <DataTableMoviesReports isLoading={loadingMoviesReports} data={movies}  />
+                <DataTableMoviesReports isLoading={loadingMoviesReports} data={movies} />
             </div>
 
 
-          
+
         </div>
     )
 }
