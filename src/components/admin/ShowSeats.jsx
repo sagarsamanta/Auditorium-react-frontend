@@ -22,6 +22,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [employeeOptions, setEmployeeOptions] = useState([]);
+    const [seatGuests, setSeatGuests] = useState([]);
 
     const paymentFormRef = useRef();
     const clientCodeRef = useRef();
@@ -185,19 +186,19 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     useEffect(() => {
         fetchFreshData();
         if (authUser?.user?.role === USER_ADMIN_ROLE) {
-            Axios("GET", "/user", null, {authRequest: true, token: authUser?.token})
-            .then((res) => {
-                if (res.status === 200) {
-                    const userList = res?.data?.users.filter((user) => user.role !== USER_ADMIN_ROLE).map((user) => ({
-                        label: user.empId,
-                        value: user._id,
-                    }));
-                    setEmployeeOptions(userList);
-                }
-            })
-            .catch((err) => {
-                console.log('err', err.message);
-            })
+            Axios("GET", "/user", null, { authRequest: true, token: authUser?.token })
+                .then((res) => {
+                    if (res.status === 200) {
+                        const userList = res?.data?.users.filter((user) => user.role !== USER_ADMIN_ROLE).map((user) => ({
+                            label: user.empId,
+                            value: user._id,
+                        }));
+                        setEmployeeOptions(userList);
+                    }
+                })
+                .catch((err) => {
+                    console.log('err', err.message);
+                })
         }
     }, [movieId, showId, authUser, priceList]);
 
@@ -209,7 +210,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
         const totalAmount = getTotalSelectedPrice(seatPriceObj)
         return (
-            <BookingConfirmation 
+            <BookingConfirmation
                 handlePay={handleSave}
                 closeModal={closeSeatBookinConfirmModal}
                 selectedSeats={selectedSeats?.sort()?.join(', ')}
@@ -222,6 +223,8 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                 setSelectedEmployee={setSelectedEmployee}
                 employeeOptions={employeeOptions}
                 setEmployeeOptions={setEmployeeOptions}
+                seatGuests={seatGuests}
+                setSeatGuests={setSeatGuests}
             />
         )
     }
