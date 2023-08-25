@@ -99,14 +99,31 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         return seatsObj?.reduce((total, seat) => total + seat.price, 0);
     };
 
+    const getSeatsInfoWithGuest = (seatPriceObj) => {
+      const data=  seatPriceObj.map(seat => {
+            const guest = seatGuests.find(info => info.seat.trim() === seat.seatNo.trim());
+            if (guest) {
+                return {
+                    ...seat,
+                    name: guest.name,
+                    phone: guest.phone
+                };
+            }
+
+            return seat;
+        });
+        return data
+    }
     const handleSave = async (payMode) => {
         if (selectedSeats.length > 0) {
             setLoading(prev => { return { ...prev, booking: true } });
             const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
+            const updatedSeatPriceObj = authUser?.user?.role === USER_ADMIN_ROLE ? getSeatsInfoWithGuest(seatPriceObj) : seatPriceObj
+            console.log(updatedSeatPriceObj);
             const seats = {
                 movieId,
                 showtimeId: showId,
-                seatIds: seatPriceObj,
+                seatIds: updatedSeatPriceObj,
                 userId: selectedEmployee ? selectedEmployee.value : authUser.user._id,
                 totalPrice: getTotalSelectedPrice(seatPriceObj),
                 paymentMode: payMode
