@@ -181,6 +181,18 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       minWidth: "120px",
       sortable: true,
       selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
+      
+    },
+    {
+      name: "Guest Name",
+      minWidth: "200px",
+      selector: (row) => <>{row?.guestName ? row?.guestName :"--"}</>,
+    },
+    {
+      name: "Guest Mobile No",
+      minWidth: "200px",
+      selector: (row) => row?.guestMobile,
+      selector: (row) => <>{row?.guestMobile ? row?.guestMobile :"--"}</>,
     },
     {
       name: "EmpId",

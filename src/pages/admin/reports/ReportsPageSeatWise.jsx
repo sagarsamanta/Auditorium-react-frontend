@@ -9,6 +9,10 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { downloadCSV, generateReportFileName } from "../../../lib/downloadCsv";
 import DataTableAdminSeatWiseReports from "../../../components/DataTableAdminSeatWiseReports";
 import { BiRefresh } from "react-icons/bi";
+import { CustomDataTable as DataTable } from "../../../components/DataTable";
+import { PAYMENTS_STATUS, SEATS_STATUS } from "../../../lib/consts";
+import { RxCrossCircled } from "react-icons/rx";
+import { MdOutlineVerified } from "react-icons/md";
 
 const ReportsPageSeatWise = () => {
   const [movieTitleList, setMovieList] = useState([]);
@@ -22,7 +26,7 @@ const ReportsPageSeatWise = () => {
   const { token } = useAuth();
   const movieSelectRef = useRef(null);
   const showSelectRef = useRef(null);
-
+  const [seatsDetailsData, setSeatDetailsData] = useState([])
   const getAllMoviesTitle = () => {
     Axios("GET", "/movie/get-all-movie-title", null, {
       authRequest: true,
@@ -75,7 +79,7 @@ const ReportsPageSeatWise = () => {
     setShowList(showsList);
     return;
   };
- 
+
   const getAllMoviesSeatsReports = () => {
     Axios("GET", "/show/daily-seat-booking-reports/", null, {
       authRequest: true,
@@ -127,6 +131,8 @@ const ReportsPageSeatWise = () => {
             setReport(res.data);
             setLoading(false);
             setLoaadingAllSetsTable(false)
+            console.log("calll");
+
           }
         })
         .finally(() => {
@@ -136,6 +142,9 @@ const ReportsPageSeatWise = () => {
         .catch((err) => {
           console.log("err", err);
         });
+      if (selectedMovie) {
+        getRecordOfSeatsInDetails()
+      }
     },
   });
 
@@ -166,7 +175,122 @@ const ReportsPageSeatWise = () => {
     setSelectedShows("");
     formik.setFieldValue("movie", ""); // Clear movie selection
     formik.setFieldValue("show", ""); // Clear show selection
+    setSeatDetailsData([])
   };
+
+  const getRecordOfSeatsInDetails = () => {
+    setLoading(true);
+    Axios("GET", `show/get-seats-bookig-record/?movieId=${formik.values.movie}&showtimeId=${formik.values.show}&date=${formik.values?.date}`, null, {
+      authRequest: true,
+      token: token,
+    })
+      .then((res) => {
+        console.log(res);
+        setSeatDetailsData(res?.data?.data)
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+
+  }
+  const columns = [
+    {
+      name: <>Seat No</>,
+      selector: (row) => (
+        <div className="text-sm  text-blue-700">{row?.seatNo}</div>
+      ),
+    },
+
+    {
+      name: <>Seats Status</>,
+      minWidth: "150px",
+      cell: (row) => {
+        return (
+          <div className="flex flex-wrap gap-2">
+            {
+              <div className="flex gap-[2px] justify-center items-center">
+                <div
+                  className={`${row.status === SEATS_STATUS.BOOKED &&
+                    "text-red-700 p-2 rounded-lg"
+                    } ${row.status === SEATS_STATUS.VISITED &&
+                    "text-green-700 p-2  rounded-lg"
+                    }`}
+                >
+                  {row?.status}
+                </div>
+              </div>
+            }
+          </div>
+        );
+      },
+    },
+
+    {
+      name: "Booking Id",
+      minWidth: "150px",
+      selector: (row) => (
+        <div className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center">
+          <span>{row?.bookingId?.bookingId}</span>
+        </div>
+      ),
+    },
+    {
+      name: "Payment Mode",
+      minWidth: "180px",
+      sortable: true,
+      selector: (row) => <div>{row?.bookingId?.paymentMode}</div>,
+    },
+    {
+      name: <>Payment Status</>,
+      minWidth: "200px",
+      selector: (row) => (
+        <div
+          className={`${row?.bookingId?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
+            } ${row?.bookingId?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
+            "text-yellow-400"
+            } 
+                ${row?.bookingId?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+            "text-red-400"
+            } 
+                font-semibold `}
+        >
+          {row?.bookingId?.paymentStatus}
+        </div>
+      ),
+    },
+    {
+      name: "Booked User",
+      minWidth: "150px",
+      selector: (row) => row.userId?.name,
+    },
+    {
+      name: "Amount",
+      minWidth: "120px",
+      sortable: true,
+      selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
+
+    },
+    {
+      name: "Guest Name",
+      minWidth: "200px",
+      selector: (row) => <>{row?.guestName ? row?.guestName : "--"}</>,
+    },
+    {
+      name: "Guest Mobile No",
+      minWidth: "200px",
+      selector: (row) => row?.guestMobile,
+      selector: (row) => <>{row?.guestMobile ? row?.guestMobile : "--"}</>,
+    },
+    {
+      name: "EmpId",
+      minWidth: "200px",
+      selector: (row) => row?.userId?.empId,
+    },
+  ];
   return (
     <div>
       <div className="flex justify-between items-center p-4 mb-2 border border-slate-100 rounded-md shadow-md">
@@ -239,12 +363,21 @@ const ReportsPageSeatWise = () => {
           isLoading={loadingAllSetsTable}
           data={report || []}
         />
-        {/* {report && report?.length !== 0 && (
-                    <>
-                        <div className='text-lg'>Total Revenue: {getCurrencyFormat(calculateTotalAmount(report, "totalAmount"))}</div>
-                        <div className='text-lg'>Total Bookings: {calculateTotalAmount(report, "totalBookings")}</div>
-                    </>
-                )} */}
+
+      </div>
+      <div className="mt-3 lg:mt-6 shadow-lg">
+        <h3 className="text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded inline-block">
+          All Booked seats
+        </h3>
+        <DataTable
+          columns={columns}
+          data={seatsDetailsData}
+          // className={className}
+          pagination
+          paginationPerPage={20}
+          // title="All Booked seats"
+          progressPending={loadingAllSetsTable}
+        />
       </div>
     </div>
   );

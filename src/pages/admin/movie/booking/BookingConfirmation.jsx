@@ -17,6 +17,7 @@ import LoadingButton from "../../../../components/UI/LoadingButton";
 import Axios from "../../../../lib/axiosInstance";
 import Select from "react-select";
 
+
 const BookingConfirmation = ({
   selectedSeats,
   show,
@@ -86,10 +87,30 @@ const BookingConfirmation = ({
   // WIP
   const handleGuestChange = (seat, e, field) => {
     const guestObj = [...seatGuests];
-  }
+    const seatIndex = guestObj.findIndex(item => item.seat === seat);
+
+    if (seatIndex !== -1) {
+      const updatedGuest = {
+        ...guestObj[seatIndex],
+        [field]: e.target.value
+      };
+      guestObj[seatIndex] = updatedGuest;
+      setSeatGuests(guestObj);
+    } else {
+      const newGuest = {
+        seat: seat,
+        name: field === 'name' ? e.target.value : '',
+        phone: field === 'phone' ? e.target.value : ''
+      };
+      guestObj.push(newGuest);
+
+      setSeatGuests(guestObj);
+    }
+  };
 
   const isNotValidPayment =
     user?.role === USER_EMPLOYEE_ROLE && paymentMethod === PAYMENT_METHOS.CASH;
+
 
   return (
     <div className="relative  flex justify-center items-center p-0 md:p-0">
@@ -186,27 +207,33 @@ const BookingConfirmation = ({
               </div>
               {userType === "guest" && (
                 selectedSeatsArr.map((seat) => {
+                  const guest = seatGuests.find(item => item.seat === seat);
+                  const guestName = guest ? guest.name : '';
+                  const guestPhone = guest ? guest.phone : '';
+
                   return (
-                    <div className="mt-2 flex justify-between items-center gap-2">
+                    <div className="mt-2 flex justify-between items-center gap-2" key={seat}>
                       <span className="text-sm font-semibold w-7">{seat}</span>
                       <input
                         className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
-                        id="guest-name"
+                        id={`guest-name-${seat}`}
                         type="text"
                         placeholder="Guest Name"
-                        name="guest-name"
+                        name={`guest-name-${seat}`}
+                        value={guestName}
                         onChange={(e) => handleGuestChange(seat, e, 'name')}
                       />
                       <input
                         className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
-                        id="guest-phn-no"
+                        id={`guest-phn-no-${seat}`}
                         type="text"
                         placeholder="Guest Phone No."
-                        name="guest-phn-no"
+                        name={`guest-phn-no-${seat}`}
+                        value={guestPhone}
                         onChange={(e) => handleGuestChange(seat, e, 'phone')}
                       />
                     </div>
-                  )
+                  );
                 })
               )}
               {userType === "employee" && (
