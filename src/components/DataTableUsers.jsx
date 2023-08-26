@@ -1,23 +1,30 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { CustomDataTable as DataTable } from "./DataTable";
-import { MdEdit, MdPassword } from "react-icons/md";
+import {AiFillEdit,AiOutlineDelete} from 'react-icons/ai'
+
+import {RiLockPasswordLine} from 'react-icons/ri'
+
 import SearchBox from "./UI/SearchBox";
-import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "./UI/Modal";
 import { generateRandomString } from "../lib/utils";
 import { BsArrowRepeat } from "react-icons/bs";
 import Axios from "../lib/axiosInstance";
 import { useAuth } from "../lib/hooks/useAuth";
 import { toast } from "react-toastify";
+import EditUserModal from "../pages/admin/user/EditUserModal";
+import { API_ROOT } from "../lib/consts";
 
 const DataTableUsers = ({ data, className }) => {
   const [userList, setUsersList] = useState(data);
   const [isLoading, setIsLoading] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState({
-    user: "",
-    show: false,
-  });
+  const [selectedUserForEdit, setSelectedUserForEdit] = useState();
+  const [selectedUserForDelete, setSelectedUserForDelete] = useState();
+  const [loadinfEditUserButton, setLoadingedituserButton] = useState(false);
+  const [openEditUserModal, setOpnEditUserModal] = useState(false);
+  const [openDeleteUserConfirmModal, setDeleteUserConfirmModal] =
+    useState(false);
+
   const [changePasswordModal, setChangePasswordModal] = useState({
     user: {},
     newPassword: "",
@@ -27,6 +34,19 @@ const DataTableUsers = ({ data, className }) => {
   });
   const newPasswordInputRef = useRef();
   const { token } = useAuth();
+
+  const openEditModal = () => {
+    setOpnEditUserModal(true);
+  };
+  const closeEditModal = () => {
+    setOpnEditUserModal(false);
+  };
+  const openDeleteModal = () => {
+    setDeleteUserConfirmModal(true);
+  };
+  const closeDeleteModal = () => {
+    setDeleteUserConfirmModal(false);
+  };
   const columns = [
     {
       name: "Emp Id",
@@ -55,43 +75,72 @@ const DataTableUsers = ({ data, className }) => {
     },
     {
       name: "Actions",
+      minWidth: "250px",
       cell: (row) => (
-        <div className="space-x-4">
+        <div className="space-x-4 flex justify-center items-center gap-2">
+          <button
+            className="inline-block p-2 rounded-lg transition duration-200 border border-green-700 text-center text-green-700 font-serif hover:bg-green-600 hover:text-white"
+            title="Edit User"
+            onClick={() => {
+              openEditModal();
+              setSelectedUserForEdit(row);
+            }}
+          >
+           <AiFillEdit size={15}/>
+          </button>
           <button
             className="inline-block p-2 rounded-lg transition duration-200 border border-red-700 text-center text-red-700 font-serif hover:bg-red-600 hover:text-white"
             title="Change Password"
             onClick={() => changePasswordModalHandler(row)}
           >
-            Change Password
+            <RiLockPasswordLine size={15}/>
           </button>
-
-          {/* <button to="#" className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white" title="Edit"><MdEdit size={15} /></button>
-
-                    <button onClick={() => openConfirmModal(row.name)} className="text-lg inline-block p-2 rounded-lg transition duration-200 border border-red-500 text-center text-red-500 font-serif hover:bg-red-500 hover:text-white" title="Remove"><AiOutlineDelete size={15} /></button> */}
+          <button
+            className="inline-block p-2 rounded-lg transition duration-200 border border-red-700 text-center text-red-700 font-serif hover:bg-red-600 hover:text-white"
+            title="Change Password"
+            onClick={() => {
+              setSelectedUserForDelete(row);
+              openDeleteModal();
+            }}
+          >
+            <AiOutlineDelete size={15}/>
+          </button>
         </div>
       ),
     },
   ];
   const onOkConfirmDelete = () => {
-    closeConfirmModal();
+    setDeleteUserConfirmModal();
+    Axios("DELETE", `${API_ROOT}/user/${selectedUserForDelete?._id}`, null, {
+      authRequest: true,
+      token: token,
+    })
+      .then((response) => {
+        const filteredusers = userList.filter(
+          (user) => user?._id !== selectedUserForDelete?._id
+        );
+        setUsersList(filteredusers);
+        toast.success("User Successfully Removed!");
+        closeDeleteModal(false);
+        setSelectedUserForDelete();
+      })
+      .catch((error) => {
+        toast.error(`Failed To Remove`);
+      })
+      .finally(() => {
+        // setAddUserModalOpen(false);
+      });
   };
   const confirmConfig = {
-    title: "Are you sure you want to remove this user ?",
+    title: "Are you sure you want to remove this employee ?",
     buttonText: "Ok",
-    text: showDeleteConfirm ? `Name : ${showDeleteConfirm.movie}` : "",
+    text: openDeleteUserConfirmModal
+      ? `Name : ${selectedUserForDelete?.name}`
+      : "",
     buttonHandler: onOkConfirmDelete,
   };
   const closeConfirmModal = () => {
-    setShowDeleteConfirm({
-      movie: "",
-      show: false,
-    });
-  };
-  const openConfirmModal = (text) => {
-    setShowDeleteConfirm({
-      movie: text,
-      show: true,
-    });
+    setDeleteUserConfirmModal(false);
   };
 
   // Change Password Modal Handlers
@@ -177,6 +226,31 @@ const DataTableUsers = ({ data, className }) => {
     buttonHandler: saveNewPassword,
     loading: changePasswordModal?.loading,
   };
+  const handleEditUserRequest = (data, id) => {
+    Axios("PUT", `${API_ROOT}/user/${id}`, data, {
+      authRequest: true,
+      token: token,
+    })
+      .then((response) => {
+        console.log(response.data);
+        const indexToUpdate = userList.findIndex((user) => user?._id === id);
+        const updatedUsers = [...userList];
+        if (indexToUpdate !== -1) {
+          // Use array manipulation to replace the object at the found index
+          updatedUsers.splice(indexToUpdate, 1, response?.data?.users);
+          setUsersList(updatedUsers);
+          toast.success("Edit successfull!");
+          setOpnEditUserModal(false);
+          setSelectedUserForEdit();
+        }
+      })
+      .catch((error) => {
+        toast.error(`Failed to edit`);
+      })
+      .finally(() => {
+        // setAddUserModalOpen(false);
+      });
+  };
 
   return (
     <>
@@ -196,20 +270,30 @@ const DataTableUsers = ({ data, className }) => {
       />
 
       {/* Delete User Modal */}
-      {showDeleteConfirm && (
+      {openDeleteUserConfirmModal && (
         <Modal
-          isOpen={showDeleteConfirm.show}
+          isOpen={openDeleteUserConfirmModal}
           closeHandler={closeConfirmModal}
           config={confirmConfig}
         />
       )}
 
       {/* Chnage Password Modal */}
-        <Modal
-          isOpen={changePasswordModal?.show}
-          closeHandler={changePasswordModalHandler}
-          config={chnagePasswordModalConfig}
+      <Modal
+        isOpen={changePasswordModal?.show}
+        closeHandler={closeDeleteModal}
+        config={chnagePasswordModalConfig}
+      />
+      {/* edit user modal */}
+      {openEditUserModal && (
+        <EditUserModal
+          isOpen={openEditUserModal}
+          closeHandler={closeEditModal}
+          initialValues={selectedUserForEdit}
+          isLoading={loadinfEditUserButton}
+          handleEditUserRequest={handleEditUserRequest}
         />
+      )}
     </>
   );
 };
