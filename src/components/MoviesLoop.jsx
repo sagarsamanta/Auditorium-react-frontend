@@ -12,13 +12,12 @@ const MoviesLoop = ({ cardClassName = 'bg-gray-800 text-skin-inverted' }) => {
     const [loading, setLoading] = useState({ movie: true, shows: true });
     const [error, setError] = useState({ movie: false, shows: false });
     const { isAuthenticated, user } = useAuth();
-    const bookTicketsLinkBase = user?.role === USER_ADMIN_ROLE ? '/admin/bookings/movie' : '/movie';
+    const bookTicketsLinkBase = (isAuthenticated && user?.role === USER_ADMIN_ROLE) ? '/admin/bookings/movie' : '/movie';
 
     // Frath Movie
     useEffect(() => {
         Axios("GET", "/movie/active-ticket")
             .then((res) => {
-                console.log('res', res);
                 if (res.status === 200) {
                     setMovies(res.data?.movie);
                 }
@@ -29,7 +28,6 @@ const MoviesLoop = ({ cardClassName = 'bg-gray-800 text-skin-inverted' }) => {
             .catch((err) => {
                 console.log('err', err);
                 setError({ movie: true, shows: true });
-                // toast.error(`${err.response.statusText}`);
             });
     }, []);
 
