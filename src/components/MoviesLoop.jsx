@@ -5,12 +5,14 @@ import { Link } from "react-router-dom";
 import SomethingWentWrong from "./UI/SomethingWentWrong";
 import Loader from "./UI/Loader";
 import { displayDate } from "../lib/utils";
+import { USER_ADMIN_ROLE } from "../lib/consts";
 
 const MoviesLoop = ({ cardClassName = 'bg-gray-800 text-skin-inverted' }) => {
     const [movies, setMovies] = useState({});
     const [loading, setLoading] = useState({ movie: true, shows: true });
     const [error, setError] = useState({ movie: false, shows: false });
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
+    const bookTicketsLinkBase = user.role === USER_ADMIN_ROLE ? '/admin/bookings/movie' : '/movie';
 
     // Frath Movie
     useEffect(() => {
@@ -81,7 +83,7 @@ const MoviesLoop = ({ cardClassName = 'bg-gray-800 text-skin-inverted' }) => {
                                                     </Link>
                                                 ) : (
                                                     <Link
-                                                        to={`/movie/${movie?._id}`}
+                                                        to={`${bookTicketsLinkBase}/${movie?._id}`}
                                                         className="block text-center text-skin-inverted transition bg-skin-base hover:bg-skin-base/90 focus:ring-skin-muted focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
                                                     >
                                                         Book Tickets
