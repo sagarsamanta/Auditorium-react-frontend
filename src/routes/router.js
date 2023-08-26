@@ -29,11 +29,17 @@ import LiveBookings from "../pages/admin/Live-bookings/LiveBookings";
 import SuccessConfirm from "../pages/payment/SuccessConfirm";
 import ReportsPageSeatWise from "../pages/admin/reports/ReportsPageSeatWise";
 import DistinctMoviesPage from "../pages/admin/movie/DistinctMoviesPage";
+import MovieBookingPage from "../pages/MovieBookingPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <UserPanelLayout><HomePage /></UserPanelLayout>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/movie/:movieId",
+        element: <UserPanelLayout><MovieBookingPage /></UserPanelLayout>,
         errorElement: <ErrorPage />,
     },
     {
