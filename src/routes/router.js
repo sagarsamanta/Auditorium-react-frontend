@@ -30,6 +30,7 @@ import SuccessConfirm from "../pages/payment/SuccessConfirm";
 import ReportsPageSeatWise from "../pages/admin/reports/ReportsPageSeatWise";
 import DistinctMoviesPage from "../pages/admin/movie/DistinctMoviesPage";
 import MovieBookingPage from "../pages/MovieBookingPage";
+import AdminMovieListingPage from "../pages/admin/AdminMovieListingPage";
 
 const router = createBrowserRouter([
     {
@@ -114,6 +115,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/admin/bookings",
+        element: <AuthentiCate><AdminPanelLayout><AdminMovieListingPage /></AdminPanelLayout></AuthentiCate>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/admin/bookings/movie/:movieId",
         element: <AuthentiCate><AdminPanelLayout><AdminBookingsPage /></AdminPanelLayout></AuthentiCate>,
         errorElement: <ErrorPage />,
     },

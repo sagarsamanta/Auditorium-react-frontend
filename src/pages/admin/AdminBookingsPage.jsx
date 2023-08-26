@@ -6,43 +6,60 @@ import { FiCheckCircle } from "react-icons/fi";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { STATUS_ACTIVE } from "../../lib/consts";
 import { displayDate, displayTime } from "../../lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ShowSeats from "../../components/admin/ShowSeats";
 import SomethingWentWrong from "../../components/UI/SomethingWentWrong";
+import { RiArrowGoBackLine } from "react-icons/ri";
+import { IoArrowBack } from "react-icons/io5";
 
 const AdminBookingsPage = () => {
+    const { movieId } = useParams();
     const [movie, setMovie] = useState({});
     const [shows, setShows] = useState([]);
     const [selectedShow, setSelectedShow] = useState({});
     const [loading, setLoading] = useState({ movie: true, shows: true });
     const [error, setError] = useState({ movie: false, shows: false });
+    const navigate = useNavigate();
     const { isAuthenticated, token, user } = useAuth();
+    const isAllShowInactive =
+        shows.filter((show) => show.status === STATUS_ACTIVE).length === 0;
 
-    const isAllShowInactive = shows.filter((show) => show.status === STATUS_ACTIVE).length === 0;
-
-  useEffect(() => {
-    const fetchMovieAndShows = async () => {
-        try {
-            const movieResponse = await Axios('GET', '/movie/active');
-            if (movieResponse.status === 200) {
-                setMovie(movieResponse.data?.movie[0]);
-
-                if (isAuthenticated && token && movieResponse.data?.movie[0]?._id) {
-                    const showResponse = await Axios('GET', `user/getAllShowsForMovie/${movieResponse.data.movie[0]._id}`, null, { authRequest: true, token: token });
-                    setShows(showResponse.data?.shows);
-                    setSelectedShow(showResponse.data?.shows[0]);
+    // Frath Movie
+    useEffect(() => {
+        Axios("GET", `/movie/${movieId}`, null, { authRequest: true, token: token })
+            .then((res) => {
+                if (res.status === 200) {
+                    setMovie(res.data?.movie);
                 }
-            }
-        } catch (error) {
-            setError({ movie: true, shows: true });
-            // toast.error(`${error.response.statusText}`);
-        } finally {
-            setLoading({ ...loading, movie: false, shows: false });
-        }
-    };
+            })
+            .finally(() => {
+                setLoading({ ...loading, movie: false });
+            })
+            .catch((err) => {
+                setError({ movie: true, shows: true });
+                // toast.error(`${err.response.statusText}`);
+            });
+    }, []);
 
-    fetchMovieAndShows();
-}, [isAuthenticated, token]);
+    // Fetch Show
+    useEffect(() => {
+        if (isAuthenticated && token && movie?._id) {
+            Axios("GET", `user/getAllShowsForMovie/${movieId}`, null, {
+                authRequest: true,
+                token: token,
+            })
+                .then((res) => {
+                    setShows(res.data?.shows);
+                    setSelectedShow(res.data?.shows[0]);
+                })
+                .finally(() => {
+                    setLoading({ movie: false, shows: false });
+                })
+                .catch((err) => {
+                    setError({ movie: true, shows: true });
+                });
+        }
+    }, [movie, isAuthenticated, token]);
 
 
     return (
@@ -53,11 +70,29 @@ const AdminBookingsPage = () => {
                         <Loader className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' />
                     ) : (
                         error.movie || error.shows || !selectedShow ? (
-                            <SomethingWentWrong className='absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10' text="No Shows available!" />
+                            <div className="absolute top-1/3 left-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
+                                <SomethingWentWrong
+                                    className=""
+                                    text="No Shows available!"
+                                />
+                                <button
+                                    className="text-sm p-2 md:px-4 rounded-full transition bg-skin-base hover:bg-skin-base/90 text-skin-inverted flex items-center gap-2 mx-auto mt-4"
+                                    title="Back"
+                                    onClick={() => navigate(-1)}
+                                >
+                                    <IoArrowBack size={20} /> Back
+                                </button>
+                            </div>
                         ) : (
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
                                     <h1 className="text-xl md:text-2xl lg:text:3xl">Book shows</h1>
+                                    <button
+                                        className="text-sm px-2 py-2 md:px-4 md:py-3 rounded-lg border border-skin-base bg-skin-inverted text-skin-base flex items-center gap-2"
+                                        onClick={() => navigate(-1)}
+                                    >
+                                        <RiArrowGoBackLine /> Back
+                                    </button>
                                 </div>
                                 <div className=" text-gray-800 shadow-lg bg-gray-100 rounded-lg p-4 flex flex-col md:flex-row gap-4 md:gap-8">
                                     <div className={`w-full md:w-1/3 h-[360px] max-h-[360px] relative overflow-hidden rounded-lg`}>
