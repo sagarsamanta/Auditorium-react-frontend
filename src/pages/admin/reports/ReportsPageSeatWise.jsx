@@ -4,7 +4,7 @@ import Axios from "../../../lib/axiosInstance";
 import { useAuth } from "../../../lib/hooks/useAuth";
 import { useFormik } from "formik";
 import LoadingButton from "../../../components/UI/LoadingButton";
-import { getShowsByMovieId } from "../../../lib/utils";
+import { displayDate, getShowsByMovieId } from "../../../lib/utils";
 import { AiOutlineDownload } from "react-icons/ai";
 import { downloadCSV, generateReportFileName } from "../../../lib/downloadCsv";
 import DataTableAdminSeatWiseReports from "../../../components/DataTableAdminSeatWiseReports";
@@ -38,7 +38,7 @@ const ReportsPageSeatWise = () => {
           const allOptions = allMovies?.map((movie) => {
             return {
               value: movie._id,
-              label: movie.title,
+              label: `${movie.title}-(${displayDate(movie?.releaseDate)})`,
             };
           });
           setMovieList(allOptions);

@@ -30,7 +30,7 @@ const ReportsPageMovieWise = () => {
                     const allOptions = allMovies?.map((movie) => {
                         return {
                             value: movie._id,
-                            label: movie.title
+                            label: `${movie.title}-(${displayDate(movie?.releaseDate)})`,
                         }
                     })
                     setmovieList(allOptions);
