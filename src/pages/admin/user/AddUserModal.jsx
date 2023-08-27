@@ -7,7 +7,7 @@ import LoadingButton from "../../../components/UI/LoadingButton";
 export default function AddUserModal({
   isOpen,
   closeHandler,
-  sendAddUserRequest,
+  handleAddUserRequest,
   isLoading,
 }) {
   function closeModal() {
@@ -47,7 +47,7 @@ export default function AddUserModal({
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      sendAddUserRequest(values);
+      handleAddUserRequest(values);
     },
   });
 

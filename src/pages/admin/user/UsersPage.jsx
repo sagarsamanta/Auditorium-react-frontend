@@ -6,17 +6,12 @@ import Loader from "../../../components/UI/Loader";
 import DataTableUsers from "../../../components/DataTableUsers";
 import { useAuth } from "../../../lib/hooks/useAuth";
 import { AiOutlineUserAdd } from "react-icons/ai";
-import AddUserModal from "./AddUserModal";
-import { USER_EMPLOYEE_ROLE } from "../../../lib/consts";
-import Axios from "../../../lib/axiosInstance";
-import { toast } from "react-toastify";
 
 const UsersPage = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [openAddUserModal, setAddUserModalOpen] = useState(false);
     const { token } = useAuth();
-    const [loadingAddUser, setLoadingAddUser] = useState(false);
 
     useEffect(() => {
         const response = async () => {
@@ -33,30 +28,9 @@ const UsersPage = () => {
     const handleAddUserModalClose = () => {
         setAddUserModalOpen(false);
     };
-    const sendAddUserRequest = (values) => {
-        setLoadingAddUser(true);
-        const user = { ...values, role: USER_EMPLOYEE_ROLE };
-
-        Axios("POST", `/user/register`, user, { authRequest: true, token: token })
-            .then((response) => {
-                console.log('then users', response);
-                if (response?.status === 200) {
-                    setUsers([response?.data?.user, ...users]);
-                    toast.success(`Employee Added Successfully!`);
-                    setAddUserModalOpen(false);
-                }
-            })
-            .catch((error) => {
-                console.error("Error adding user:", error?.response);
-                if (error?.response?.status === 409) {
-                    toast.warn(`${error?.response?.data?.message}`);
-                } else {
-                    toast.error(`An error occurred. Failed to add user.`);
-                }
-            })
-            .finally(() => {
-                setLoadingAddUser(false);
-            });
+    const addUserModalConfig = {
+        handleAddUserModalClose: handleAddUserModalClose,
+        openAddUserModal: openAddUserModal
     };
     return (
         <>
@@ -80,17 +54,9 @@ const UsersPage = () => {
                     {loading ? (
                         <Loader className={"m-auto"} />
                     ) : (
-                        <DataTableUsers data={users} />
+                        <DataTableUsers data={users} addUserModalConfig={addUserModalConfig} />
                     )}
                 </div>
-                {openAddUserModal && (
-                    <AddUserModal
-                        isOpen={openAddUserModal}
-                        closeHandler={handleAddUserModalClose}
-                        sendAddUserRequest={sendAddUserRequest}
-                        isLoading={loadingAddUser}
-                    />
-                )}
             </main>
         </>
     );
