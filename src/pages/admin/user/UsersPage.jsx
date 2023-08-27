@@ -50,7 +50,7 @@ const UsersPage = () => {
                     </Link>
                 </div>
 
-                <div className="movies-table-wrapper p-4 shadow-md mt-5">
+                <div className="movies-table-wrapper p-4 rounded-md shadow-md mt-5">
                     {loading ? (
                         <Loader className={"m-auto"} />
                     ) : (

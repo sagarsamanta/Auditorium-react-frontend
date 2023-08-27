@@ -35,14 +35,14 @@ const BookingHistory = () => {
                         <Loader className={'m-auto'} />
                     ) : (
                         <>
-                            <h3 className="text-lg md:text-xl lg:text:3xl bg-green-500 rounded-sm inline-block p-1">Booked Seats</h3>
+                            <h3 className="text-lg md:text-xl lg:text:2xl bg-green-500 rounded-md inline-block px-2">Booked Seats</h3>
                             <DataTableAdminBookings data={bookings} />
                         </>
                     )}
                 </div>
 
                 {!loading && <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
-                    <h3 className="text-lg md:text-xl lg:text:3xl bg-yellow-300 p-1 rounded-sm inline-block">Reserved Seats</h3>
+                    <h3 className="text-lg md:text-xl lg:text:2xl bg-yellow-300 rounded-md inline-block px-2">Reserved Seats</h3>
                     <DataTableAdminReserved data={reserved} />
                 </div>}
             </main>
