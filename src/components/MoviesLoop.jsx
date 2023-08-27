@@ -11,9 +11,9 @@ const MoviesLoop = ({ cardClassName = "bg-gray-800 text-skin-inverted" }) => {
   const [movies, setMovies] = useState({});
   const [loading, setLoading] = useState({ movie: true, shows: true });
   const [error, setError] = useState({ movie: false, shows: false });
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isAdmin } = useAuth();
   const bookTicketsLinkBase =
-    isAuthenticated && user?.role === USER_ADMIN_ROLE
+    isAuthenticated && isAdmin
       ? "/admin/bookings/movie"
       : "/movie";
 
@@ -45,12 +45,12 @@ const MoviesLoop = ({ cardClassName = "bg-gray-800 text-skin-inverted" }) => {
             text="No Shows available!"
           />
         ) : (
-          <div className="mx-auto container px-2 sm:px-6 lg:px-8 py-4 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+          <div className={`mx-auto container ${!isAdmin && 'px-2 sm:px-6 lg:px-8'} py-4 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8`}>
             {movies?.length > 0 &&
               movies?.map((movie) => (
                 <div
                   key={movie?._id}
-                  className={`flex flex-col justify-between text-base rounded-lg p-4 ${cardClassName}`}
+                  className={`flex flex-col justify-between text-sm rounded-lg p-4 transition shadow-md hover:shadow-lg ${cardClassName}`}
                 >
                   <div className="w-full space-y-2">
                     <div
@@ -81,8 +81,8 @@ const MoviesLoop = ({ cardClassName = "bg-gray-800 text-skin-inverted" }) => {
                       </div>
                       <div className="flex items-center gap-3">
                         <p
-                          className={`line-clamp-3 rounded-md px-2 font-semibold ${
-                            movie?.isRefundable ? "bg-green-400" : "bg-red-400 "
+                          className={`line-clamp-3 rounded px-3 py-1 text-xs ${
+                            movie?.isRefundable ? "bg-teal-600/50" : "bg-yellow-600/50"
                           }`}
                         >
                           {movie?.isRefundable
