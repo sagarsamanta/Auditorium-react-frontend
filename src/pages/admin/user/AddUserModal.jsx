@@ -81,11 +81,11 @@ export default function AddUserModal({
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg  font-medium leading-6 text-gray-900"
                   >
-                    ADD EMPLOYEE DETAILS
+                    Add Employee Details
                   </Dialog.Title>
-                  <form onSubmit={formik.handleSubmit} className="space-y-6">
+                  <form onSubmit={formik.handleSubmit} className="space-y-6 mt-3 ">
                     <div>
                       <label
                         htmlFor="empId"

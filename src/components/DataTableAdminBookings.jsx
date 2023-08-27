@@ -179,7 +179,7 @@ const DataTableAdminBookings = ({ data, className }) => {
             onClick={() => askFormConfirmation(row)}
             title="Cancel Ticket"
             disabled={
-              row.status !== BOOKING_STATUS.BOOKED || !row?.isRefundable
+              row.status !== BOOKING_STATUS.BOOKED || !row?.movie?.isRefundable
             }
           >
             <TbTicketOff size={15} />

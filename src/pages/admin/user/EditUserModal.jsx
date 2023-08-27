@@ -69,9 +69,9 @@ export default function EditUserModal({
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    EDIT EMPLOYEE DETAILS
+                  Edit Employee Details
                   </Dialog.Title>
-                  <form onSubmit={formik.handleSubmit} className="space-y-6">
+                  <form onSubmit={formik.handleSubmit} className="space-y-6 mt-3">
                     <div>
                       <label
                         htmlFor="empId"
