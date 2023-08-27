@@ -137,11 +137,10 @@ const DataTableAdminBookings = ({ data, className }) => {
       selector: (row) => (
         <div
           className={`${
-            row?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
-            "text-green-700"
+            row?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
           } ${
-            row?.paymentStatus ===
-              PAYMENTS_STATUS.REFUND_REQUESTED && "text-yellow-400"
+            row?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
+            "text-yellow-400"
           } 
                 ${
                   row?.paymentStatus === PAYMENTS_STATUS.FAILED &&
@@ -176,10 +175,12 @@ const DataTableAdminBookings = ({ data, className }) => {
       cell: (row) => (
         <>
           <button
-            className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50`}
+            className={`shadow transition duration-300 ease-in-out bg-red-600 hover:bg-red-600/80 focus:shadow-outline focus:outline-none text-white py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed`}
             onClick={() => askFormConfirmation(row)}
             title="Cancel Ticket"
-            disabled={row.status !== BOOKING_STATUS.BOOKED}
+            disabled={
+              row.status !== BOOKING_STATUS.BOOKED || !row?.isRefundable
+            }
           >
             <TbTicketOff size={15} />
           </button>

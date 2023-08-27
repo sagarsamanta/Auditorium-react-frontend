@@ -60,6 +60,68 @@ const DataTableMovie = ({ data, className }) => {
     text: showDeleteConfirm ? `Movie Name : ${showDeleteConfirm.movie}` : "",
     buttonHandler: onOkConfirmDelete,
   };
+  const handeMovieRefundStatusChange = (id, value) => {
+    console.log(id, value);
+    Axios(
+      "PUT",
+      `movie/chnage-properties/${id}`,
+      { isRefundable: value },
+      { authRequest: true, token: token }
+    )
+      .then((res) => {
+        if (res.status === 200 && res.data) {
+          const newMovie = res.data;
+          const newMovieList = moviesList.map((prevData) => {
+            return prevData._id === newMovie._id
+              ? { ...prevData, newMovie }
+              : prevData;
+          });
+          setMoviesList(newMovieList);
+          toast.success(
+            value ? "Money Refund is allowed!" : "Money Refund is canceled."
+          );
+        }
+      })
+      .catch((err) => {
+        if (err?.response?.status === 302) {
+          toast.warning(`${err?.response?.data?.message}`);
+        }
+        if (err?.response?.status === 500) {
+          toast.error(`${err?.response?.data?.message}`);
+        }
+      });
+  };
+  const handeMovieTicketStatusChange = (id, value) => {
+    Axios(
+      "PUT",
+      `movie/chnage-properties/${id}`,
+      { isAllowTicketBooking: value },
+      { authRequest: true, token: token }
+    )
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200 && res.data) {
+          const newMovie = res.data;
+          const newMovieList = moviesList.map((prevData) => {
+            return prevData._id === newMovie._id
+              ? { ...prevData, newMovie }
+              : prevData;
+          });
+          setMoviesList(newMovieList);
+          toast.success(
+            value ? "Tickets are released!" : "Ticket release is canceled."
+          );
+        }
+      })
+      .catch((err) => {
+        if (err?.response?.status === 302) {
+          toast.warning(`${err?.response?.data?.message}`);
+        }
+        if (err?.response?.status === 500) {
+          toast.error(`${err?.response?.data?.message}`);
+        }
+      });
+  };
   const columns = [
     {
       name: "Title",
@@ -106,6 +168,38 @@ const DataTableMovie = ({ data, className }) => {
         >
           {row.status}
         </button>
+      ),
+    },
+    {
+      name: "Refundable",
+      minWidth: "150px",
+      cell: (row) => (
+        <div className="space-x-4 flex justify-center items-center">
+          <input
+            type="checkbox"
+            className="w-5 h-5 accent-green-600"
+            defaultChecked={row?.isRefundable}
+            onChange={(e) =>
+              handeMovieRefundStatusChange(row?._id, e.target.checked)
+            }
+          />
+        </div>
+      ),
+    },
+    {
+      name: "Ticket Status",
+      minWidth: "150px",
+      cell: (row) => (
+        <div className="space-x-4 flex justify-center items-center ">
+          <input
+            type="checkbox"
+            className="w-5 h-5 accent-green-600"
+            defaultChecked={row?.isAllowTicketBooking}
+            onChange={(e) =>
+              handeMovieTicketStatusChange(row?._id, e.target.checked)
+            }
+          />
+        </div>
       ),
     },
     {

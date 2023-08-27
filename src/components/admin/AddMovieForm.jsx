@@ -28,8 +28,6 @@ const AddMovieForm = ({ movie, addMovie }) => {
     "Malayalam",
   ];
   const isRepeatMovie = addMovie ? true : false;
-  console.log('movie', movie);
-  console.log('addMovie', addMovie);
   if (isRepeatMovie) movie = addMovie;
 
   const formik = useFormik({
@@ -40,6 +38,8 @@ const AddMovieForm = ({ movie, addMovie }) => {
       duration: movie?.duration || "",
       language: movie?.language || "",
       image: "",
+      isRefundable: movie?.isRefundable || false,
+      isAllowTicketBooking: movie?.isAllowTicketBooking || false,
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please enter movie title"),
@@ -47,12 +47,22 @@ const AddMovieForm = ({ movie, addMovie }) => {
       date: Yup.string().required("Please enter dhow date"),
       duration: Yup.string(),
       language: Yup.string(),
+      isAllowTicketBooking: Yup.boolean(),
+      isRefundable: Yup.boolean(),
     }),
     onSubmit: async (values) => {
       setLoading(true);
       const requestMethod = movie ? (isRepeatMovie ? "POST" : "PUT") : "POST";
-      const requestUrl = movie ? (isRepeatMovie ? "/movie/" : `/movie/${movie?._id}`) : "/movie/";
-      const posterImage = movie ? (isRepeatMovie ? movie?.poster || '' : values.image) : values.image;  // Send File if new movie, send poster url if repeat movie
+      const requestUrl = movie
+        ? isRepeatMovie
+          ? "/movie/"
+          : `/movie/${movie?._id}`
+        : "/movie/";
+      const posterImage = movie
+        ? isRepeatMovie
+          ? movie?.poster || ""
+          : values.image
+        : values.image; // Send File if new movie, send poster url if repeat movie
 
       const formData = new FormData();
       formData.append("title", values.title);
@@ -62,6 +72,8 @@ const AddMovieForm = ({ movie, addMovie }) => {
       formData.append("language", values.language);
       formData.append("poster", posterImage);
       formData.append("isRepeatMovie", isRepeatMovie);
+      formData.append("isAllowTicketBooking", values.isAllowTicketBooking);
+      formData.append("isRefundable", values.isRefundable);
 
       Axios(requestMethod, requestUrl, formData, {
         authRequest: true,
@@ -90,6 +102,7 @@ const AddMovieForm = ({ movie, addMovie }) => {
     imgPreviewRef.current.src = imgUri;
     formik.setFieldValue("image", file);
   };
+  console.log(formik.errors);
   return (
     <>
       <form className="w-full" onSubmit={formik.handleSubmit}>
@@ -104,10 +117,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                   Movie Title{" "}
                   {movie?.status ? (
                     <span
-                      className={`badge font-normal normal-case py-1 px-2 rounded-full ${movie?.status === STATUS_ACTIVE
-                        ? "bg-green-200"
-                        : "bg-yellow-200"
-                        }`}
+                      className={`badge font-normal normal-case py-1 px-2 rounded-full ${
+                        movie?.status === STATUS_ACTIVE
+                          ? "bg-green-200"
+                          : "bg-yellow-200"
+                      }`}
                     >
                       This movie is currently: {movie?.status}
                     </span>
@@ -116,10 +130,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                   )}
                 </label>
                 <input
-                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${formik.touched.title && formik.errors.title
-                    ? "border-red-500"
-                    : "border-gray-200"
-                    } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                    formik.touched.title && formik.errors.title
+                      ? "border-red-500"
+                      : "border-gray-200"
+                  } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                   id="movie-title"
                   type="text"
                   placeholder="Movie Title"
@@ -143,10 +158,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                 </label>
                 <textarea
                   rows="10"
-                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${formik.touched.description && formik.errors.description
-                    ? "border-red-500"
-                    : "border-gray-200"
-                    } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                  className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                    formik.touched.description && formik.errors.description
+                      ? "border-red-500"
+                      : "border-gray-200"
+                  } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                   id="movie-description"
                   name="description"
                   value={formik.values.description}
@@ -169,10 +185,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                   <select
                     name="language"
                     id="movie-language"
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${formik.touched.language && formik.errors.language
-                      ? "border-red-500"
-                      : "border-gray-200"
-                      } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white text-sm`}
+                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                      formik.touched.language && formik.errors.language
+                        ? "border-red-500"
+                        : "border-gray-200"
+                    } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white text-sm`}
                     onChange={formik.handleChange}
                   >
                     <option value="" disabled>
@@ -201,10 +218,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                     Duration
                   </label>
                   <input
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${formik.touched.duration && formik.errors.duration
-                      ? "border-red-500"
-                      : "border-gray-200"
-                      } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                      formik.touched.duration && formik.errors.duration
+                        ? "border-red-500"
+                        : "border-gray-200"
+                    } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                     id="movie-duration"
                     type="number"
                     name="duration"
@@ -218,6 +236,38 @@ const AddMovieForm = ({ movie, addMovie }) => {
                     </p>
                   )}
                 </div>
+                <div className="relative">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="movie-language"
+                  >
+                    Refundable or Allow Cancellation
+                  </label>
+                  <input
+                    className="h-6 w-6 accent-green-500"
+                    id="movie-isRefundable"
+                    type="checkbox"
+                    name="isRefundable"
+                    onChange={formik.handleChange}
+                    defaultChecked={formik.values.isRefundable}
+                  />
+                </div>
+                <div>
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="movie-duration"
+                  >
+                    Realese Ticket
+                  </label>
+                  <input
+                    className="h-6 w-6 accent-green-500"
+                    id="movie-isAllowTicketBooking"
+                    type="checkbox"
+                    name="isAllowTicketBooking"
+                    defaultChecked={formik.values.isAllowTicketBooking}
+                    onChange={formik.handleChange}
+                  />
+                </div>
                 <div>
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -226,10 +276,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                     Show Date
                   </label>
                   <input
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${formik.touched.date && formik.errors.date
-                      ? "border-red-500"
-                      : "border-gray-200"
-                      } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                      formik.touched.date && formik.errors.date
+                        ? "border-red-500"
+                        : "border-gray-200"
+                    } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                     id="movie-date"
                     type="date"
                     name="date"
@@ -264,10 +315,11 @@ const AddMovieForm = ({ movie, addMovie }) => {
                 <img
                   ref={imgPreviewRef}
                   src={movie?.poster || `/images/upload.png`}
-                  className={`absolute inset-0 ${movie?.poster || imgPreviewRef?.current?.src
-                    ? ""
-                    : "flex justify-center items-center"
-                    } w-full h-full object-contain cursor-pointer bg-gray-200 p-4 rounded-lg z-[0]`}
+                  className={`absolute inset-0 ${
+                    movie?.poster || imgPreviewRef?.current?.src
+                      ? ""
+                      : "flex justify-center items-center"
+                  } w-full h-full object-contain cursor-pointer bg-gray-200 p-4 rounded-lg z-[0]`}
                   onClick={() => imgInputRef.current.click()}
                   alt="Click to add Movie Poster"
                 />
@@ -281,7 +333,13 @@ const AddMovieForm = ({ movie, addMovie }) => {
           <div className="flex items-center gap-6 w-full px-0 py-4 md:p-3">
             <LoadingButton
               isLoading={loading}
-              text={movie ? (isRepeatMovie ? "Add Movie" : "Update Movie") : "Add Movie"}
+              text={
+                movie
+                  ? isRepeatMovie
+                    ? "Add Movie"
+                    : "Update Movie"
+                  : "Add Movie"
+              }
             />
           </div>
         </div>

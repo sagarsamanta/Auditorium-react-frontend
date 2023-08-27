@@ -115,7 +115,7 @@ const BookingDetails = (props) => {
         console.error("Error downloading PDF:", error);
       });
   };
-
+console.log(bookingDetails);
   return (
     <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">
       {loading ? (
@@ -254,10 +254,11 @@ const BookingDetails = (props) => {
                     </button>
                     {BOOKING_STATUS.CANCEL !== bookingDetails?.status && (
                       <LoadingButton
-                        className={`text-skin-inverted border border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 !bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                        className={`text-skin-inverted border disabled:cursor-not-allowed border-red-800/70 hover:bg-red-800/20 focus:ring-red-800/70 !bg-red-800/40  focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
                         onClick={cancelTicketModal}
                         isLoading={cancelLoading}
                         text="Cancel ticket"
+                        isDisable={!bookingDetails?.movie?.isRefundable}
                       />
                     )}
                   </div>
