@@ -5,7 +5,7 @@ import { useAuth } from '../../../lib/hooks/useAuth';
 import { useFormik } from 'formik';
 import LoadingButton from '../../../components/UI/LoadingButton';
 import DataTableAdminShowWiseReports from '../../../components/DataTableAdminShowWiseReports';
-import { getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
+import { displayDate, getCurrencyFormat, getShowsByMovieId } from '../../../lib/utils';
 import { AiOutlineDownload } from 'react-icons/ai'
 import { downloadCSV, generateReportFileName } from '../../../lib/downloadCsv';
 
@@ -28,7 +28,7 @@ const ReportsPageShowWise = () => {
                     const allOptions = allMovies?.map((movie) => {
                         return {
                             value: movie._id,
-                            label: movie.title
+                            label: `${movie.title}-(${displayDate(movie?.releaseDate)})`,
                         }
                     })
                     setMovieList(allOptions);
