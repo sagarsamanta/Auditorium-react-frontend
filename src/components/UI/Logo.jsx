@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { OPGC } from "../../lib/consts";
 
 const Logo = ({ to = '/', className = '' }) => {
     return (
@@ -24,7 +25,7 @@ const Logo = ({ to = '/', className = '' }) => {
                 <span className="text-2xl font-extrabold whitespace-nowrap truncate">
                     IWS
                 </span> */}
-                <img src="/images/opgc-logo.jpg" alt="OPGC" style={{ height: "56px", width: "56px", objectFit: "cover", objectPosition: "center", borderRadius: "10px" }} />
+                <img src="/images/opgc-logo.png" alt={OPGC} style={{ height: "55px", width: "auto", objectFit: "cover", objectPosition: "center", borderRadius: "10px" }} />
             </Link>
         </>
     )
