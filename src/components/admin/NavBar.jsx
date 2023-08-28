@@ -65,7 +65,7 @@ const NavBar = () => {
         >
           <div className="flex justify-center items-center gap-4">
             <BiTime size={21} />
-            <div>Live Bookings</div>
+            <div>Upcomming Movie</div>
           </div>
         </Link>
         <Link

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
 import { displayDate } from "../lib/utils";
 import { Link } from "react-router-dom";
@@ -32,13 +32,21 @@ const DataTableMovie = ({ data, className }) => {
       .then((res) => {
         if (res.data?.movie) {
           const newMovie = res.data?.movie;
-          const newMovieList = moviesList.map((prevData) => {
-            return prevData._id === newMovie._id
-              ? { ...prevData, status: newMovie.status }
-              : prevData;
-          });
-          setMoviesList(newMovieList);
+          const indexToUpdate = moviesList.findIndex(movie => movie?._id === newMovie._id);
+          const updatedMovies = [...moviesList];
+          // if (indexToUpdate !== -1) {
+          //   updatedMovies.splice(indexToUpdate, 1, newMovie); // Update the status in the list
+          // }
+          // setMoviesList(updatedMovies); // Update the entire list in the state
           toast.success(`Movie updated successfully`);
+
+          // Now also update the ticket status in the same manner
+          const ticketIndexToUpdate = updatedMovies.findIndex(movie => movie?._id === newMovie._id);
+          if (ticketIndexToUpdate !== -1) {
+            updatedMovies[ticketIndexToUpdate].isAllowTicketBooking = newMovie.isAllowTicketBooking;
+            updatedMovies[ticketIndexToUpdate].status = newMovie.status;
+            setMoviesList(updatedMovies);
+          }
         }
       })
       .catch((err) => {
@@ -51,6 +59,14 @@ const DataTableMovie = ({ data, className }) => {
         event.target.checked = currentStatus === STATUS_ACTIVE ? true : false;
       });
   };
+  useEffect(() => {
+    // Update ticket status checkboxes when moviesList changes
+    setIsLoading(true);
+    if (moviesList.length > 0) {
+      setIsLoading(false);
+    }
+  }, [moviesList]);
+
   const onOkConfirmDelete = () => {
     closeConfirmModal();
   };
@@ -73,7 +89,7 @@ const DataTableMovie = ({ data, className }) => {
           const newMovie = res.data;
           const newMovieList = moviesList.map((prevData) => {
             return prevData._id === newMovie._id
-              ? { ...prevData, newMovie }
+              ? { ...prevData, ...newMovie }
               : prevData;
           });
           setMoviesList(newMovieList);
@@ -104,7 +120,7 @@ const DataTableMovie = ({ data, className }) => {
           const newMovie = res.data;
           const newMovieList = moviesList.map((prevData) => {
             return prevData._id === newMovie._id
-              ? { ...prevData, newMovie }
+              ? { ...prevData, ...newMovie }
               : prevData;
           });
           setMoviesList(newMovieList);
@@ -152,17 +168,15 @@ const DataTableMovie = ({ data, className }) => {
       minWidth: "150px",
       cell: (row) => (
         <button
-          title={`${
-            row.status === STATUS_ACTIVE
-              ? "Deactive this movie"
-              : "Active this movie"
-          } `}
+          title={`${row.status === STATUS_ACTIVE
+            ? "Deactive this movie"
+            : "Active this movie"
+            } `}
           name={`enable-movie--${row._id}`}
-          className={`text-xs ${
-            row.status === STATUS_ACTIVE
-              ? "border border-green-700 hover:bg-green-800 text-green-800 hover:text-white"
-              : "border text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
-          } inline-block py-2 px-4 rounded-lg transition duration-200 text-black cursor-pointer w-28 font-semibold`}
+          className={`text-xs ${row.status === STATUS_ACTIVE
+            ? "border border-green-700 hover:bg-green-800 text-green-800 hover:text-white"
+            : "border text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+            } inline-block py-2 px-4 rounded-lg transition duration-200 text-black cursor-pointer w-28 font-semibold`}
           defaultChecked={row.status === STATUS_ACTIVE ? true : false}
           onClick={(e) => handleMovieStatusChange(e, row.status, row)}
         >
@@ -178,7 +192,7 @@ const DataTableMovie = ({ data, className }) => {
           <input
             type="checkbox"
             className="w-5 h-5 accent-green-600"
-            defaultChecked={row?.isRefundable}
+            defaultChecked={row?.isRefundable === true ? true : false}
             onChange={(e) =>
               handeMovieRefundStatusChange(row?._id, e.target.checked)
             }
@@ -189,18 +203,21 @@ const DataTableMovie = ({ data, className }) => {
     {
       name: "Ticket Status",
       minWidth: "150px",
-      cell: (row) => (
-        <div className="space-x-4 flex justify-center items-center ">
-          <input
-            type="checkbox"
-            className="w-5 h-5 accent-green-600"
-            defaultChecked={row?.isAllowTicketBooking}
-            onChange={(e) =>
-              handeMovieTicketStatusChange(row?._id, e.target.checked)
-            }
-          />
-        </div>
-      ),
+      cell: (row) => {
+        console.log(row);
+        return (
+          <div className="space-x-4 flex justify-center items-center ">
+            <input
+              type="checkbox"
+              className="w-5 h-5 accent-green-600"
+              defaultChecked={row?.isAllowTicketBooking === true ? true : false}
+              onChange={(e) =>
+                handeMovieTicketStatusChange(row?._id, e.target.checked)
+              }
+            />
+          </div>
+        )
+      },
     },
     {
       name: "Actions",

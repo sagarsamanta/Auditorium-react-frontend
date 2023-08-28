@@ -39,7 +39,9 @@ const LiveBookings = () => {
         setSelectedShow(res.data?.show[0]);
         setLoading(false);
       })
-      .finally(() => {})
+      .finally(() => {
+        setLoading(false)
+      })
       .catch((err) => {
         console.log(err);
       });
