@@ -32,21 +32,14 @@ const DataTableMovie = ({ data, className }) => {
       .then((res) => {
         if (res.data?.movie) {
           const newMovie = res.data?.movie;
-          const indexToUpdate = moviesList.findIndex(movie => movie?._id === newMovie._id);
-          const updatedMovies = [...moviesList];
-          // if (indexToUpdate !== -1) {
-          //   updatedMovies.splice(indexToUpdate, 1, newMovie); // Update the status in the list
-          // }
-          // setMoviesList(updatedMovies); // Update the entire list in the state
+          const newMovieList = moviesList.map((prevData) => {
+            return prevData._id === newMovie._id
+              ? { ...prevData, ...newMovie }
+              : prevData;
+          });
+          setMoviesList(newMovieList);
+          toast.dismiss();
           toast.success(`Movie updated successfully`);
-
-          // Now also update the ticket status in the same manner
-          const ticketIndexToUpdate = updatedMovies.findIndex(movie => movie?._id === newMovie._id);
-          if (ticketIndexToUpdate !== -1) {
-            updatedMovies[ticketIndexToUpdate].isAllowTicketBooking = newMovie.isAllowTicketBooking;
-            updatedMovies[ticketIndexToUpdate].status = newMovie.status;
-            setMoviesList(updatedMovies);
-          }
         }
       })
       .catch((err) => {
@@ -77,7 +70,6 @@ const DataTableMovie = ({ data, className }) => {
     buttonHandler: onOkConfirmDelete,
   };
   const handeMovieRefundStatusChange = (id, value) => {
-    console.log(id, value);
     Axios(
       "PUT",
       `movie/chnage-properties/${id}`,
@@ -93,6 +85,7 @@ const DataTableMovie = ({ data, className }) => {
               : prevData;
           });
           setMoviesList(newMovieList);
+          toast.dismiss();
           toast.success(
             value ? "Money Refund is allowed!" : "Money Refund is canceled."
           );
@@ -115,7 +108,6 @@ const DataTableMovie = ({ data, className }) => {
       { authRequest: true, token: token }
     )
       .then((res) => {
-        console.log(res);
         if (res.status === 200 && res.data) {
           const newMovie = res.data;
           const newMovieList = moviesList.map((prevData) => {
@@ -124,6 +116,7 @@ const DataTableMovie = ({ data, className }) => {
               : prevData;
           });
           setMoviesList(newMovieList);
+          toast.dismiss();
           toast.success(
             value ? "Tickets are released!" : "Ticket release is canceled."
           );
@@ -203,21 +196,20 @@ const DataTableMovie = ({ data, className }) => {
     {
       name: "Ticket Status",
       minWidth: "150px",
-      cell: (row) => {
-        console.log(row);
-        return (
+      cell: (row) => (
+        <>
           <div className="space-x-4 flex justify-center items-center ">
             <input
               type="checkbox"
               className="w-5 h-5 accent-green-600"
-              defaultChecked={row?.isAllowTicketBooking === true ? true : false}
+              checked={row?.isAllowTicketBooking}
               onChange={(e) =>
                 handeMovieTicketStatusChange(row?._id, e.target.checked)
               }
             />
           </div>
-        )
-      },
+        </>
+      ),
     },
     {
       name: "Actions",
