@@ -9,15 +9,16 @@ import { displayDate, getCurrencyFormat } from '../../../lib/utils';
 import DataTableMoviesReports from '../../../components/DataTableMoviesReports';
 import { AiOutlineDownload } from 'react-icons/ai'
 import { downloadCSV, generateReportFileName } from '../../../lib/downloadCsv';
+import MultipleMoviesReports from './MultipleMoviesReports';
 
 const ReportsPageMovieWise = () => {
     const [movieTitleList, setmovieList] = useState([]);
     const [report, setReport] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [loadingMoviesReports, setLoadingMovieReports] = useState(true);
+    const [loadingMoviesReports, setLoadingMovieReports] = useState(false);
+    const [multiMovieSelect, setSelectMultipleMovie] = useState([])
 
     const [movies, setMovies] = useState([])
-    const [tempMovies, setTempMovies] = useState([])
 
     const { token } = useAuth();
 
@@ -43,24 +44,48 @@ const ReportsPageMovieWise = () => {
                 console.log(err)
             });
     }
-    const getAllMoviesReports = () => {
-        Axios('GET', '/movie/all-movie-reports', null, { authRequest: true, token: token })
-            .then((res) => {
+    // const getAllMoviesReports = () => {
+    //     Axios('GET', '/movie/all-movie-reports', null, { authRequest: true, token: token })
+    //         .then((res) => {
 
+    //             if (res.status === 200) {
+    //                 setMovies(res.data);
+    //                 setTempMovies(res.data);
+    //                 setLoadingMovieReports(false)
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             setLoadingMovieReports(false)
+    //             console.log(err)
+    //         })
+    //         .finally(() => {
+    //             setLoadingMovieReports(false)
+    //         })
+
+    // }
+    const handleMultipleMovieChange = (value) => {
+        if (!value) return
+        setLoadingMovieReports(true)
+        const movieIds = value?.map((movie) => movie.value)
+        console.log(movieIds);
+        Axios('POST', `/movie/all-movie-reports-grouped-title`, { movieIds }, { authRequest: true, token: token })
+            .then((res) => {
                 if (res.status === 200) {
-                    setMovies(res.data);
-                    setTempMovies(res.data);
+                    console.log(res.data);
+                    setSelectMultipleMovie(res.data?.overallSum)
+                    setMovies(res.data?.movieReports);
                     setLoadingMovieReports(false)
                 }
-            })
-            .catch((err) => {
-                setLoadingMovieReports(false)
-                console.log(err)
             })
             .finally(() => {
                 setLoadingMovieReports(false)
             })
-
+            .catch((err) => {
+                console.log('err', err)
+                setLoadingMovieReports(false)
+                setSelectMultipleMovie([])
+                setMovies([]);
+            });
     }
     const calculateTotalAmount = (data = [], field = "totalAmount") => {
         let total = 0;
@@ -74,7 +99,7 @@ const ReportsPageMovieWise = () => {
 
     useEffect(() => {
         getAllMoviesTitle()
-        getAllMoviesReports()
+        // getAllMoviesReports()
     }, []);
 
     // Handle Form
@@ -107,19 +132,33 @@ const ReportsPageMovieWise = () => {
     }
 
     const downloadAllMoviesReport = () => {
+        console.log(movies);
         const reportData = movies.map((row) => ({
-            "MOVIE": row?.movie?.title,
-            "MOVIE LANGUAGE": row?.movie?.language,
-            "MOVIE STATUS": row?.movie?.status,
+            "MOVIE": row?.movieTitle,
+            "MOVIE LANGUAGE": row?.language,
+            "MOVIE STATUS": row?.status,
             "BOOKED SEATS": row?.bookedSeats,
             "RESERVED SEATS": row?.reservedSeats,
-            "REFUNDABLE": row?.movie?.isRefundable ? 'YES':'NO' ,
-            "RELEASE DATE": `${displayDate(row?.movie?.releaseDate)}`,
+            "REFUNDABLE": row?.isRefundable ? 'YES' : 'NO',
+            "RELEASE DATE": `${displayDate(row?.releaseDate)}`,
             "TOTAL ONLINE COLLECTION": row?.totalAmountCollected?.online,
             "TOTAL CASH COLLECTION": row?.totalAmountCollected?.cash,
             "TOTAL AMOUNT COLLECTION": row?.totalAmountCollected?.total,
         }));
         const reportFileName = `Movie-wise_Collection_${displayDate(new Date(), "DD-MM-YYYY_hhmmss")}`;
+        downloadCSV(reportData, reportFileName);
+    }
+    const downloadAllAggrigateMoviesReport = () => {
+        const reportData = [{
+            // "MOVIE": row?.movieTitle,
+            "TOTAL BOOKINGS": multiMovieSelect?.bookedSeats,
+            "TOTAL RESERVED SEATS": multiMovieSelect?.reservedSeats,
+            "TOTAL ONLINE COLLECTION": multiMovieSelect?.totalAmountCollected?.online,
+            "TOTAL CASH COLLECTION": multiMovieSelect?.totalAmountCollected?.cash,
+            "TOTAL AMOUNT COLLECTION": multiMovieSelect?.totalAmountCollected?.total,
+        }];
+        console.log(reportData);
+        const reportFileName = `Aggrigate-Movie_Collection_${displayDate(new Date(), "DD-MM-YYYY_hhmmss")}`;
         downloadCSV(reportData, reportFileName);
     }
 
@@ -138,7 +177,7 @@ const ReportsPageMovieWise = () => {
     }
 
     return (
-        <div>
+        <div className='mb-14'>
             <div className="flex justify-between items-center p-4 mb-2 border border-slate-100 rounded-md shadow-md">
                 <h1 className="text-xl md:text-2xl lg:text:3xl">Movies Reports</h1>
             </div>
@@ -168,17 +207,34 @@ const ReportsPageMovieWise = () => {
 
                 {report?.dailyReports && report?.dailyReports?.length !== 0 && (
                     <>
-                        <div className='text-lg'>Total Revenue: {getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</div>
-                        <div className='text-lg'>Total Bookings: {calculateTotalAmount(report?.dailyReports, "totalBookings")}</div>
+                        <div className='text-lg font-semibold'><span className='text-blue-500'>Total Revenue </span> : <span className='text-green-400'>{getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</span></div>
+                        <div className='text-lg font-semibold'><span className='text-blue-500'>Total Bookings </span>: <span className='text-green-400'>{calculateTotalAmount(report?.dailyReports, "totalBookings")}</span></div>
                     </>
                 )}
+            </div>
+            <div className='movies-table-wrapper p-4 shadow mt-5 rounded-md'>
+                <div className='flex justify-between items-center'>
+                    <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-3 rounded inline-block'>Multiple Movies-wise Collection</h3>
+                    <button
+                        className='border border-blue-500 p-1 disabled:opacity-50 disabled:cursor-not-allowed px-2 rounded-md flex items-center gap-1 text-blue-700'
+                        onClick={downloadAllAggrigateMoviesReport}
+                        disabled={multiMovieSelect.length === 0}
+                    >
+                        <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
+                    </button>
+                </div>
+                <Select isMulti={true} onChange={handleMultipleMovieChange} placeholder="Select Movie" className='w-full mt-3 lg:mt-5 mx-3' options={movieTitleList} isClearable />
+
+                <MultipleMoviesReports data={multiMovieSelect} />
+
             </div>
             <div className="movies-table-wrapper p-4 shadow mt-5 rounded-md">
                 <div className='flex justify-between items-center'>
                     <h3 className='text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded'>Movies-wise Collection</h3>
                     <button
-                        className='border border-blue-500 p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
+                        className='border border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed p-1 px-2 rounded-md flex items-center gap-1 text-blue-700'
                         onClick={downloadAllMoviesReport}
+                        disabled={movies.length === 0}
                     >
                         <AiOutlineDownload size={15} /><span className='hidden md:inline-block'>Download</span>
                     </button>

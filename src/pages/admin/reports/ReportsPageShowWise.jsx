@@ -163,8 +163,8 @@ const ReportsPageShowWise = () => {
                 <DataTableAdminShowWiseReports data={report?.dailyReports || []} />
                 {report?.dailyReports && report?.dailyReports?.length !== 0 && (
                     <>
-                        <div className='text-lg'>Total Revenue: {getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</div>
-                        <div className='text-lg'>Total Bookings: {calculateTotalAmount(report?.dailyReports, "totalBookings")}</div>
+                        <div className='text-lg font-semibold'><span className='text-blue-500'>Total Revenue </span> : <span className='text-green-400'>{getCurrencyFormat(calculateTotalAmount(report?.dailyReports, "totalAmount"))}</span></div>
+                        <div className='text-lg font-semibold'><span className='text-blue-500'>Total Bookings </span>: <span className='text-green-400'>{calculateTotalAmount(report?.dailyReports, "totalBookings")}</span></div>
                     </>
                 )}
             </div>

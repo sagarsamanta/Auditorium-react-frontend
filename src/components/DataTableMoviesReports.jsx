@@ -5,11 +5,11 @@ const DataTableMoviesReports = ({ data, className, isLoading }) => {
   const columns = [
     {
       name: "Movie",
-      selector: (row) => row?.movie?.title,
+      selector: (row) => row?.movieTitle,
     },
     {
       name: "Realesed Date",
-      cell: (row) => `${displayDate(row?.movie?.releaseDate)}`,
+      cell: (row) => `${displayDate(row?.releaseDate)}`,
     },
     {
       name: "No.Of Bookings",

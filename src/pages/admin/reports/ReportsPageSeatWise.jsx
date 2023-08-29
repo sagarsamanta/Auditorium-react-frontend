@@ -169,6 +169,22 @@ const ReportsPageSeatWise = () => {
     );
     downloadCSV(report, reportFileTitle);
   };
+  const downloadMovieSeatWiseReport = () => {
+    if(seatsDetailsData.length===0) return
+    const reportData = seatsDetailsData.map((row) => ({
+      "DATE": `${displayDate(row?.createdAt)}`,
+      "EMP ID": row?.userId?.empId,
+      "SEAT NO": row?.seatNo,
+      "SEAT STATUS": row?.status,
+      "BOOKING ID": row?.bookingId?.bookingId,
+      "PAYMENT MODE": row?.bookingId?.paymentMode,
+      "TICKET PRICE": row?.price,
+      "GUEST NAME": row?.userId?.name,
+      "GUEST MOBILE": row?.userId?.mobile,
+    }));
+    const reportFileName = generateReportFileName(selectedMovie ? selectedMovie : "Movie-seats-reports", '', formik.values.date);
+    downloadCSV(reportData, reportFileName);
+  }
   const handleRefresh = () => {
     formik.resetForm();
     setSelectedMovie("");
@@ -351,7 +367,7 @@ const ReportsPageSeatWise = () => {
             Seats Reports
           </h3>
           <button
-            className="border border-blue-500 p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-blue-700"
+            className="border border-blue-500 hidden p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-blue-700"
             onClick={downloadReports}
             disabled={report.length === 0}
           >
@@ -366,9 +382,19 @@ const ReportsPageSeatWise = () => {
 
       </div>
       <div className="mt-3 lg:mt-6 shadow-lg">
-        <h3 className="text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded inline-block">
-          All Booked seats
-        </h3>
+        <div className="flex justify-between items-center mb-2 md:mb-4 pt-3  pr-2">
+          <h3 className="text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded inline-block">
+            All Booked seats
+          </h3>
+          <button
+            className="border border-blue-500  p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-blue-700"
+            onClick={downloadMovieSeatWiseReport}
+            disabled={report.length === 0 && !selectedMovie}
+          >
+            <AiOutlineDownload size={15} />
+            <span className="hidden md:inline-block">Download</span>
+          </button>
+        </div>
         <DataTable
           columns={columns}
           data={seatsDetailsData}
