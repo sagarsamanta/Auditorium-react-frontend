@@ -6,6 +6,7 @@ import { useAuth } from "../../lib/hooks/useAuth";
 import Logo from "../UI/Logo";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { OPGC } from "../../lib/consts";
 
 const AdminPanelLayout = ({ children }) => {
   const { user, isAdmin } = useAuth();
@@ -86,7 +87,10 @@ const AdminPanelLayout = ({ children }) => {
             className="flex flex-col space-y-6 relative h-full"
             data-dev-hint="optional div for having an extra footer navigation"
           >
-            <Logo to="/admin" className="ml-4" />
+            <div className="flex justify-center items-center flex-col ml-[-30px]">
+              <Logo to="/admin" className="" />
+              <h1 className="font-semibold uppercase">{OPGC}</h1>
+            </div>
 
             <NavBar />
             <div className="w-full">

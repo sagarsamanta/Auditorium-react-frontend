@@ -179,8 +179,8 @@ const ReportsPageSeatWise = () => {
       "BOOKING ID": row?.bookingId?.bookingId,
       "PAYMENT MODE": row?.bookingId?.paymentMode,
       "TICKET PRICE": row?.price,
-      "GUEST NAME": row?.userId?.name,
-      "GUEST MOBILE": row?.userId?.mobile,
+      "GUEST NAME": row?.guestName,
+      "GUEST MOBILE": row?.guestMobile,
     }));
     const reportFileName = generateReportFileName(selectedMovie ? selectedMovie : "Movie-seats-reports", '', formik.values.date);
     downloadCSV(reportData, reportFileName);

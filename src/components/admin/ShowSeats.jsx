@@ -8,6 +8,7 @@ import Modal from "../UI/Modal";
 import BookingConfirmation from "../../pages/admin/movie/booking/BookingConfirmation";
 import BookingConfirm from "../UI/BookingConfirm";
 import { redirectToPaymentGateway } from "../../lib/payment";
+import { useNavigate } from "react-router-dom";
 
 const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
@@ -28,6 +29,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     const clientCodeRef = useRef();
     const encDataRef = useRef();
     const paymentFormRefs = { paymentFormRef, clientCodeRef, encDataRef };
+    const navigate=useNavigate()
 
     const fetchFreshData = async () => {
         if (authUser?.user?.role !== USER_ADMIN_ROLE) setLoading({ ...loading, seats: true });
@@ -139,6 +141,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                     .then(async (res) => {
                         if (res?.status === 201) {
                             toast.success(`Booked Successfully!`);
+                            navigate("/admin/history")
                         }
                     })
                     .finally(() => {

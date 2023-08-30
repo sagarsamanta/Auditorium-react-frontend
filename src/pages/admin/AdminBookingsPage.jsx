@@ -82,7 +82,7 @@ const AdminBookingsPage = () => {
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
               <h1 className="text-xl md:text-2xl lg:text:3xl">Book shows</h1>
               <button
-                className="text-sm px-2 py-2 md:px-4 md:py-3 rounded-lg border border-skin-base bg-skin-inverted text-skin-base flex items-center gap-2"
+                className="text-sm  px-2 py-2 md:px-4 md:py-3 rounded-lg border border-skin-base bg-skin-inverted text-skin-base flex items-center gap-2 hidden"
                 onClick={() => navigate(-1)}
               >
                 <RiArrowGoBackLine /> Back
