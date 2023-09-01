@@ -26,15 +26,15 @@ export const redirectToPaymentGateway = (user, seats, paymentFormRefs) => {
     Axios("POST", "/payment/encryot-data", {
         payerName: user.name,
         payerEmail: user.email,
-        payerMobile: "9876543210",  // user.mobile
+        payerMobile: user.mobile,
         clientTxnId: randomStr(20, "12345abcdefghujklmnopqrstuvwxyz"),
         amount: seats.totalPrice,
-        clientCode: "TM001",
-        transUserName: "spuser_2013",
-        transUserPassword: "RIADA_SP336",
+        clientCode: process.env.REACT_APP_PAYMENT_SPCLIENTCODE,
+        transUserName: process.env.REACT_APP_PAYMENT_SPTRANSUSERNAME,
+        transUserPassword: process.env.REACT_APP_PAYMENT_SPTRANSUSERPASSWORD,
         callbackUrl: `${API_ROOT}/payment/decrypt-data`,
-        channelId: "W",
-        mcc: "5666",
+        channelId: process.env.REACT_APP_PAYMENT_SPCHANNELID,
+        mcc: process.env.REACT_APP_PAYMENT_SPMCC,
         transData: new Date(),
         ...udf,
     }).then(async (res) => {
