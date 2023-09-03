@@ -1,9 +1,6 @@
-export const OPGC = "IB THERMAL CLUB";
-export const API_ROOT = process.env.API_ROOT || "http://localhost:5000/api";
-export const BASE_DOMAIN =
-  process.env.BASE_DOMAIN || "http://localhost:5000/api/payment/decrypt-data";
-
-export const AUTH_USER_LOCALSTORAGE = "IWS-AUTHUSER";
+export const OPGC = "IB THERMAL CLUB"
+export const API_ROOT = process.env.REACT_APP_API_ROOT || "http://localhost:5000/api";
+export const AUTH_USER_LOCALSTORAGE = 'IWS-AUTHUSER';
 
 export const USER_ADMIN_ROLE = "ADMIN";
 export const USER_EMPLOYEE_ROLE = "USER";
@@ -22,12 +19,12 @@ export const PAYMENT_METHOS = {
   DEFAULT: "ONLINE",
 };
 export const PAYMENTS_STATUS = {
-  SUCCESS: "SUCCESS",
-  PENDING: "PENDING",
-  FAILED: "FAILED",
-  REFUND_INITIATED: "REFUND_INITIATED",
-  REFUND_REQUESTED: "REFUND_REQUESTED",
-};
+    SUCCESS: 'SUCCESS',
+    PENDING: 'PENDING',
+    FAILED: 'FAILED',
+    REFUND_INITIATED: 'REFUND_INITIATED',
+    REFUND_REQUESTED: 'REFUND_REQUESTED',
+}
 export const SEATS = {
   a_to_c: {
     A: ["12", "11", "10", "09", "08", "07", "06", "05", "04", "03", "02", "01"],
@@ -418,7 +415,7 @@ export const SEATS_STATUS = {
 };
 
 export const PAYMENT = {
-  spURL: "https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1", // Staging environment
+    spURL: process.env.REACT_APP_PAYMENT_SPURL,
 };
 
 export const MESSAGE = {
