@@ -26,7 +26,14 @@ const ReportsPageSeatWise = () => {
   const { token } = useAuth();
   const movieSelectRef = useRef(null);
   const showSelectRef = useRef(null);
-  const [seatsDetailsData, setSeatDetailsData] = useState([])
+  const [seatsDetailsData, setSeatDetailsData] = useState([]);
+  const [countReports, setCountReports] = useState({
+    numVisitedSeats: 0,
+    numBookedSeats: 0,
+    numTotalBookedSeats: 0,
+    numReservedSeats: 0,
+  });
+
   const getAllMoviesTitle = () => {
     Axios("GET", "/movie/get-all-movie-title", null, {
       authRequest: true,
@@ -119,7 +126,7 @@ const ReportsPageSeatWise = () => {
     },
     onSubmit: (values) => {
       setLoading(true);
-      setLoaadingAllSetsTable(true)
+      setLoaadingAllSetsTable(true);
       Axios(
         "GET",
         `/show/daily-seat-booking-reports/?movieId=${values?.movie}&showTitle=${values?.show}&date=${values?.date}`,
@@ -130,20 +137,19 @@ const ReportsPageSeatWise = () => {
           if (res.status === 200) {
             setReport(res.data);
             setLoading(false);
-            setLoaadingAllSetsTable(false)
+            setLoaadingAllSetsTable(false);
             console.log("calll");
-
           }
         })
         .finally(() => {
           setLoading(false);
-          setLoaadingAllSetsTable(false)
+          setLoaadingAllSetsTable(false);
         })
         .catch((err) => {
           console.log("err", err);
         });
       if (selectedMovie) {
-        getRecordOfSeatsInDetails()
+        getRecordOfSeatsInDetails();
       }
     },
   });
@@ -170,9 +176,9 @@ const ReportsPageSeatWise = () => {
     downloadCSV(report, reportFileTitle);
   };
   const downloadMovieSeatWiseReport = () => {
-    if(seatsDetailsData.length===0) return
+    if (seatsDetailsData.length === 0) return;
     const reportData = seatsDetailsData.map((row) => ({
-      "DATE": `${displayDate(row?.createdAt)}`,
+      DATE: `${displayDate(row?.createdAt)}`,
       "EMP ID": row?.userId?.empId,
       "SEAT NO": row?.seatNo,
       "SEAT STATUS": row?.status,
@@ -182,27 +188,48 @@ const ReportsPageSeatWise = () => {
       "GUEST NAME": row?.guestName,
       "GUEST MOBILE": row?.guestMobile,
     }));
-    const reportFileName = generateReportFileName(selectedMovie ? selectedMovie : "Movie-seats-reports", '', formik.values.date);
+    const reportFileName = generateReportFileName(
+      selectedMovie ? selectedMovie : "Movie-seats-reports",
+      "",
+      formik.values.date
+    );
     downloadCSV(reportData, reportFileName);
-  }
+  };
   const handleRefresh = () => {
     formik.resetForm();
     setSelectedMovie("");
     setSelectedShows("");
     formik.setFieldValue("movie", ""); // Clear movie selection
     formik.setFieldValue("show", ""); // Clear show selection
-    setSeatDetailsData([])
+    setSeatDetailsData([]);
+    setCountReports({
+      numVisitedSeats: 0,
+      numBookedSeats: 0,
+      numTotalBookedSeats: 0,
+      numReservedSeats: 0,
+    });
   };
 
   const getRecordOfSeatsInDetails = () => {
     setLoading(true);
-    Axios("GET", `show/get-seats-bookig-record/?movieId=${formik.values.movie}&showtimeId=${formik.values.show}&date=${formik.values?.date}`, null, {
-      authRequest: true,
-      token: token,
-    })
+    Axios(
+      "GET",
+      `show/get-seats-bookig-record/?movieId=${formik.values.movie}&showtimeId=${formik.values.show}&date=${formik.values?.date}`,
+      null,
+      {
+        authRequest: true,
+        token: token,
+      }
+    )
       .then((res) => {
         console.log(res);
-        setSeatDetailsData(res?.data?.data)
+        setSeatDetailsData(res?.data?.data);
+        setCountReports({
+          numVisitedSeats: res.data?.numVisitedSeats,
+          numBookedSeats: res.data?.numBookedSeats,
+          numTotalBookedSeats: res.data?.numTotalBookedSeats,
+          numReservedSeats: res.data?.numReservedSeats
+        });
         setLoading(false);
       })
       .finally(() => {
@@ -211,8 +238,7 @@ const ReportsPageSeatWise = () => {
       .catch((err) => {
         setLoading(false);
       });
-
-  }
+  };
   const columns = [
     {
       name: <>Seat No</>,
@@ -230,11 +256,13 @@ const ReportsPageSeatWise = () => {
             {
               <div className="flex gap-[2px] justify-center items-center">
                 <div
-                  className={`${row.status === SEATS_STATUS.BOOKED &&
+                  className={`${
+                    row.status === SEATS_STATUS.BOOKED &&
                     "text-red-700 p-2 rounded-lg"
-                    } ${row.status === SEATS_STATUS.VISITED &&
+                  } ${
+                    row.status === SEATS_STATUS.VISITED &&
                     "text-green-700 p-2  rounded-lg"
-                    }`}
+                  }`}
                 >
                   {row?.status}
                 </div>
@@ -265,13 +293,17 @@ const ReportsPageSeatWise = () => {
       minWidth: "200px",
       selector: (row) => (
         <div
-          className={`${row?.bookingId?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
-            } ${row?.bookingId?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
-            "text-yellow-400"
-            } 
-                ${row?.bookingId?.paymentStatus === PAYMENTS_STATUS.FAILED &&
-            "text-red-400"
-            } 
+          className={`${
+            row?.bookingId?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
+            "text-green-700"
+          } ${
+            row?.bookingId?.paymentStatus ===
+              PAYMENTS_STATUS.REFUND_REQUESTED && "text-yellow-400"
+          } 
+                ${
+                  row?.bookingId?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+                  "text-red-400"
+                } 
                 font-semibold `}
         >
           {row?.bookingId?.paymentStatus}
@@ -288,12 +320,16 @@ const ReportsPageSeatWise = () => {
       minWidth: "120px",
       sortable: true,
       selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
-
     },
     {
       name: "Guest Name",
       minWidth: "200px",
       selector: (row) => <>{row?.guestName ? row?.guestName : "--"}</>,
+    },
+    {
+      name: "Guest Children Count",
+      minWidth: "200px",
+      selector: (row) => <>{row?.guestChildren ? row?.guestChildren : "--"}</>,
     },
     {
       name: "Guest Mobile No",
@@ -322,9 +358,11 @@ const ReportsPageSeatWise = () => {
           className="w-[250px]"
           options={movieTitleList}
           isClearable
-          value={movieTitleList.find(
-            (movie) => movie.value === formik.values.movie
-          ) || ""}
+          value={
+            movieTitleList.find(
+              (movie) => movie.value === formik.values.movie
+            ) || ""
+          }
           ref={movieSelectRef}
         />
 
@@ -335,9 +373,10 @@ const ReportsPageSeatWise = () => {
           options={showTitleList}
           isClearable
           isDisabled={formik.values.movie === ""}
-          value={showTitleList.find(
-            (show) => show.value === formik.values.show
-          ) || ""}
+          value={
+            showTitleList.find((show) => show.value === formik.values.show) ||
+            ""
+          }
           ref={showSelectRef}
         />
         <input
@@ -379,9 +418,34 @@ const ReportsPageSeatWise = () => {
           isLoading={loadingAllSetsTable}
           data={report || []}
         />
-
       </div>
       <div className="mt-3 lg:mt-6 shadow-lg">
+        <div className="bg-white rounded-lg mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1">
+          <div className="border p-4 rounded-lg flex flex-col shadow-md">
+            <span className="text-lg font-semibold text-blue-500">
+              {countReports?.numTotalBookedSeats || 0}
+            </span>
+            <span className="text-sm">Booked Seats</span>
+          </div>
+          <div className="border p-4 rounded-lg flex flex-col shadow-md">
+            <span className="text-lg font-semibold text-green-500">
+              {countReports?.numVisitedSeats || 0}
+            </span>
+            <span className="text-sm">Visited Seats (Children Included)</span>
+          </div>
+          <div className="border p-4 rounded-lg flex flex-col shadow-md">
+            <span className="text-lg font-semibold text-red-500">
+              {countReports?.numBookedSeats || 0}
+            </span>
+            <span className="text-sm">Non Visited Seats</span>
+          </div>
+          <div className="border p-4 rounded-lg flex flex-col shadow-md">
+            <span className="text-lg font-semibold text-yellow-400">
+              {countReports?.numReservedSeats || 0}
+            </span>
+            <span className="text-sm">Reserved Seats</span>
+          </div>
+        </div>
         <div className="flex justify-between items-center mb-2 md:mb-4 pt-3  pr-2">
           <h3 className="text-base md:text-lg font-semibold mx-3 bg-yellow-200 px-2 rounded inline-block">
             All Booked seats

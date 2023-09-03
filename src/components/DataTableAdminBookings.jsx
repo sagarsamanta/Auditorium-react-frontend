@@ -95,10 +95,10 @@ const DataTableAdminBookings = ({ data, className }) => {
     },
     {
       name: <>Booked seats</>,
-      maxWidth: "250px",
+      maxWidth: "350px",
       cell: (row) => {
         return (
-          <div className="w-full overflow-x-auto scrollbar-w-1">
+          <div className="w-full">
             <div className="w-max flex items-center gap-2">
               {row?.seats?.map((seat) => (
                 <span

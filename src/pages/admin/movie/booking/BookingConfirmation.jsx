@@ -17,7 +17,6 @@ import LoadingButton from "../../../../components/UI/LoadingButton";
 import Axios from "../../../../lib/axiosInstance";
 import Select from "react-select";
 
-
 const BookingConfirmation = ({
   selectedSeats,
   show,
@@ -87,20 +86,21 @@ const BookingConfirmation = ({
   // WIP
   const handleGuestChange = (seat, e, field) => {
     const guestObj = [...seatGuests];
-    const seatIndex = guestObj.findIndex(item => item.seat === seat);
+    const seatIndex = guestObj.findIndex((item) => item.seat === seat);
 
     if (seatIndex !== -1) {
       const updatedGuest = {
         ...guestObj[seatIndex],
-        [field]: e.target.value
+        [field]: e.target.value,
       };
       guestObj[seatIndex] = updatedGuest;
       setSeatGuests(guestObj);
     } else {
       const newGuest = {
         seat: seat,
-        name: field === 'name' ? e.target.value : '',
-        phone: field === 'phone' ? e.target.value : ''
+        name: field === "name" ? e.target.value : "",
+        phone: field === "phone" ? e.target.value : "",
+        phone: field === "children" ? e.target.value : "",
       };
       guestObj.push(newGuest);
 
@@ -110,7 +110,6 @@ const BookingConfirmation = ({
 
   const isNotValidPayment =
     user?.role === USER_EMPLOYEE_ROLE && paymentMethod === PAYMENT_METHOS.CASH;
-
 
   return (
     <div className="relative  flex justify-center items-center p-0 md:p-0">
@@ -205,37 +204,60 @@ const BookingConfirmation = ({
                   <span className="text-sm md:text-base">Employee</span>
                 </label>
               </div>
-              {userType === "guest" && (
-                selectedSeatsArr.map((seat) => {
-                  const guest = seatGuests.find(item => item.seat === seat);
-                  const guestName = guest ? guest.name : '';
-                  const guestPhone = guest ? guest.phone : '';
+              <div className="max-h-[200px] overflow-scroll">
+                {userType === "guest" &&
+                  selectedSeatsArr.map((seat) => {
+                    const guest = seatGuests.find((item) => item.seat === seat);
+                    const guestName = guest ? guest.name : "";
+                    const guestPhone = guest ? guest.phone : "";
+                    const guestChildren = guest ? guest.children : "";
 
-                  return (
-                    <div className="mt-2 flex justify-between items-center gap-2" key={seat}>
-                      <span className="text-sm font-semibold w-7">{seat}</span>
-                      <input
-                        className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
-                        id={`guest-name-${seat}`}
-                        type="text"
-                        placeholder="Guest Name"
-                        name={`guest-name-${seat}`}
-                        value={guestName}
-                        onChange={(e) => handleGuestChange(seat, e, 'name')}
-                      />
-                      <input
-                        className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
-                        id={`guest-phn-no-${seat}`}
-                        type="text"
-                        placeholder="Guest Phone No."
-                        name={`guest-phn-no-${seat}`}
-                        value={guestPhone}
-                        onChange={(e) => handleGuestChange(seat, e, 'phone')}
-                      />
-                    </div>
-                  );
-                })
-              )}
+
+                    return (
+                      <div
+                        className="mt-2 flex flex-col justify-between items-center gap-2"
+                        key={seat}
+                      >
+                        <span className="text-sm font-semibold w-7 text-green-600">
+                          {seat}
+                        </span>
+                        <input
+                          className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
+                          id={`guest-name-${seat}`}
+                          type="text"
+                          placeholder="Guest Name"
+                          name={`guest-name-${seat}`}
+                          value={guestName}
+                          onChange={(e) => handleGuestChange(seat, e, "name")}
+                        />
+                        <input
+                          className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
+                          id={`guest-phn-no-${seat}`}
+                          type="text"
+                          placeholder="Guest Phone No."
+                          name={`guest-phn-no-${seat}`}
+                          value={guestPhone}
+                          onChange={(e) => handleGuestChange(seat, e, "phone")}
+                        />
+                        <input
+                          className={`text-sm appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
+                          id={`guest-children-${seat}`}
+                          type="number"
+                          min={0}
+                          max={100}
+                          defaultValue={0}
+                          placeholder="No of children age below 3"
+                          name={`guest-chilren-${seat}`}
+                          value={guestChildren}
+                          onChange={(e) =>
+                            handleGuestChange(seat, e, "children")
+                          }
+                        />
+                      </div>
+                    );
+                  })}
+              </div>
+
               {userType === "employee" && (
                 <div className="mt-2">
                   <label
@@ -265,7 +287,7 @@ const BookingConfirmation = ({
             </div>
           </>
         )}
-        <div className="border-t-2 border-gray-200 pt-4 mt-4">
+        <div className="border-t-2 border-gray-200 pt-4 mt-4 ">
           <div className="grid grid-cols-3 gap-2">
             <h3 className="text-sm md:text-lg font-semibold">Pay Amount</h3>
             <p className="text-lg text-center md:text-base">:</p>
@@ -275,8 +297,9 @@ const BookingConfirmation = ({
           </div>
           {
             <div
-              className={`text-sm bg-yellow-200 px-3 py-1 mb-2 rounded-full transition ${isNotValidPayment ? "opacity-100" : "opacity-0"
-                }`}
+              className={`text-sm bg-yellow-200 px-3 py-1 mb-2 rounded-full transition ${
+                isNotValidPayment ? "opacity-100" : "opacity-0"
+              }`}
             >
               {MESSAGE.USER_CASH_PAY_WARNING_MESSAGE}
             </div>

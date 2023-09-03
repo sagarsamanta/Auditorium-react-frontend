@@ -1,6 +1,7 @@
 import React from "react";
 import { displayDate, getCurrencyFormat } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
+import { SEATS_STATUS } from "../lib/consts";
 
 const DataTableAdminSeatWiseReports = ({ data, className, isLoading }) => {
   if (isLoading) {
@@ -12,14 +13,16 @@ const DataTableAdminSeatWiseReports = ({ data, className, isLoading }) => {
   }
 
   // Collect all unique shows across all data objects and sort them
-  const allShows = data.reduce((shows, report) => {
-    report.shows.forEach((show) => {
-      if (!shows.includes(show.showTitle)) {
-        shows.push(show.showTitle);
-      }
-    });
-    return shows;
-  }, []).sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+  const allShows = data
+    .reduce((shows, report) => {
+      report.shows.forEach((show) => {
+        if (!shows.includes(show.showTitle)) {
+          shows.push(show.showTitle);
+        }
+      });
+      return shows;
+    }, [])
+    .sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
 
   return (
     <div className="overflow-x-auto">
@@ -42,12 +45,16 @@ const DataTableAdminSeatWiseReports = ({ data, className, isLoading }) => {
           <tbody>
             {data.map((report, index) => (
               <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-                <td className="px-2 py-1 border text-xs">{report.movieTitle}</td>
+                <td className="px-2 py-1 border text-xs">
+                  {report.movieTitle}
+                </td>
                 <td className="px-2 py-1 border text-xs">
                   {displayDate(report.releaseDate)}
                 </td>
                 {allShows.map((showTitle) => {
-                  const show = report.shows.find((show) => show.showTitle === showTitle);
+                  const show = report.shows.find(
+                    (show) => show.showTitle === showTitle
+                  );
                   return (
                     <td key={showTitle} className="px-2 py-1 border">
                       <table className="table-auto">
@@ -55,13 +62,28 @@ const DataTableAdminSeatWiseReports = ({ data, className, isLoading }) => {
                           {show?.dates.map((dateInfo) => (
                             <tr key={dateInfo.date}>
                               <td className="px-1 py-1 text-center text-xs">
-                                {new Date(dateInfo.date).toLocaleDateString('en-GB')}
+                                {new Date(dateInfo.date).toLocaleDateString(
+                                  "en-GB"
+                                )}
                               </td>
                               {dateInfo.statusCounts.map((statusCount) => (
                                 <React.Fragment key={statusCount.status}>
                                   <td className="px-1 py-1 text-center">
-                                    <span className={`${statusCount.status === 'BOOKED' ? 'text-blue-600' : 'text-green-600'} text-xs font-semibold`}>
-
+                                    <span
+                                      className={`${
+                                        statusCount.status ===
+                                          SEATS_STATUS.BOOKED && "text-blue-600"
+                                      } ${
+                                        statusCount.status ===
+                                          SEATS_STATUS.VISITED &&
+                                        "text-green-600"
+                                      } 
+                                      ${
+                                        statusCount.status ===
+                                          SEATS_STATUS.RESERVED &&
+                                        "text-yellow-600"
+                                      }  text-xs font-semibold`}
+                                    >
                                       {statusCount.status}
                                     </span>
                                   </td>

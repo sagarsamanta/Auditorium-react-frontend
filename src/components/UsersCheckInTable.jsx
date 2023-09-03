@@ -189,6 +189,11 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       selector: (row) => <>{row?.guestName ? row?.guestName :"--"}</>,
     },
     {
+      name: "Guest Children Count",
+      minWidth: "200px",
+      selector: (row) => <>{row?.guestChildren ? row?.guestChildren :"--"}</>,
+    },
+    {
       name: "Guest Mobile No",
       minWidth: "200px",
       selector: (row) => row?.guestMobile,
