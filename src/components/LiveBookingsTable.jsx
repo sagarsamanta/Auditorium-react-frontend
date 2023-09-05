@@ -2,42 +2,16 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../lib/hooks/useAuth";
 import SearchBox from "./UI/SearchBox";
 import Axios from "../lib/axiosInstance";
-import Clipboard from "clipboard";
 import { displayDate, displayTime, getCurrencyFormat } from "../lib/utils";
 import { CustomDataTable as DataTable } from "./DataTable";
 
-import { AiOutlineCopy } from "react-icons/ai";
-import { toast } from "react-toastify";
 import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../lib/consts";
-const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }) => {
+const LiveBookingsTable = ({ show, showStartTime, setTotalAmountCollectedOnShow }) => {
   const [data, setData] = useState([]);
   const [tempData, setTempData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const { token } = useAuth();
 
-  const chnageBookingStatus = (id, status) => {
-    Axios(
-      "PUT",
-      `booking/chnage-booking-status/${id}`,
-      { newStatus: status },
-      { authRequest: true, token: token }
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          const updatedBookings = data.map((booking) => {
-            if (booking.bookingId === id) {
-              return { ...booking, status: res?.data?.status };
-            }
-            return booking;
-          });
-          setData(updatedBookings);
-        }
-      })
-      .finally(() => {})
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -59,17 +33,6 @@ const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }
       });
   }, [show]);
 
-  // Function to handle copy button click
-  const handleCopyClick = (event, bookingId) => {
-    // Copy the bookingId to the clipboard
-    const clipboard = new Clipboard(".copy-button", {
-      text: () => bookingId,
-    });
-
-    // Trigger the copy action
-    clipboard.onClick(event);
-    toast.success("Copied");
-  };
 
   const columns = [
     {
@@ -81,7 +44,6 @@ const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }
       selector: (row) => (
         <div
           className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center"
-          //   onClick={(e) => handleCopyClick(e, row.bookingId)}
         >
           <span>{row.bookingId}</span>
         </div>
@@ -111,16 +73,13 @@ const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }
       minWidth: "200px",
       selector: (row) => (
         <div
-          className={`${
-            row?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
-          } ${
-            row?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
+          className={`${row?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
+            } ${row?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
             "text-yellow-400"
-          } 
-          ${
-            row?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+            }
+          ${row?.paymentStatus === PAYMENTS_STATUS.FAILED &&
             "text-red-400"
-          } 
+            }
           font-semibold `}
         >
           {row?.paymentStatus}
@@ -132,11 +91,9 @@ const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }
       minWidth: "200px",
       selector: (row) => (
         <div
-          className={`${
-            row?.status === BOOKING_STATUS.BOOKED && "text-green-700"
-          } ${
-            row?.status === BOOKING_STATUS.CANCEL && "text-red-600"
-          } font-semibold `}
+          className={`${row?.status === BOOKING_STATUS.BOOKED && "text-green-700"
+            } ${row?.status === BOOKING_STATUS.CANCEL && "text-red-600"
+            } font-semibold `}
         >
           {row?.status}
         </div>
@@ -152,13 +109,11 @@ const LiveBookingsTable = ({ show, showStartTime,setTotalAmountCollectedOnShow }
             {row?.seats?.map((seat) => (
               <div className="flex gap-[2px] justify-center items-center ">
                 <span
-                  className={`${
-                    seat.status === SEATS_STATUS.BOOKED &&
+                  className={`${seat.status === SEATS_STATUS.BOOKED &&
                     "bg-green-400 p-1 rounded-md"
-                  } ${
-                    seat.status === SEATS_STATUS.VISITED &&
+                    } ${seat.status === SEATS_STATUS.VISITED &&
                     "bg-yellow-600 text-white p-1 rounded-lg"
-                  } font-semibold`}
+                    } font-semibold`}
                 >
                   {seat?.seatNo}
                 </span>
