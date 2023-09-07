@@ -395,7 +395,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
                                         key={seatNo}
                                         className={`seat w-7 h-7 ${getSeatStatusColor(
                                           seatNo
-                                        )} p-1 rounded-md font-semibold text-center text-xs seat-${seatNo} disabled:cursor-not-allowed`}
+                                        )} rounded-md font-semibold flex justify-center items-center text-[11px] seat-${seatNo} disabled:cursor-not-allowed`}
                                         onClick={(e) => handleSelect(e, seatNo)}
                                       >
                                         {seatNo}
