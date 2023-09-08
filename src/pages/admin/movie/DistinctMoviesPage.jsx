@@ -12,9 +12,13 @@ const DistinctMoviesPage = () => {
 
     useEffect(() => {
         const response = async () => {
-            const newData = await Axios("GET", '/movie/all-distinct-movie', null, { authRequest: true, token: token });
-            setResponse(newData?.data);
-            setLoading(false);
+            try {
+                const newData = await Axios("GET", '/movie/all-distinct-movie', null, { authRequest: true, token: token });
+                setResponse(newData?.data);
+                setLoading(false);
+            } catch (error) {
+                console.log(error);
+            }
         };
         response();
     }, []);

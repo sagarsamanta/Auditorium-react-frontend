@@ -100,7 +100,7 @@ const BookingConfirmation = ({
         seat: seat,
         name: field === "name" ? e.target.value : "",
         phone: field === "phone" ? e.target.value : "",
-        phone: field === "children" ? e.target.value : "",
+        children: field === "children" ? e.target.value : "",
       };
       guestObj.push(newGuest);
 
@@ -204,7 +204,7 @@ const BookingConfirmation = ({
                   <span className="text-sm md:text-base">Employee</span>
                 </label>
               </div>
-              <div className="max-h-[200px] overflow-scroll">
+              <div className="max-h-[200px] overflow-scroll over">
                 {userType === "guest" &&
                   selectedSeatsArr.map((seat) => {
                     const guest = seatGuests.find((item) => item.seat === seat);
