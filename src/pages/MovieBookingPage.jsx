@@ -182,7 +182,7 @@ const MovieBookingPage = () => {
                             </div>
                             {isAuthenticated && selectedShow && !isAllShowInactive && (
                                 <div className=" bg-gray-800 text-skin-inverted rounded-lg p-4">
-                                    <span className="text-xl font-semibold">Seats</span>
+                                    {/* <span className="text-xl font-semibold">Seats</span> */}
                                     {loading.shows ? (
                                         <div className="py-4">
                                             <Loader className="block" />
