@@ -8,7 +8,6 @@ function randomStr(len, arr) {
     }
     return ans;
 }
-const clientCode = "TM001";
 
 export const redirectToPaymentGateway = (user, seats, paymentFormRefs) => {
     if (!user) return;
@@ -41,7 +40,7 @@ export const redirectToPaymentGateway = (user, seats, paymentFormRefs) => {
         if (res.status === 200) {
             // Submit all data to SubPaisa
             paymentFormRefs.encDataRef.current.value = res?.data?.data
-            paymentFormRefs.clientCodeRef.current.value = clientCode
+            paymentFormRefs.clientCodeRef.current.value = process.env.REACT_APP_PAYMENT_SPCLIENTCODE
             paymentFormRefs.paymentFormRef.current.submit();
         }
     }).catch((err) => {
