@@ -165,7 +165,7 @@ const ReportsPageMovieWise = () => {
     const downloadMovieDateWiseReport = () => {
         const movie = movieTitleList.filter((movie) => (movie.value === formik.values.movie));
         const reportData = report?.dailyReports.map((row) => ({
-            "DATE": `${displayDate(row?.createdAt)}`,
+            "DATE": `${displayDate(row?._id?.date)}`,
             "NO OF SHOWS": row?.totalShows,
             "TOTAL BOOKINGS": row?.totalBookings,
             "CASH COLLECTION": row?.totalAmountCash,

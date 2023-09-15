@@ -100,7 +100,7 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
           </button>
           <button
             className="inline-block p-2 rounded-lg transition duration-200 border border-red-700 text-center text-red-700 font-serif hover:bg-red-600 hover:text-white"
-            title="Change Password"
+            title="Delete User"
             onClick={() => {
               setSelectedUserForDelete(row);
               openDeleteModal();
@@ -209,12 +209,11 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
               className={`w-full outline-none text-gray-800 placeholder-gray-500 h-10 p-2 rounded border `}
             />
             <p
-              className={`${
-                changePasswordModal?.error &&
-                !changePasswordModal?.newPassword?.length
+              className={`${changePasswordModal?.error &&
+                  !changePasswordModal?.newPassword?.length
                   ? "block"
                   : "hidden"
-              } text-red-700`}
+                } text-red-700`}
             >
               Enter Password
             </p>

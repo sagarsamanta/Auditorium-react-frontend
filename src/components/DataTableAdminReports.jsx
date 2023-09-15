@@ -5,7 +5,7 @@ const DataTableAdminReports = ({ data, className }) => {
     const columns = [
         {
             name: 'Booking Date',
-            cell: row => `${displayDate(row?.createdAt)}`,
+            cell: row => `${displayDate(row?._id?.date)}`,
         },
         {
             name: 'Total Bookings',
@@ -21,7 +21,7 @@ const DataTableAdminReports = ({ data, className }) => {
             cell: row => getCurrencyFormat(row?.totalAmountOnline),
             sortable: true,
         },
-      
+
         {
             name: 'Cash Amount',
             selector: row => row?.totalAmountCash,
