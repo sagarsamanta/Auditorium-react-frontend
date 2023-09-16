@@ -63,7 +63,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       });
   };
 
-  useEffect(() => {
+  const getBookedSeats = () => {
     setLoading(true);
     Axios("GET", `booking/all-booked-seats/${show?._id}`, null, {
       authRequest: true,
@@ -80,6 +80,13 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       .catch((err) => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      getBookedSeats();
+    }, 5 * 60000); //1 minute = 60,000 milliseconds
+    getBookedSeats();
   }, [show]);
   const handleRequestUpdatePayStatus = (clientTxnId, bookingId) => {
     let requestedData = {
@@ -93,13 +100,11 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       { authRequest: true, token: token }
     )
       .then((res) => {
-        // console.log(res.data);
         if (res.status === 200) {
           const { status, sabpaisaMessage, bankMessage } = res.data;
           const rowIndex = data.findIndex(
             (r) => r.bookingId.bookingId === bookingId
           );
-          console.log(rowIndex);
           if (rowIndex !== -1) {
             const updatedRows = [...data];
             updatedRows[rowIndex] = {
@@ -109,10 +114,8 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
                 paymentStatus: status,
                 bankMessage,
                 sabpaisaMessage,
-              }
+              },
             };
-            console.log('status', status);
-            console.log(updatedRows);
             setData(updatedRows);
           }
         }
@@ -256,7 +259,9 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       name: "Paid Amount",
       minWidth: "120px",
       sortable: true,
-      selector: (row) => <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>,
+      selector: (row) => (
+        <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>
+      ),
     },
     {
       name: "Guest Name",
@@ -282,17 +287,26 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
     {
       name: "Bank Name",
       minWidth: "200px",
-      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? row?.bookingId?.bankName : '--',
+      selector: (row) =>
+        row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH
+          ? row?.bookingId?.bankName
+          : "--",
     },
     {
       name: "Bank Message",
       minWidth: "200px",
-      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? row?.bookingId?.bankMessage : '--',
+      selector: (row) =>
+        row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH
+          ? row?.bookingId?.bankMessage
+          : "--",
     },
     {
       name: "Trasaction Date",
       minWidth: "200px",
-      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? displayDate(row?.bookingId?.transDate) : '--',
+      selector: (row) =>
+        row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH
+          ? displayDate(row?.bookingId?.transDate)
+          : "--",
     },
   ];
   const openConfirmModalHandelar = () => {

@@ -44,34 +44,14 @@ const ReportsPageMovieWise = () => {
                 console.log(err)
             });
     }
-    // const getAllMoviesReports = () => {
-    //     Axios('GET', '/movie/all-movie-reports', null, { authRequest: true, token: token })
-    //         .then((res) => {
-
-    //             if (res.status === 200) {
-    //                 setMovies(res.data);
-    //                 setTempMovies(res.data);
-    //                 setLoadingMovieReports(false)
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             setLoadingMovieReports(false)
-    //             console.log(err)
-    //         })
-    //         .finally(() => {
-    //             setLoadingMovieReports(false)
-    //         })
-
-    // }
+   
     const handleMultipleMovieChange = (value) => {
         if (!value) return
         setLoadingMovieReports(true)
         const movieIds = value?.map((movie) => movie.value)
-        console.log(movieIds);
         Axios('POST', `/movie/all-movie-reports-grouped-title`, { movieIds }, { authRequest: true, token: token })
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res.data);
                     setSelectMultipleMovie(res.data?.overallSum)
                     setMovies(res.data?.movieReports);
                     setLoadingMovieReports(false)
@@ -132,7 +112,6 @@ const ReportsPageMovieWise = () => {
     }
 
     const downloadAllMoviesReport = () => {
-        console.log(movies);
         const reportData = movies.map((row) => ({
             "MOVIE": row?.movieTitle,
             "MOVIE LANGUAGE": row?.language,
@@ -157,7 +136,6 @@ const ReportsPageMovieWise = () => {
             "TOTAL CASH COLLECTION": multiMovieSelect?.totalAmountCollected?.cash,
             "TOTAL AMOUNT COLLECTION": multiMovieSelect?.totalAmountCollected?.total,
         }];
-        console.log(reportData);
         const reportFileName = `Aggrigate-Movie_Collection_${displayDate(new Date(), "DD-MM-YYYY_hhmmss")}`;
         downloadCSV(reportData, reportFileName);
     }

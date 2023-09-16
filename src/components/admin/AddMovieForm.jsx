@@ -102,7 +102,6 @@ const AddMovieForm = ({ movie, addMovie }) => {
     imgPreviewRef.current.src = imgUri;
     formik.setFieldValue("image", file);
   };
-  console.log(formik.errors);
   return (
     <>
       <form className="w-full" onSubmit={formik.handleSubmit}>

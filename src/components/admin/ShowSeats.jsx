@@ -265,7 +265,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
             const userList = res?.data?.users
               .filter((user) => user.role !== USER_ADMIN_ROLE)
               .map((user) => ({
-                label: user.empId,
+                label: `${user.name} (${user.empId})`,
                 value: user._id,
               }));
             setEmployeeOptions(userList);

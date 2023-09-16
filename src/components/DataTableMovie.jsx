@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { STATUS_ACTIVE, STATUS_INACTIVE } from "../lib/consts";
-import { displayDate } from "../lib/utils";
+import { displayDate, isPastDate } from "../lib/utils";
 import { Link } from "react-router-dom";
 import { CustomDataTable as DataTable } from "./DataTable";
 import { toast } from "react-toastify";
@@ -161,15 +161,17 @@ const DataTableMovie = ({ data, className }) => {
       minWidth: "150px",
       cell: (row) => (
         <button
-          title={`${row.status === STATUS_ACTIVE
-            ? "Deactive this movie"
-            : "Active this movie"
-            } `}
+          title={`${
+            row.status === STATUS_ACTIVE
+              ? "Deactive this movie"
+              : "Active this movie"
+          } `}
           name={`enable-movie--${row._id}`}
-          className={`text-xs ${row.status === STATUS_ACTIVE
-            ? "border border-green-700 hover:bg-green-800 text-green-800 hover:text-white"
-            : "border text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
-            } inline-block py-2 px-4 rounded-lg transition duration-200 text-black cursor-pointer w-28 font-semibold`}
+          className={`text-xs ${
+            row.status === STATUS_ACTIVE
+              ? "border border-green-700 hover:bg-green-800 text-green-800 hover:text-white"
+              : "border text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+          } inline-block py-2 px-4 rounded-lg transition duration-200 text-black cursor-pointer w-28 font-semibold`}
           defaultChecked={row.status === STATUS_ACTIVE ? true : false}
           onClick={(e) => handleMovieStatusChange(e, row.status, row)}
         >
@@ -215,18 +217,19 @@ const DataTableMovie = ({ data, className }) => {
       name: "Actions",
       minWidth: "50px",
       cell: (row) => {
-        console.log('row', row)
         return (
-        <div className="space-x-4 flex justify-center">
-          <Link
-            to={`/admin/movies/${row._id}`}
-            className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white"
-            title="Edit Movie Details"
-          >
-            <MdEdit size={15} />
-          </Link>
-        </div>
-        )
+          <div className="space-x-4 flex justify-center">
+            {!isPastDate(row?.releaseDate) && (
+              <Link
+                to={`/admin/movies/${row._id}`}
+                className="inline-block p-2 rounded-lg transition duration-200 border border-skin-base text-center text-skin-base font-serif hover:bg-skin-base hover:text-white"
+                title="Edit Movie Details"
+              >
+                <MdEdit size={15} />
+              </Link>
+            )}
+          </div>
+        );
       },
     },
   ];

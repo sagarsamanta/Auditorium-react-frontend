@@ -237,7 +237,6 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
       token: token,
     })
       .then((response) => {
-        console.log(response.data);
         const indexToUpdate = userList.findIndex((user) => user?._id === id);
         const updatedUsers = [...userList];
         if (indexToUpdate !== -1) {

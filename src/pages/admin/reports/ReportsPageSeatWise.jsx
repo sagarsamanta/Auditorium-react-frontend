@@ -10,7 +10,7 @@ import { downloadCSV, generateReportFileName } from "../../../lib/downloadCsv";
 import DataTableAdminSeatWiseReports from "../../../components/DataTableAdminSeatWiseReports";
 import { BiRefresh } from "react-icons/bi";
 import { CustomDataTable as DataTable } from "../../../components/DataTable";
-import { PAYMENTS_STATUS, SEATS_STATUS } from "../../../lib/consts";
+import { PAYMENTS_STATUS, PAYMENT_METHOS, SEATS_STATUS } from "../../../lib/consts";
 import { RxCrossCircled } from "react-icons/rx";
 import { MdOutlineVerified } from "react-icons/md";
 
@@ -138,7 +138,6 @@ const ReportsPageSeatWise = () => {
             setReport(res.data);
             setLoading(false);
             setLoaadingAllSetsTable(false);
-            console.log("calll");
           }
         })
         .finally(() => {
@@ -222,7 +221,6 @@ const ReportsPageSeatWise = () => {
       }
     )
       .then((res) => {
-        console.log(res);
         setSeatDetailsData(res?.data?.data);
         setCountReports({
           numVisitedSeats: res.data?.numVisitedSeats,
@@ -322,6 +320,12 @@ const ReportsPageSeatWise = () => {
       selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
     },
     {
+      name: "Paid Amount",
+      minWidth: "120px",
+      sortable: true,
+      selector: (row) => <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>,
+    },
+    {
       name: "Guest Name",
       minWidth: "200px",
       selector: (row) => <>{row?.guestName ? row?.guestName : "--"}</>,
@@ -341,6 +345,16 @@ const ReportsPageSeatWise = () => {
       name: "EmpId",
       minWidth: "200px",
       selector: (row) => row?.userId?.empId,
+    },
+    {
+      name: "Bank Message",
+      minWidth: "200px",
+      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? row?.bookingId?.bankMessage : '--',
+    },
+    {
+      name: "Trasaction Date",
+      minWidth: "200px",
+      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? displayDate(row?.bookingId?.transDate) : '--',
     },
   ];
   return (

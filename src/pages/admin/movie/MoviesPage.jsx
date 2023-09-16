@@ -18,7 +18,6 @@ const MoviesPage = () => {
         const response = async () => {
             Axios("GET", `/movie/all-movie-by-title/${movieTitle}`, null, { authRequest: true, token: token })
                 .then(res => {
-                    console.log('res', res);
                     const movies = res?.data?.movies;
                     setResponse(movies);
                 })
