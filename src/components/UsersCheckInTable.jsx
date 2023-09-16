@@ -6,7 +6,13 @@ import { CustomDataTable as DataTable } from "./DataTable";
 
 import { MdOutlineVerified } from "react-icons/md";
 import { RxCrossCircled } from "react-icons/rx";
-import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../lib/consts";
+import { HiOutlineRefresh } from "react-icons/hi";
+import {
+  BOOKING_STATUS,
+  PAYMENTS_STATUS,
+  PAYMENT_METHOS,
+  SEATS_STATUS,
+} from "../lib/consts";
 import Modal from "./UI/Modal";
 const UsersCheckInTable = ({ show, showStartTime }) => {
   const [data, setData] = useState([]);
@@ -74,7 +80,42 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
         setLoading(false);
       });
   }, [show]);
-
+  const handleRequestUpdatePayStatus = (clientTxnId, bookingId) => {
+    let requestedData = {
+      clientTxnId,
+      bookingId,
+    };
+    Axios(
+      "POST",
+      `payment/transactionEnquery`,
+      { ...requestedData },
+      { authRequest: true, token: token }
+    )
+      .then((res) => {
+        // console.log(res.data);
+        if (res.status === 200) {
+          const { status, sabpaisaMessage, bankMessage } = res.data;
+          const rowIndex = data.findIndex(
+            (r) => r.bookingId.bookingId === bookingId
+          );
+          console.log(rowIndex);
+          if (rowIndex !== -1) {
+            const updatedRows = [...data];
+            updatedRows[rowIndex] = {
+              ...updatedRows[rowIndex],
+              paymentStatus: status,
+              bankMessage,
+              sabpaisaMessage,
+            };
+            console.log(updatedRows);
+            setData(updatedRows);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const columns = [
     {
       name: <>Seat No</>,
@@ -138,6 +179,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
 
     {
       name: "Booking Id",
+      minWidth: "150px",
       selector: (row) => (
         <div className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center">
           <span>{row?.bookingId?.bookingId}</span>
@@ -153,21 +195,44 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
     {
       name: <>Payment Status</>,
       minWidth: "200px",
-      selector: (row) => (
-        <div
-          className={`${
-            row?.bookingId?.paymentStatus === PAYMENTS_STATUS.SUCCESS && "text-green-700"
-          } ${
-            row?.bookingId?.paymentStatus === PAYMENTS_STATUS.REFUND_REQUESTED &&
-            "text-yellow-400"
-          } 
-                ${
-                  row?.bookingId?.paymentStatus === PAYMENTS_STATUS.FAILED &&
-                  "text-red-400"
-                } 
-                font-semibold `}
-        >
-          {row?.bookingId?.paymentStatus}
+      cell: (row) => (
+        <div className="flex gap-2 justify-center items-center font-bold">
+          <div
+            className={`${
+              row?.bookingId?.paymentStatus === PAYMENTS_STATUS.INITIATED &&
+              "text-yellow-400   p-2 rounded-sm"
+            } ${
+              row?.bookingId?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
+              "text-green-700 p-2 rounded-sm "
+            }
+            
+            ${
+              row?.bookingId?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+              "text-red-500 p-2 rounded-sm "
+            }
+            ${
+              row?.bookingId?.paymentStatus ===
+                PAYMENTS_STATUS.REFUND_REQUESTED &&
+              "text-yellow-500 p-2 rounded-sm "
+            }
+            `}
+          >
+            {row?.bookingId?.paymentStatus}
+          </div>
+          {row?.bookingId?.paymentMode === PAYMENT_METHOS.ONLINE &&
+            row?.bookingId?.paymentStatus === PAYMENTS_STATUS.INITIATED && (
+              <button
+                className="border border-gray-400 p-2 rounded-md"
+                onClick={() => {
+                  handleRequestUpdatePayStatus(
+                    row?.bookingId?.clientTxnId,
+                    row?.bookingId?.bookingId
+                  );
+                }}
+              >
+                <HiOutlineRefresh />
+              </button>
+            )}
         </div>
       ),
     },
@@ -181,23 +246,22 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       minWidth: "120px",
       sortable: true,
       selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
-      
     },
     {
       name: "Guest Name",
       minWidth: "200px",
-      selector: (row) => <>{row?.guestName ? row?.guestName :"--"}</>,
+      selector: (row) => <>{row?.guestName ? row?.guestName : "--"}</>,
     },
     {
       name: "Guest Children Count",
       minWidth: "200px",
-      selector: (row) => <>{row?.guestChildren ? row?.guestChildren :"--"}</>,
+      selector: (row) => <>{row?.guestChildren ? row?.guestChildren : "--"}</>,
     },
     {
       name: "Guest Mobile No",
       minWidth: "200px",
       selector: (row) => row?.guestMobile,
-      selector: (row) => <>{row?.guestMobile ? row?.guestMobile :"--"}</>,
+      selector: (row) => <>{row?.guestMobile ? row?.guestMobile : "--"}</>,
     },
     {
       name: "EmpId",
