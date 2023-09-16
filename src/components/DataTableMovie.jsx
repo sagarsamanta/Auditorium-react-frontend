@@ -214,7 +214,9 @@ const DataTableMovie = ({ data, className }) => {
     {
       name: "Actions",
       minWidth: "50px",
-      cell: (row) => (
+      cell: (row) => {
+        console.log('row', row)
+        return (
         <div className="space-x-4 flex justify-center">
           <Link
             to={`/admin/movies/${row._id}`}
@@ -223,9 +225,9 @@ const DataTableMovie = ({ data, className }) => {
           >
             <MdEdit size={15} />
           </Link>
-          {/* <button onClick={()=>openConfirmModal(row.title)} to={`/admin/movies/${row._id}`} className="p-2 rounded-lg transition duration-200 border border-red-500 text-center text-red-500 font-serif hover:bg-red-500 hover:text-white" title="Remove"><AiOutlineDelete size={15} /></button> */}
         </div>
-      ),
+        )
+      },
     },
   ];
   const closeConfirmModal = () => {

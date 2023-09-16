@@ -30,7 +30,9 @@ export const displayTime = (timeIn12hrs, format = "hh:mm A") => {
 
 export const isPastDate = (dateString) => {
     if (!dateString) return true;
-    return moment(dateString).isBefore(moment());
+    const inputDate = moment(dateString).startOf('day'); // Set the time portion to the start of the day
+    const currentDate = moment().startOf('day'); // Set the time portion of the current date to the start of the day
+    return inputDate.isBefore(currentDate);
 }
 
 export const getCurrencyFormat = (amount, countryCode = "INR") => {

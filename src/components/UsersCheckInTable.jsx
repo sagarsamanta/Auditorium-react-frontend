@@ -14,6 +14,7 @@ import {
   SEATS_STATUS,
 } from "../lib/consts";
 import Modal from "./UI/Modal";
+import { displayDate } from "../lib/utils";
 const UsersCheckInTable = ({ show, showStartTime }) => {
   const [data, setData] = useState([]);
   const [tempData, setTempData] = useState([]);
@@ -103,10 +104,14 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
             const updatedRows = [...data];
             updatedRows[rowIndex] = {
               ...updatedRows[rowIndex],
-              paymentStatus: status,
-              bankMessage,
-              sabpaisaMessage,
+              bookingId: {
+                ...updatedRows[rowIndex].bookingId,
+                paymentStatus: status,
+                bankMessage,
+                sabpaisaMessage,
+              }
             };
+            console.log('status', status);
             console.log(updatedRows);
             setData(updatedRows);
           }
@@ -219,7 +224,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
           >
             {row?.bookingId?.paymentStatus}
           </div>
-          {row?.bookingId?.paymentMode === PAYMENT_METHOS.ONLINE &&
+          {row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH &&
             row?.bookingId?.paymentStatus === PAYMENTS_STATUS.INITIATED && (
               <button
                 className="border border-gray-400 p-2 rounded-md"
@@ -248,6 +253,12 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
     },
     {
+      name: "Paid Amount",
+      minWidth: "120px",
+      sortable: true,
+      selector: (row) => <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>,
+    },
+    {
       name: "Guest Name",
       minWidth: "200px",
       selector: (row) => <>{row?.guestName ? row?.guestName : "--"}</>,
@@ -267,6 +278,21 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       name: "EmpId",
       minWidth: "200px",
       selector: (row) => row?.userId?.empId,
+    },
+    {
+      name: "Bank Name",
+      minWidth: "200px",
+      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? row?.bookingId?.bankName : '--',
+    },
+    {
+      name: "Bank Message",
+      minWidth: "200px",
+      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? row?.bookingId?.bankMessage : '--',
+    },
+    {
+      name: "Trasaction Date",
+      minWidth: "200px",
+      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? displayDate(row?.bookingId?.transDate) : '--',
     },
   ];
   const openConfirmModalHandelar = () => {

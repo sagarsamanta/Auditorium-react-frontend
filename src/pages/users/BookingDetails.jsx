@@ -176,7 +176,7 @@ console.log(bookingDetails);
                     {displayDate(bookingDetails?.createdAt)}
                   </p>
                 </div>
-                <div className="w-full md:w-1/3 grid grid-cols-2">
+                <div className="w-full lg:w-1/3 grid grid-cols-2">
                   <div className="mt-4 space-y-1">
                     <span className="text-lg font-semibold">Seats</span>
                     <p className="line-clamp-3">
@@ -203,9 +203,15 @@ console.log(bookingDetails);
                     </p>
                   </div>
                   <div className="mt-4 space-y-1">
-                    <span className="text-lg font-semibold">Total Amount </span>
+                    <span className="text-lg font-semibold">Ticket Amount</span>
                     <p className="line-clamp-3">
                       {getCurrencyFormat(bookingDetails?.totalPrice)}
+                    </p>
+                  </div>
+                  <div className="mt-4 space-y-1">
+                    <span className="text-lg font-semibold">Paid Amount</span>
+                    <p className="line-clamp-3">
+                      {getCurrencyFormat(bookingDetails?.paidAmount)}
                     </p>
                   </div>
                   <div className="mt-4 space-y-1">
@@ -234,11 +240,15 @@ console.log(bookingDetails);
                         bookingDetails?.paymentStatus ===
                           PAYMENTS_STATUS.REFUND_REQUESTED && "text-yellow-400"
                       } 
-                            ${
-                              bookingDetails?.paymentStatus === PAYMENTS_STATUS.FAILED &&
-                              "text-red-400"
-                            } 
-                            font-semibold `}
+                      ${
+                        bookingDetails?.paymentStatus === PAYMENTS_STATUS.FAILED &&
+                        "text-red-400"
+                      } 
+                      ${
+                        bookingDetails?.paymentStatus === PAYMENTS_STATUS.INITIATED &&
+                        "text-yellow-400"
+                      } 
+                      font-semibold `}
                     >
                       {bookingDetails?.paymentStatus}
                     </p>

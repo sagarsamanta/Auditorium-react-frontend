@@ -30,6 +30,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     reserved: false,
     seats: true,
   });
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [isOpenReserveSeatModal, setIsOpenReserveSeatModal] = useState(false);
   const [isOpenSelectedSeatModal, setIsOpenSelectedSeatModal] = useState(false);
   const [isOpenReserveConfirmSeatModal, setHandleCloseReservedConfirmModal] =
@@ -148,9 +149,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
   };
   const handleSave = async (payMode) => {
     if (selectedSeats.length > 0) {
-      setLoading((prev) => {
-        return { ...prev, booking: true };
-      });
+      setConfirmLoading(true);
       const seatPriceObj = getSeatPriceObj(selectedSeats, priceList);
       const updatedSeatPriceObj =
         authUser?.user?.role === USER_ADMIN_ROLE
@@ -185,9 +184,10 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
             }
           })
           .finally(() => {
-            setLoading((prev) => {
-              return { ...prev, booking: false };
-            });
+            setConfirmLoading(false);
+            // setLoading((prev) => {
+            //   return { ...prev, booking: false };
+            // });
             setIsOpenSelectedSeatModal(false);
             fetchFreshData();
           })
@@ -293,7 +293,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         show={show}
         paymentMethod={paymentMethod}
         setPaymentMethod={setPaymentMethod}
-        isLoading={loading.booking}
+        isLoading={confirmLoading}
         selectedEmployee={selectedEmployee}
         setSelectedEmployee={setSelectedEmployee}
         employeeOptions={employeeOptions}
