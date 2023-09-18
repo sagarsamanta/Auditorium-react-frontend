@@ -274,7 +274,7 @@ const ReportsPageSeatWise = () => {
     {
       name: "Booking Id",
       minWidth: "150px",
-      selector: (row) => (
+      cell: (row) => (
         <div className="flex gap-1 text-red-600 font-semibold cursor-pointer items-center">
           <span>{row?.bookingId?.bookingId}</span>
         </div>
@@ -284,12 +284,15 @@ const ReportsPageSeatWise = () => {
       name: "Payment Mode",
       minWidth: "180px",
       sortable: true,
-      selector: (row) => <div>{row?.bookingId?.paymentMode}</div>,
+      selector:(row)=>row?.bookingId?.paymentMode,
+      cell: (row) => <div>{row?.bookingId?.paymentMode}</div>,
     },
     {
       name: <>Payment Status</>,
       minWidth: "200px",
-      selector: (row) => (
+      sortable: true,
+      selector:(row)=>row?.bookingId?.paymentStatus,
+      cell: (row) => (
         <div
           className={`${
             row?.bookingId?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
@@ -317,13 +320,15 @@ const ReportsPageSeatWise = () => {
       name: "Amount",
       minWidth: "120px",
       sortable: true,
-      selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
+      selector: (row) => row.price,
+      cell: (row) => <div className="text-green-600">₹ {row?.price}</div>,
     },
     {
       name: "Paid Amount",
-      minWidth: "120px",
+      minWidth: "160px",
       sortable: true,
-      selector: (row) => <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>,
+      selector: (row) => row?.paidAmount || row?.price,
+      cell: (row) => <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>,
     },
     {
       name: "Guest Name",
@@ -339,7 +344,7 @@ const ReportsPageSeatWise = () => {
       name: "Guest Mobile No",
       minWidth: "200px",
       selector: (row) => row?.guestMobile,
-      selector: (row) => <>{row?.guestMobile ? row?.guestMobile : "--"}</>,
+      cell: (row) => <>{row?.guestMobile ? row?.guestMobile : "--"}</>,
     },
     {
       name: "EmpId",
