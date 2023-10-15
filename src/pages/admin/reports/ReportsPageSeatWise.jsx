@@ -10,7 +10,11 @@ import { downloadCSV, generateReportFileName } from "../../../lib/downloadCsv";
 import DataTableAdminSeatWiseReports from "../../../components/DataTableAdminSeatWiseReports";
 import { BiRefresh } from "react-icons/bi";
 import { CustomDataTable as DataTable } from "../../../components/DataTable";
-import { PAYMENTS_STATUS, PAYMENT_METHOS, SEATS_STATUS } from "../../../lib/consts";
+import {
+  PAYMENTS_STATUS,
+  PAYMENT_METHOS,
+  SEATS_STATUS,
+} from "../../../lib/consts";
 import { RxCrossCircled } from "react-icons/rx";
 import { MdOutlineVerified } from "react-icons/md";
 
@@ -226,7 +230,7 @@ const ReportsPageSeatWise = () => {
           numVisitedSeats: res.data?.numVisitedSeats,
           numBookedSeats: res.data?.numBookedSeats,
           numTotalBookedSeats: res.data?.numTotalBookedSeats,
-          numReservedSeats: res.data?.numReservedSeats
+          numReservedSeats: res.data?.numReservedSeats,
         });
         setLoading(false);
       })
@@ -284,14 +288,14 @@ const ReportsPageSeatWise = () => {
       name: "Payment Mode",
       minWidth: "180px",
       sortable: true,
-      selector:(row)=>row?.bookingId?.paymentMode,
+      selector: (row) => row?.bookingId?.paymentMode,
       cell: (row) => <div>{row?.bookingId?.paymentMode}</div>,
     },
     {
       name: <>Payment Status</>,
       minWidth: "200px",
       sortable: true,
-      selector:(row)=>row?.bookingId?.paymentStatus,
+      selector: (row) => row?.bookingId?.paymentStatus,
       cell: (row) => (
         <div
           className={`${
@@ -328,7 +332,9 @@ const ReportsPageSeatWise = () => {
       minWidth: "160px",
       sortable: true,
       selector: (row) => row?.paidAmount || row?.price,
-      cell: (row) => <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>,
+      cell: (row) => (
+        <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>
+      ),
     },
     {
       name: "Guest Name",
@@ -354,12 +360,19 @@ const ReportsPageSeatWise = () => {
     {
       name: "Bank Message",
       minWidth: "200px",
-      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? row?.bookingId?.bankMessage : '--',
+      selector: (row) =>
+        row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH
+          ? row?.bookingId?.bankMessage
+          : "--",
     },
     {
       name: "Trasaction Date",
       minWidth: "200px",
-      selector: (row) => row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH ? displayDate(row?.bookingId?.transDate) : '--',
+      selector: (row) =>
+        row?.bookingId?.paymentMode
+          ? displayDate(row?.bookingId?.transDate) ||
+            displayDate(row?.createdAt)
+          : "--",
     },
   ];
   return (

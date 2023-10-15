@@ -22,6 +22,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
   const [confirmButtonLoading, setConfirmLoading] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [selectedSeat, setSelectedSeat] = useState(null);
+  const [showRecord,setShowRecords]=useState()
   const { token } = useAuth();
 
   const handleMarkAsVisited = () => {
@@ -72,6 +73,8 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       .then((res) => {
         setData(res.data?.data);
         setTempData(res.data?.data);
+        console.log(res.data.record);
+        setShowRecords(res?.data?.record)
         setLoading(false);
       })
       .finally(() => {
@@ -304,8 +307,9 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       name: "Trasaction Date",
       minWidth: "200px",
       selector: (row) =>
-        row?.bookingId?.paymentMode !== PAYMENT_METHOS.CASH
-          ? displayDate(row?.bookingId?.transDate)
+        row?.bookingId?.paymentMode 
+          ? displayDate(row?.bookingId?.transDate) ||
+            displayDate(row?.createdAt)
           : "--",
     },
   ];
@@ -317,6 +321,13 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
   };
   return (
     <>
+    <div className="flex gap-1 lg:gap-2 my-3">
+      <div  className="font-semibold">Booked  - <sapn className="text-blue-700">{showRecord?.numTotalBookedSeats || 0}</sapn></div>
+      <div className="font-semibold">Visited - <sapn className="text-green-600">{showRecord?.numVisitedSeats || 0}</sapn></div>
+      <div className="font-semibold">Non-Visited  - <sapn className="text-red-700">{showRecord?.numBookedSeats || 0}</sapn></div>
+      <div className="font-semibold">Reserved  - <sapn className="text-yellow-500">{showRecord?.numReservedSeats || 0}</sapn></div>
+
+    </div>
       <SearchBox
         placeholder="Enter Seat No."
         data={tempData}
