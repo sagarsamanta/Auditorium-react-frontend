@@ -5,7 +5,7 @@ import { useAuth } from "../../lib/hooks/useAuth";
 import { FiCheckCircle } from "react-icons/fi";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { STATUS_ACTIVE } from "../../lib/consts";
-import { displayDate, displayTime } from "../../lib/utils";
+import { displayDate, displayTime, isPastDate, isPastTime, isTodayDate } from "../../lib/utils";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ShowSeats from "../../components/admin/ShowSeats";
 import SomethingWentWrong from "../../components/UI/SomethingWentWrong";
@@ -23,6 +23,7 @@ const AdminBookingsPage = () => {
   const { isAuthenticated, token, user } = useAuth();
   const isAllShowInactive =
     shows.filter((show) => show.status === STATUS_ACTIVE).length === 0;
+  const isShowEnded = (isPastDate(movie?.releaseDate) || isTodayDate(movie?.releaseDate)) && isPastTime(selectedShow?.showEndTime);
 
   // Frath Movie
   useEffect(() => {
@@ -50,7 +51,8 @@ const AdminBookingsPage = () => {
       })
         .then((res) => {
           setShows(res.data?.shows);
-          setSelectedShow(res.data?.shows[0]);
+          const availableShow = res.data?.shows?.filter((show) => show?.status === STATUS_ACTIVE && !isPastTime(show?.showEndTime));
+          setSelectedShow(availableShow.length ? availableShow[0] : res.data?.shows[0]);
         })
         .finally(() => {
           setLoading({ movie: false, shows: false });
@@ -82,7 +84,7 @@ const AdminBookingsPage = () => {
             <div className="flex justify-between items-center p-4 border border-slate-100 rounded-md shadow-md">
               <h1 className="text-xl md:text-2xl lg:text:3xl">Book shows</h1>
               <button
-                className="text-sm  px-2 py-2 md:px-4 md:py-3 rounded-lg border border-skin-base bg-skin-inverted text-skin-base flex items-center gap-2 hidden"
+                className="text-sm  px-2 py-2 md:px-4 md:py-3 rounded-lg border border-skin-base bg-skin-inverted text-skin-base flex items-center gap-2"
                 onClick={() => navigate(-1)}
               >
                 <RiArrowGoBackLine /> Back
@@ -167,8 +169,10 @@ const AdminBookingsPage = () => {
                                     selectedShow._id === show._id
                                       ? "text-gray-800 border border-green-800/70 hover:bg-green-800/20 focus:ring-green-800/70 bg-green-800/40"
                                       : "text-gray-800 border border-skin-base hover:bg-skin-base/20 focus:ring-skin-muted"
-                                  } focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2`}
+                                  } focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 inline-flex items-center gap-2 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:grayscale`}
                                   onClick={() => setSelectedShow(show)}
+                                  title={(isPastDate(movie?.releaseDate) || isTodayDate(movie?.releaseDate)) && isPastTime(show?.showEndTime) ? 'Show Ended' : show?.title}
+                                  disabled={(isPastDate(movie?.releaseDate) || isTodayDate(movie?.releaseDate)) && isPastTime(show?.showEndTime)}
                                 >
                                   {selectedShow?._id === show?._id ? (
                                     <FiCheckCircle size={15} />
@@ -188,20 +192,24 @@ const AdminBookingsPage = () => {
               </div>
             </div>
             {isAuthenticated && selectedShow && !isAllShowInactive && (
-              <div className="  text-gray-800 rounded-lg p-4 bg-gray-100 shadow-lg">
+              <div className="text-gray-800 rounded-lg p-4 bg-gray-100 shadow-lg">
                 <span className="text-xl font-semibold">Available Seats</span>
                 {loading.shows ? (
                   <div className="py-4">
                     <Loader className="block" />
                   </div>
                 ) : (
-                  <ShowSeats
+                  isShowEnded ? (
+                    <p>This Show is not available for booking</p>
+                  ) : (
+                    <ShowSeats
                     show={{ ...selectedShow, movie }}
                     movieId={movie?._id}
                     showId={selectedShow?._id}
                     authUser={{ user: user, token: token }}
                     priceList={selectedShow?.price}
                   />
+                  )
                 )}
               </div>
             )}

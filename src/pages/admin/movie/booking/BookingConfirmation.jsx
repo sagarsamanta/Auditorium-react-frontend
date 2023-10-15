@@ -51,28 +51,33 @@ const BookingConfirmation = ({
   };
 
   useEffect(() => {
-    const seats = {
-      movieId: movie?._id,
-      showtimeId: show?._id,
-      seatIds: seatPriceObj,
-      userId: user._id,
-      totalPrice: totalAmount,
-      paymentMode: paymentMethod,
-    };
-    // API call to check seats
-    Axios("POST", `/booking/check-seats-availability/${movie?._id}`, seats, {
-      authRequest: true,
-      token: token,
-    })
-      .then(async (res) => {
-        setIsEverythingOk(res?.status === 200);
-        if (res.status !== 200) {
-          setError(res.data.data?.message);
-        }
+    const checkAvailability = setInterval(() => {
+      const seats = {
+        movieId: movie?._id,
+        showtimeId: show?._id,
+        seatIds: seatPriceObj,
+        userId: user._id,
+        totalPrice: totalAmount,
+        paymentMode: paymentMethod,
+      };
+      // API call to check seats
+      Axios("POST", `/booking/check-seats-availability/${movie?._id}`, seats, {
+        authRequest: true,
+        token: token,
       })
-      .catch((err) => {
-        setError(err?.response?.data?.message);
-      });
+        .then(async (res) => {
+          setIsEverythingOk(res?.status === 200);
+          setError("");
+        })
+        .catch((err) => {
+          setIsEverythingOk(false);
+          setError(err?.response?.data?.message);
+        });
+    }, 5000);
+
+    return () => {
+      clearInterval(checkAvailability)
+    }
   }, [selectedSeats, totalAmount]);
 
   const handleEmployeeSelect = (value) => {

@@ -35,6 +35,20 @@ export const isPastDate = (dateString) => {
   return inputDate.isBefore(currentDate);
 };
 
+export const isTodayDate = (dateString) => {
+  if (!dateString) return false; // If dateString is not provided, it's not today
+  const inputDate = moment(dateString, 'YYYY-MM-DD').startOf('day'); // Set the time portion to the start of the day
+  const currentDate = moment().startOf('day'); // Set the time portion of the current date to the start of the day
+  return inputDate.isSame(currentDate, 'day');
+}
+
+export const isPastTime = (timeString) => {
+  if (!timeString) return true;
+  const targetTime = moment(timeString, 'HH:mm');
+  const currentTime = moment();
+  return targetTime.isBefore(currentTime);
+}
+
 export const getCurrencyFormat = (amount, countryCode = "INR") => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
