@@ -87,7 +87,7 @@ const NavBar = () => {
         >
           <div className="flex justify-center items-center gap-4">
             <GoHistory size={19} />
-            <div>My History</div>
+            <div>Ticket History</div>
           </div>
         </Link>
 

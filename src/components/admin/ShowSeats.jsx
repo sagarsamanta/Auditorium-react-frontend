@@ -165,9 +165,15 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         paymentMode: payMode,
       };
 
+      let bookedBy = authUser.user._id;
       if (paymentMethod === PAYMENT_METHOS.ONLINE) {
         // Online Payment
-        await redirectToPaymentGateway(authUser.user, seats, paymentFormRefs);
+        await redirectToPaymentGateway(
+          authUser.user,
+          seats,
+          paymentFormRefs,
+          bookedBy
+        );
       } else if (
         paymentMethod === PAYMENT_METHOS.CASH &&
         authUser?.user?.role === USER_ADMIN_ROLE

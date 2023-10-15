@@ -74,9 +74,15 @@ const DataTableAdminBookings = ({ data, className }) => {
 
   const columns = [
     {
-      name: <>Movie Date</>,
-      maxWidth: "150px",
-      cell: (row) => displayDate(row?.showtime?.movie?.releaseDate),
+      name: <>Movie Date/time</>,
+      minWidth: "200px",
+      cell: (row) => (
+        <div className="flex gap-[4px]">
+          <div>{displayDate(row?.showtime?.movie?.releaseDate)}</div>
+          <div>|</div>
+          <div> {displayTime(row?.showtime?.showStartTime)}</div>
+        </div>
+      ),
     },
     {
       name: <>Movie</>,
@@ -84,18 +90,20 @@ const DataTableAdminBookings = ({ data, className }) => {
       cell: (row) => <span title={row?.movie?.title}>{row?.movie?.title}</span>,
     },
     {
-      name: <>Start Time</>,
-      maxWidth: "150px",
-      cell: (row) => displayTime(row?.showtime?.showStartTime),
+      name: <>Booking Date</>,
+      minWidth: "150px",
+      cell: (row) => <div>{displayDate(row?.createdAt)}</div>,
     },
+
     {
       name: <>Total Seats</>,
-      maxWidth: "100px",
+      minWidth: "150px",
       cell: (row) => row?.seats.length,
     },
     {
       name: <>Booked seats</>,
       maxWidth: "350px",
+      minWidth: "150px",
       cell: (row) => {
         return (
           <div className="w-full">
@@ -120,16 +128,31 @@ const DataTableAdminBookings = ({ data, className }) => {
     },
     {
       name: <>Total Amount</>,
-      maxWidth: "100px",
+      minWidth: "150px",
       sortable: true,
       selector: (row) => row?.totalPrice,
       cell: (row) => getCurrencyFormat(row?.totalPrice),
     },
     {
+      name: <>Paymeny Mode</>,
+      minWidth: "150px",
+      cell: (row) => <div>{row?.paymentMode}</div>,
+    },
+    {
       name: "Status",
-      maxWidth: "100px",
+      minWidth: "100px",
       selector: (row) => row.status,
       sortable: true,
+    },
+    {
+      name: "Booked For",
+      minWidth: "150px",
+      selector: (row) => row?.user?.name,
+    },
+    {
+      name: "Booked By",
+      minWidth: "150px",
+      selector: (row) => row?.bookedBy?.name,
     },
     {
       name: <>Payment Status</>,
@@ -155,7 +178,7 @@ const DataTableAdminBookings = ({ data, className }) => {
 
     {
       name: "Ticket",
-      maxWidth: "100px",
+      minWidth: "100px",
       cell: (row) => (
         <>
           <button
@@ -171,7 +194,7 @@ const DataTableAdminBookings = ({ data, className }) => {
     },
     {
       name: <>Cancel Ticket</>,
-      maxWidth: "100px",
+      minWidth: "100px",
       cell: (row) => (
         <>
           <button

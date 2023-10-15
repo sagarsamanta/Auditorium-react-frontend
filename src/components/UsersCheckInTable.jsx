@@ -253,14 +253,14 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
       name: "Amount",
       minWidth: "120px",
       sortable: true,
-      selector: (row) => <div className="text-green-600">₹ {row?.price}</div>,
+      selector: (row) => <div className="text-green-700">₹ {row?.price}</div>,
     },
     {
       name: "Paid Amount",
       minWidth: "160px",
       sortable: true,
       selector: (row) => (
-        <div className="text-green-600">₹ {row?.paidAmount || row?.price}</div>
+        <div className="text-green-700">₹ {row?.paidAmount || row?.price}</div>
       ),
     },
     {

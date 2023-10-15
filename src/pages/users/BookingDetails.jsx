@@ -6,7 +6,11 @@ import { useParams } from "react-router-dom";
 import TicketModal from "../../components/UI/TicketModal";
 import Loader from "../../components/UI/Loader";
 import SomethingWentWrong from "../../components/UI/SomethingWentWrong";
-import { BOOKING_STATUS, PAYMENTS_STATUS, SEATS_STATUS } from "../../lib/consts";
+import {
+  BOOKING_STATUS,
+  PAYMENTS_STATUS,
+  SEATS_STATUS,
+} from "../../lib/consts";
 import { toast } from "react-toastify";
 import LoadingButton from "../../components/UI/LoadingButton";
 
@@ -68,7 +72,7 @@ const BookingDetails = (props) => {
       token: token,
     })
       .then((response) => {
-        if (response?.status === 200) {         
+        if (response?.status === 200) {
           setBookingDetails({
             ...bookingDetails,
             status: response?.data?.data?.status,
@@ -205,7 +209,7 @@ const BookingDetails = (props) => {
                   <div className="mt-4 space-y-1">
                     <span className="text-lg font-semibold">Paid Amount</span>
                     <p className="line-clamp-3">
-                      {getCurrencyFormat(bookingDetails?.paidAmount)}
+                      {getCurrencyFormat(bookingDetails?.paidAmount ? bookingDetails?.paidAmount : bookingDetails?.totalPrice)}
                     </p>
                   </div>
                   <div className="mt-4 space-y-1">
@@ -223,24 +227,28 @@ const BookingDetails = (props) => {
                     </p>
                   </div>
                   <div className="mt-4 space-y-1">
+                    <span className="text-lg font-semibold">Payment Mode</span>
+                    <p className={`line-clamp-3 `}>{bookingDetails?.paymentMode}</p>
+                  </div>
+                  <div className="mt-4 space-y-1">
                     <span className="text-lg font-semibold">
                       Payment Status
                     </span>
                     <p
                       className={`${
-                        bookingDetails?.paymentStatus === PAYMENTS_STATUS.SUCCESS &&
-                        "text-green-700"
+                        bookingDetails?.paymentStatus ===
+                          PAYMENTS_STATUS.SUCCESS && "text-green-500"
                       } ${
                         bookingDetails?.paymentStatus ===
                           PAYMENTS_STATUS.REFUND_REQUESTED && "text-yellow-400"
                       } 
                       ${
-                        bookingDetails?.paymentStatus === PAYMENTS_STATUS.FAILED &&
-                        "text-red-400"
+                        bookingDetails?.paymentStatus ===
+                          PAYMENTS_STATUS.FAILED && "text-red-400"
                       } 
                       ${
-                        bookingDetails?.paymentStatus === PAYMENTS_STATUS.INITIATED &&
-                        "text-yellow-400"
+                        bookingDetails?.paymentStatus ===
+                          PAYMENTS_STATUS.INITIATED && "text-yellow-400"
                       } 
                       font-semibold `}
                     >
