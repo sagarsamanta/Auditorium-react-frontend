@@ -22,7 +22,7 @@ const NavBar = () => {
                                 </div>
                                 <h1 className='hidden md:block font-black text-sm md:text-xl text-gray-200 uppercase'>{OPGC}</h1>
                             </div>
-                            {isAuthenticated && <div className='text-white hidden md:block capitalize'>  Wellcome, <span className=''>{user?.name}</span></div>}
+                            {isAuthenticated && <div className='text-white hidden md:block capitalize'>  Welcome, <span className=''>{user?.name}</span></div>}
                             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">

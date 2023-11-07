@@ -235,7 +235,7 @@ const ReportsPageShowWise = () => {
             disabled={report?.dailyReports?.length === 0}
           >
             <AiOutlineDownload size={15} />
-            <span className="hidden md:inline-block">dddDownload</span>
+            <span className="hidden md:inline-block">Download</span>
           </button>
         </div>
         <DataTableAdminShowWiseReports data={report?.dailyReports || []} />

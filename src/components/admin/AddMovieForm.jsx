@@ -36,7 +36,7 @@ const AddMovieForm = ({ movie, addMovie }) => {
       description: movie?.description || "",
       date: displayDate(movie?.releaseDate, "YYYY-MM-DD") || "",
       duration: movie?.duration || "",
-      language: movie?.language || "",
+      language: movie?.language || "Odia",
       image: "",
       isRefundable: movie?.isRefundable || false,
       isAllowTicketBooking: movie?.isAllowTicketBooking || false,

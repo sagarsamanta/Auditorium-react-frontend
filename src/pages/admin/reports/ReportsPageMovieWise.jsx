@@ -265,7 +265,7 @@ const ReportsPageMovieWise = () => {
             onClick={downloadMovieDateWiseReport}
           >
             <AiOutlineDownload size={15} />
-            <span className="hidden md:inline-block">Downloadpppp</span>
+            <span className="hidden md:inline-block">Download</span>
           </button>
         </div>
         <DataTableAdminReports data={report?.dailyReports || []} />

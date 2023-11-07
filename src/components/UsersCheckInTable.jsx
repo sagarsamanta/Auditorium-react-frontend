@@ -355,7 +355,7 @@ const UsersCheckInTable = ({ show, showStartTime }) => {
               VISITED !
             </span>
           ),
-          text: "This will make the seats stats as VISITED.",
+          text: "This will make the seats status as VISITED.",
           buttonText: "Ok",
           buttonHandler: handleMarkAsVisited,
           loading: confirmButtonLoading,
