@@ -80,6 +80,7 @@ const AddMovieForm = ({ movie, addMovie }) => {
         token: token,
       })
         .then((response) => {
+          toast.dismiss();
           if (response?.status === 201) {
             toast.success("Movie Added Sucessfully");
             navigate(`/admin/movies/${response?.data?.movie?._id}`);
@@ -92,6 +93,7 @@ const AddMovieForm = ({ movie, addMovie }) => {
           setLoading(false);
         })
         .catch((error) => {
+          toast.dismiss();
           toast.error(`${error.message}`);
         });
     },

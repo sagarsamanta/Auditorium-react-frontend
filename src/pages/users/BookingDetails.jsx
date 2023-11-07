@@ -77,8 +77,8 @@ const BookingDetails = (props) => {
             ...bookingDetails,
             status: response?.data?.data?.status,
           });
+          toast.dismiss();
           toast.success("Booking cancelled successfully");
-          // navigate(-1);
         }
       })
       .finally(() => {
@@ -86,7 +86,6 @@ const BookingDetails = (props) => {
       })
       .catch((error) => {
         setError(true);
-        // toast.error(`${error.message}`);
       });
   };
   const handleDownloadTickets = (data) => {

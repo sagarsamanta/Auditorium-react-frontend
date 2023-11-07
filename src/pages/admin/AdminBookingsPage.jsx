@@ -38,7 +38,6 @@ const AdminBookingsPage = () => {
       })
       .catch((err) => {
         setError({ movie: true, shows: true });
-        // toast.error(`${err.response.statusText}`);
       });
   }, []);
 

@@ -22,9 +22,11 @@ const DataTableShow = ({ data, movieId, className }) => {
                         return (prevData.title === newShow.title) ? { ...prevData, status: newShow.status } : prevData;
                     });
                     setShowsData(newShowList);
+                    toast.dismiss();
                     toast.success(`${newShow.title} status changed to ${newShow.status}`)
                 }
             }).catch(err => {
+                toast.dismiss();
                 toast.error(`${err.message}`);
             });
     }

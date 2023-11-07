@@ -123,15 +123,14 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
           (user) => user?._id !== selectedUserForDelete?._id
         );
         setUsersList(filteredusers);
+        toast.dismiss();
         toast.success("User Successfully Removed!");
         closeDeleteModal(false);
         setSelectedUserForDelete();
       })
       .catch((error) => {
+        toast.dismiss();
         toast.error(`Failed To Remove`);
-      })
-      .finally(() => {
-        // setAddUserModalOpen(false);
       });
   };
   const confirmConfig = {
@@ -176,6 +175,7 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
         token: token,
       })
         .then((res) => {
+          toast.dismiss();
           if (res.status === 200) {
             setChangePasswordModal({ ...changePasswordModal, show: false });
             toast.success(res?.data?.message);
@@ -184,7 +184,7 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
           }
         })
         .catch((err) => {
-          console.log("err", err);
+          toast.dismiss();
           toast.error(err?.response?.data?.message);
         });
     } else {
@@ -239,6 +239,7 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
       .then((response) => {
         const indexToUpdate = userList.findIndex((user) => user?._id === id);
         const updatedUsers = [...userList];
+        toast.dismiss();
         if (indexToUpdate !== -1) {
           // Use array manipulation to replace the object at the found index
           updatedUsers.splice(indexToUpdate, 1, response?.data?.users);
@@ -249,10 +250,8 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
         }
       })
       .catch((error) => {
+        toast.dismiss();
         toast.error(`Failed to edit`);
-      })
-      .finally(() => {
-        // setAddUserModalOpen(false);
       });
   };
   // Add User Modal Handlers
@@ -266,12 +265,13 @@ const DataTableUsers = ({ data, className, addUserModalConfig }) => {
           setUsersList((prevUsers) => {
             return [response?.data?.user, ...prevUsers];
           });
+          toast.dismiss();
           toast.success(`Employee Added Successfully!`);
           handleAddUserModalClose();
         }
       })
       .catch((error) => {
-        console.error("Error adding user:", error?.response);
+        toast.dismiss();
         if (error?.response?.status === 409) {
           toast.warn(`${error?.response?.data?.message}`);
         } else {

@@ -52,19 +52,21 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                 // Update Show
                 Axios('PUT', `/show/${movie._id}/${showId}`, show, { authRequest: true, token: token })
                     .then((request) => {
+                        toast.dismiss();
                         toast.success('Show Updated Successfully');
                     })
                     .finally(() => {
                         setLoading(false);
                     })
                     .catch((err) => {
-                        console.log('erroe', err.message);
+                        toast.dismiss();
                         toast.error(`${err.message}`);
                     });
             } else {
                 // Create Show
                 Axios('POST', `/show/${movie._id}`, [show], { authRequest: true, token: token })
                     .then((request) => {
+                        toast.dismiss();
                         toast.success('Show Created Successfully');
                         navigate(-1);
                     })
@@ -72,7 +74,7 @@ const ShowDetailForm = ({ movie, showId, show, showTitle }) => {
                         setLoading(false);
                     })
                     .catch((err) => {
-                        console.log('erroe', err.message);
+                        toast.dismiss();
                         toast.error(`${err.message}`);
                     });
             }

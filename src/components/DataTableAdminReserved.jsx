@@ -32,6 +32,7 @@ const DataTableAdminReserved = ({ data, className }) => {
           (seat) => seat.seatNo !== res?.data?.seat?.seatNo
         );
         setReservedSeats(newData);
+        toast.dismiss();
         toast.success(res?.data?.message);
       })
       .finally(() => {
@@ -39,7 +40,7 @@ const DataTableAdminReserved = ({ data, className }) => {
         setIsOpenReserveSeatModal(false);
       })
       .catch((err) => {
-        console.log("err", err);
+        toast.dismiss();
         toast.error(err.message);
       });
   };

@@ -82,6 +82,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
       ) {
         setSelectedSeats([...selectedSeats, seatNo]);
       } else {
+        toast.dismiss();
         toast.warning(`You can only select ${MAX_SEATS_PER_BOOKING} seats`);
       }
     }
@@ -184,6 +185,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
           token: authUser.token,
         })
           .then(async (res) => {
+            toast.dismiss();
             if (res?.status === 201) {
               toast.success(`Booked Successfully!`);
               navigate("/admin/history");
@@ -191,15 +193,10 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
           })
           .finally(() => {
             setConfirmLoading(false);
-            // setLoading((prev) => {
-            //   return { ...prev, booking: false };
-            // });
             setIsOpenSelectedSeatModal(false);
             fetchFreshData();
           })
-          .catch((err) => {
-            console.log("err", err);
-          });
+          .catch((err) => {});
       }
     }
   };
@@ -223,6 +220,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
         token: authUser.token,
       })
         .then((res) => {
+          toast.dismiss();
           if (res?.status === 201) {
             toast.success(`${res?.data?.message}`);
           }
@@ -235,9 +233,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
           fetchFreshData();
           handleCloseReservedConfirmModal();
         })
-        .catch((err) => {
-          console.log("err", err);
-        });
+        .catch((err) => {});
     }
   };
 

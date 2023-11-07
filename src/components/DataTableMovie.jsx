@@ -43,6 +43,7 @@ const DataTableMovie = ({ data, className }) => {
         }
       })
       .catch((err) => {
+        toast.dismiss();
         if (err?.response?.status === 302) {
           toast.warning(`${err?.response?.data?.message}`);
         }
@@ -92,6 +93,7 @@ const DataTableMovie = ({ data, className }) => {
         }
       })
       .catch((err) => {
+        toast.dismiss();
         if (err?.response?.status === 302) {
           toast.warning(`${err?.response?.data?.message}`);
         }
@@ -123,6 +125,7 @@ const DataTableMovie = ({ data, className }) => {
         }
       })
       .catch((err) => {
+        toast.dismiss();
         if (err?.response?.status === 302) {
           toast.warning(`${err?.response?.data?.message}`);
         }

@@ -34,6 +34,7 @@ const DataTableAdminBookings = ({ data, className }) => {
     })
       .then((response) => {
         if (response?.status === 200) {
+          toast.dismiss();
           toast.success("Booking cancelled successfully");
           const updatedData = tableRecords.map((a) =>
             a._id === selectedBookingToCancel?._id
