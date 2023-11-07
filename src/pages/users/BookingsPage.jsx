@@ -42,7 +42,7 @@ const BookingsPage = () => {
       .catch(() => {
         setError(true);
       });
-  }, []);
+  }, [token, user]);
 
   return (
     <div className="text-sm mx-auto container px-2 sm:px-6 lg:px-8 py-4 space-y-4 min-h-screen lg:mx-auto mt-3 pb-14 relative">

@@ -24,7 +24,6 @@ import AdminPanelLayout from "../components/admin/AdminPanelLayout";
 import UserPanelLayout from "../components/user/UserPanelLayout";
 import AdminBookingsPage from "../pages/admin/AdminBookingsPage";
 import ReportsPageShowWise from "../pages/admin/reports/ReportsPageShowWise";
-import BookingHistory from "../pages/admin/Ticket-Bookings/AllTypeBookins";
 import LiveBookings from "../pages/admin/Live-bookings/LiveBookings";
 import SuccessConfirm from "../pages/payment/SuccessConfirm";
 import ReportsPageSeatWise from "../pages/admin/reports/ReportsPageSeatWise";

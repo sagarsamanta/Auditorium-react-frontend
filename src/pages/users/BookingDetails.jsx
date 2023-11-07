@@ -178,7 +178,7 @@ const BookingDetails = (props) => {
                     <span className="text-lg font-semibold">Seats</span>
                     <p className="line-clamp-3">
                       <div className="flex gap-1 flex-wrap">
-                        {bookingDetails?.seats.length == 0 && (
+                        {bookingDetails?.seats.length === 0 && (
                           <div>No Record to show</div>
                         )}
                         {bookingDetails?.seats?.map((seat) => {
