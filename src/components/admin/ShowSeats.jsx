@@ -62,6 +62,8 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     // If seat is booked / visited, then do not allow to select
     if (seatsByStatus?.BOOKED?.seatNo?.includes(seatNo)) return;
     if (seatsByStatus?.VISITED?.seatNo?.includes(seatNo)) return;
+    // If seat is reserved and current user is not ADMIN then do not allow to select
+    if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo) && authUser?.user?.role !== USER_ADMIN_ROLE) return;
 
     if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo) && authUser?.user?.role === USER_ADMIN_ROLE) {
       setIsOpenReserveSeatModal(true);
