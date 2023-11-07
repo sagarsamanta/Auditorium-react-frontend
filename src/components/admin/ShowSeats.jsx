@@ -63,7 +63,7 @@ const ShowSeats = ({ movieId, showId, show, authUser, priceList, movie }) => {
     if (seatsByStatus?.BOOKED?.seatNo?.includes(seatNo)) return;
     if (seatsByStatus?.VISITED?.seatNo?.includes(seatNo)) return;
 
-    if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo)) {
+    if (seatsByStatus?.RESERVED?.seatNo.includes(seatNo) && authUser?.user?.role === USER_ADMIN_ROLE) {
       setIsOpenReserveSeatModal(true);
       setSelectedReservedSeate(seatNo);
     }
